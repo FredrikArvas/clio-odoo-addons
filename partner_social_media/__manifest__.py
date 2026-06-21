@@ -1,6 +1,6 @@
 {
     'name': 'Partner Social Media',
-    'version': '19.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'Adds social media fields to res.partner',
     'category': 'Contacts',
     'author': 'Fredrik Arvas / Arvas International AB',

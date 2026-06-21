@@ -54,10 +54,9 @@ class ClioJobArticle(models.Model):
         help    = "True om score ≥ tröskel och markerad relevant av AI.",
     )
 
-    _article_id_uniq = models.Constraint(
-        "UNIQUE(article_id)",
-        "Artikel-ID måste vara unikt.",
-    )
+    _sql_constraints = [
+        ("article_id_uniq", "UNIQUE(article_id)", "Artikel-ID måste vara unikt."),
+    ]
 
     # ── Beräknade fält ────────────────────────────────────────────────────────
 

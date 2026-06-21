@@ -26,15 +26,9 @@ def _service_url(env) -> str:
     ).rstrip("/")
 
 
-def _call_raw(env, path: str, data: dict | None = None) -> dict:
+def _call_raw(env, path: str) -> dict:
     url = f"{_service_url(env)}{path}"
-    body = json.dumps(data or {}).encode("utf-8") if data is not None else None
-    req = urllib.request.Request(
-        url,
-        data=body,
-        headers={"Content-Type": "application/json"},
-        method="POST" if body is not None else "GET",
-    )
+    req = urllib.request.Request(url, headers={"Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             result = json.loads(resp.read())
@@ -58,6 +52,7 @@ class ClioNccProject(models.Model):
     kodord     = fields.Char(string="Kodord", index=True)
     name       = fields.Char(string="Projektnamn", required=True)
     ncc_ok     = fields.Boolean(string="NCC", default=False)
+    notion_url = fields.Char(string="Notion")
     status_raw = fields.Char(string="Status")
 
     @api.model
@@ -66,7 +61,7 @@ class ClioNccProject(models.Model):
         Hämtar projektlistan från clio-service och uppdaterar databasen.
         Befintliga rader raderas och återskapas (full refresh).
         """
-        result = _call_raw(self.env, "/mail/ncc/lista/json", {"refresh": True})
+        result = _call_raw(self.env, "/mail/ncc/lista/json")
         projects = result.get("projects", [])
 
         self.search([]).unlink()
@@ -78,6 +73,7 @@ class ClioNccProject(models.Model):
                 "kodord":     p.get("kodord") or "",
                 "name":       p.get("name") or "(inget namn)",
                 "ncc_ok":     bool(p.get("ncc_url")),
+                "notion_url": p.get("ncc_url") or "",
                 "status_raw": p.get("status") or "",
             }
             for p in projects

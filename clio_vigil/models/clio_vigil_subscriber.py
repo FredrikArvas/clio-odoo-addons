@@ -48,10 +48,9 @@ class ClioVigilSubscriber(models.Model):
         compute = "_compute_delivery_count",
     )
 
-    _partner_uniq = models.Constraint(
-        "UNIQUE(partner_id)",
-        "Kontakten har redan en prenumeration.",
-    )
+    _sql_constraints = [
+        ("partner_uniq", "UNIQUE(partner_id)", "Kontakten har redan en prenumeration."),
+    ]
 
     @api.depends("email", "partner_id.email")
     def _compute_effective_email(self):

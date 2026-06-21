@@ -84,6 +84,7 @@ class ClioVigilItem(models.Model):
             ("transcribing","Transkriberas"),
             ("transcribed", "Transkriberad"),
             ("captioned",   "Auto-textad (YouTube)"),  # Sprint B
+            ("uap_classified", "UAP-klassificerad"),
             ("indexed",     "Indexerad"),
             ("notified",    "Skickad i digest"),
         ],
@@ -120,10 +121,9 @@ class ClioVigilItem(models.Model):
     created_at  = fields.Datetime(string="Skapad",       copy=False)
     notified_at = fields.Datetime(string="Notifierad",   copy=False)
 
-    _url_uniq = models.Constraint(
-        "UNIQUE(url)",
-        "Objekt-URL måste vara unik.",
-    )
+    _sql_constraints = [
+        ("url_uniq", "UNIQUE(url)", "Objekt-URL måste vara unik."),
+    ]
 
     # ── Åtgärder ─────────────────────────────────────────────────────────────
 

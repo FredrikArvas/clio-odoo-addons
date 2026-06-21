@@ -1,6 +1,7 @@
 {
     "name":     "Clio — E-postbehörigheter",
-    "version":  "19.0.1.0.0",
+    "version":  "18.0.1.0.0",
+    "license":  "LGPL-3",
     "summary":  "Behörighetshantering för clio-agent-mail med tvåvägssynk",
     "depends":  ["base", "clio_mail_admin"],
     "application": False,
