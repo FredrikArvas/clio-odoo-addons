@@ -29,6 +29,10 @@
         'partner_contact_personal_information_page',  # Personlig info-flik pa kontakter
         'partner_firstname',                          # Fornamn och efternamn som separata falt
         'partner_multi_relation',                     # Typade relationer mellan kontakter
+        # ── Bokio-integration ─────────────────────────────────────────────
+        'invoice_bokio',                              # Synkar fakturor fran Bokio
+        'invoice_bokio_portal',                       # Bokio fakturavy for kontakter
+        'partner_bokio',                              # Kopplar Odoo-kontakter till Bokio
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
