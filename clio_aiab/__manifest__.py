@@ -1,0 +1,22 @@
+{
+    'name': 'Clio AIAB — Installationsprofil',
+    'version': '18.0.3.0.0',
+    'summary': 'Meta-modul: installerar alla Clio-moduler för AIAB-databasen',
+    'author': 'Arvas International AB',
+    'depends': [
+        'partner_autocomplete',
+        'clio_cockpit',
+        'clio_discuss',
+        'clio_graph',
+        'clio_job',
+        'clio_mail_admin',
+        'clio_obit',
+        'clio_theme',
+        'clio_vigil',
+        'l10n_se_ssn',
+    ],
+    'post_init_hook': 'post_init_hook',
+    'installable': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

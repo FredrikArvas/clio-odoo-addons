@@ -1,6 +1,6 @@
 {
     "name": "SSF - LOK-stöd",
-    "version": "19.0.1.0.0",
+    "version": "18.0.1.0.0",
     "summary": "LOK-stödsrapporter (FeeReports) synkade från SSFTA.",
     "author": "Arvas International AB",
     "depends": ["ssf_competition"],

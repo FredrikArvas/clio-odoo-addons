@@ -69,7 +69,6 @@ class ClioVigilSource(models.Model):
         help    = "Om aktiverad laddar --archive-sources ned hela källarkivet.",
     )
 
-    _url_uniq = models.Constraint(
-        "UNIQUE(url)",
-        "Käll-URL måste vara unik.",
-    )
+    _sql_constraints = [
+        ("url_uniq", "UNIQUE(url)", "Käll-URL måste vara unik."),
+    ]

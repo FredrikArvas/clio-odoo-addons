@@ -31,7 +31,10 @@ class ClioVigilDelivery(models.Model):
     delivered_at = fields.Datetime(string="Skickad",      required=True)
     digest_date  = fields.Date(   string="Digestdatum")
 
-    _sub_item_uniq = models.Constraint(
-        "UNIQUE(subscriber_id, item_id)",
-        "Objektet har redan levererats till denna prenumerant.",
-    )
+    _sql_constraints = [
+        (
+            "sub_item_uniq",
+            "UNIQUE(subscriber_id, item_id)",
+            "Objektet har redan levererats till denna prenumerant.",
+        ),
+    ]
