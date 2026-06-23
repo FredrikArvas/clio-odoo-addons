@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ClioThemeConfig(models.Model):
@@ -12,6 +13,15 @@ class ClioThemeConfig(models.Model):
     sidebar_bg    = fields.Char('Sidebar bakgrund')
     sidebar_text  = fields.Char('Sidebar text')
     primary_color = fields.Char('Primar accentfarg')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        if self.sudo().search_count([]) + len(vals_list) > 1:
+            raise UserError(_(
+                'Bara ett temainstaellningsrecord far finnas per databas. '
+                'Redigera det befintliga recordet istallet.'
+            ))
+        return super().create(vals_list)
 
     @api.model
     def get_config(self):
