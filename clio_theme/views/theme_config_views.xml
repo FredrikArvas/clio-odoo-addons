@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- Form view -->
+  <!-- Form view: faelt visas bara for base.group_system -->
   <record id="view_clio_theme_config_form" model="ir.ui.view">
     <field name="name">clio.theme.config.form</field>
     <field name="model">clio.theme.config</field>
     <field name="arch" type="xml">
       <form string="Clio Temainstaellningar">
         <sheet>
+          <div class="oe_title">
+            <h1>Temainstaellningar</h1>
+            <p class="text-muted">CSS-variabler skickas till webblaesaren och aasidosaatter SCSS-fallbackvaerden.
+               Laemna ett faelt tomt for att anvanda det haardkodade standardvaerdet.</p>
+          </div>
           <group string="Navigering (Navbar)">
-            <field name="navbar_bg"/>
-            <field name="navbar_border"/>
-            <field name="navbar_text"/>
+            <field name="navbar_bg" groups="base.group_system"/>
+            <field name="navbar_border" groups="base.group_system"/>
+            <field name="navbar_text" groups="base.group_system"/>
           </group>
           <group string="Vaenstermeny (Sidebar)">
-            <field name="sidebar_bg"/>
-            <field name="sidebar_text"/>
+            <field name="sidebar_bg" groups="base.group_system"/>
+            <field name="sidebar_text" groups="base.group_system"/>
           </group>
           <group string="Akcentfaerg (knappar, rubriker, laenkar)">
-            <field name="primary_color"/>
+            <field name="primary_color" groups="base.group_system"/>
           </group>
         </sheet>
       </form>
     </field>
   </record>
 
-  <!-- List view -->
+  <!-- List view: skapa/radera inaktiverat (singleton) -->
   <record id="view_clio_theme_config_list" model="ir.ui.view">
     <field name="name">clio.theme.config.list</field>
     <field name="model">clio.theme.config</field>
     <field name="arch" type="xml">
-      <list string="Clio Temainstaellningar">
+      <list string="Clio Temainstaellningar" create="false" delete="false">
         <field name="navbar_bg"/>
+        <field name="sidebar_bg"/>
         <field name="primary_color"/>
       </list>
     </field>
@@ -45,15 +51,17 @@
     <field name="target">current</field>
   </record>
 
-  <!-- Meny -->
+  <!-- Meny: bara synlig for base.group_system (systemadmin) -->
   <menuitem id="menu_clio_root"
             name="Clio"
             sequence="99"
             groups="base.group_system"/>
+
   <menuitem id="menu_clio_theme"
             name="Temainstaellningar"
             parent="menu_clio_root"
             action="action_clio_theme_config"
-            sequence="10"/>
+            sequence="10"
+            groups="base.group_system"/>
 
 </odoo>
