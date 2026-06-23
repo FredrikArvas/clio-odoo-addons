@@ -7,19 +7,19 @@ class ClioThemeConfig(models.Model):
     _description = 'Clio Theme Configuration'
     _rec_name = 'id'
 
-    navbar_bg     = fields.Char('Navbar bakgrund')
-    navbar_border = fields.Char('Navbar accent/linje')
-    navbar_text   = fields.Char('Navbar text')
-    sidebar_bg    = fields.Char('Sidebar bakgrund')
-    sidebar_text  = fields.Char('Sidebar text')
-    primary_color = fields.Char('Primar accentfarg')
+    navbar_bg     = fields.Char('Navbar-bakgrund')
+    navbar_border = fields.Char('Navbar-accent/linje')
+    navbar_text   = fields.Char('Navbar-text')
+    sidebar_bg    = fields.Char('Sidofält bakgrund')
+    sidebar_text  = fields.Char('Sidofält text')
+    primary_color = fields.Char('Primär accentfärg')
 
     @api.model_create_multi
     def create(self, vals_list):
         if self.sudo().search_count([]) + len(vals_list) > 1:
             raise UserError(_(
-                'Bara ett temainstaellningsrecord far finnas per databas. '
-                'Redigera det befintliga recordet istallet.'
+                'Bara ett temainställningsrecord får finnas per databas. '
+                'Redigera det befintliga recordet istället.'
             ))
         return super().create(vals_list)
 

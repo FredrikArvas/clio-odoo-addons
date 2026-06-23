@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- Form view: faelt visas bara for base.group_system -->
+  <!-- Sokvy: ger standard Odoo-sokfalt (ej full bredd) -->
+  <record id="view_clio_theme_config_search" model="ir.ui.view">
+    <field name="name">clio.theme.config.search</field>
+    <field name="model">clio.theme.config</field>
+    <field name="arch" type="xml">
+      <search string="Temainst&#228;llningar">
+        <field name="navbar_bg" string="Navbar-bakgrund"/>
+        <field name="primary_color" string="Accentf&#228;rg"/>
+      </search>
+    </field>
+  </record>
+
+  <!-- Formulaervy: falt visas bara for base.group_system -->
   <record id="view_clio_theme_config_form" model="ir.ui.view">
     <field name="name">clio.theme.config.form</field>
     <field name="model">clio.theme.config</field>
     <field name="arch" type="xml">
-      <form string="Clio Temainstaellningar">
+      <form string="Temainst&#228;llningar">
         <sheet>
           <div class="oe_title">
-            <h1>Temainstaellningar</h1>
-            <p class="text-muted">CSS-variabler skickas till webblaesaren och aasidosaatter SCSS-fallbackvaerden.
-               Laemna ett faelt tomt for att anvanda det haardkodade standardvaerdet.</p>
+            <h1>Temainst&#228;llningar</h1>
+            <p class="text-muted">CSS-v&#228;rden skickas till webbl&#228;saren och &#229;sidos&#228;tter SCSS-standardv&#228;rden.
+               L&#228;mna ett f&#228;lt tomt f&#246;r att anv&#228;nda det h&#229;rdkodade standardv&#228;rdet.</p>
           </div>
           <group string="Navigering (Navbar)">
             <field name="navbar_bg" groups="base.group_system"/>
             <field name="navbar_border" groups="base.group_system"/>
             <field name="navbar_text" groups="base.group_system"/>
           </group>
-          <group string="Vaenstermeny (Sidebar)">
+          <group string="V&#228;nstermeny (Sidebar)">
             <field name="sidebar_bg" groups="base.group_system"/>
             <field name="sidebar_text" groups="base.group_system"/>
           </group>
-          <group string="Akcentfaerg (knappar, rubriker, laenkar)">
+          <group string="Accentf&#228;rg (knappar, rubriker, l&#228;nkar)">
             <field name="primary_color" groups="base.group_system"/>
           </group>
         </sheet>
@@ -30,12 +42,12 @@
     </field>
   </record>
 
-  <!-- List view -->
+  <!-- Listvy med Ny-knapp (skapa) och utan radera -->
   <record id="view_clio_theme_config_list" model="ir.ui.view">
     <field name="name">clio.theme.config.list</field>
     <field name="model">clio.theme.config</field>
     <field name="arch" type="xml">
-      <list string="Clio Temainstaellningar" delete="false">
+      <list string="Temainst&#228;llningar" delete="false" create="true">
         <field name="navbar_bg"/>
         <field name="sidebar_bg"/>
         <field name="primary_color"/>
@@ -45,7 +57,7 @@
 
   <!-- Action -->
   <record id="action_clio_theme_config" model="ir.actions.act_window">
-    <field name="name">Temainstaellningar</field>
+    <field name="name">Temainst&#228;llningar</field>
     <field name="res_model">clio.theme.config</field>
     <field name="view_mode">list,form</field>
     <field name="target">current</field>
@@ -53,12 +65,12 @@
 
   <!-- Meny: bara synlig for base.group_system (systemadmin) -->
   <menuitem id="menu_clio_root"
-            name="Clio"
+            name="Clio Theme"
             sequence="99"
             groups="base.group_system"/>
 
   <menuitem id="menu_clio_theme"
-            name="Temainstaellningar"
+            name="Temainst&#228;llningar"
             parent="menu_clio_root"
             action="action_clio_theme_config"
             sequence="10"
