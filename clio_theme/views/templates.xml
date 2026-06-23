@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- Injicerar data-db pa body for CSS-selektorer -->
+  <!-- Satter data-db pa body for CSS-selektorer -->
   <template id="clio_theme_body_db" inherit_id="web.layout" name="Clio Theme DB Marker">
     <xpath expr="//body" position="attributes">
       <attribute name="t-att-data-db">request.db</attribute>
     </xpath>
   </template>
 
-  <!-- Injicerar CSS-variabler fran databas-installningar i head -->
+  <!-- Injicerar CSS direkt i head fran databas-installningar -->
   <template id="clio_theme_vars" inherit_id="web.layout" name="Clio Theme CSS Vars">
     <xpath expr="//head" position="inside">
       <t t-set="clio_theme" t-value="request.env['clio.theme.config'].sudo().search([], limit=1)"/>
       <t t-if="clio_theme and (clio_theme.navbar_bg or clio_theme.primary_color or clio_theme.sidebar_bg)">
+        <t t-set="db" t-value="request.db or ''"/>
         <style>
-          body[data-db="<t t-esc="request.db or ''"/>"] {
-            <t t-if="clio_theme.navbar_bg">--clio-nav-bg: <t t-esc="clio_theme.navbar_bg"/>;</t>
-            <t t-if="clio_theme.navbar_border">--clio-nav-border: <t t-esc="clio_theme.navbar_border"/>;</t>
-            <t t-if="clio_theme.navbar_text">--clio-nav-text: <t t-esc="clio_theme.navbar_text"/>;</t>
-            <t t-if="clio_theme.sidebar_bg">--clio-sidebar-bg: <t t-esc="clio_theme.sidebar_bg"/>;</t>
-            <t t-if="clio_theme.sidebar_text">--clio-sidebar-text: <t t-esc="clio_theme.sidebar_text"/>;</t>
-            <t t-if="clio_theme.primary_color">
-              --clio-primary: <t t-esc="clio_theme.primary_color"/>;
-              --o-brand-primary: <t t-esc="clio_theme.primary_color"/>;
-              --o-brand-action: <t t-esc="clio_theme.primary_color"/>;
-            </t>
-          }
+          <t t-if="clio_theme.navbar_bg">
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar {
+              background-color: <t t-esc="clio_theme.navbar_bg"/> !important;
+            }
+          </t>
+          <t t-if="clio_theme.navbar_border">
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar {
+              border-bottom: 3px solid <t t-esc="clio_theme.navbar_border"/> !important;
+            }
+          </t>
+          <t t-if="clio_theme.navbar_text">
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar .o_menu_brand,
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar a,
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar .o_menu_sections > * {
+              color: <t t-esc="clio_theme.navbar_text"/> !important;
+            }
+          </t>
+          <t t-if="clio_theme.sidebar_bg">
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar ~ .o_action_manager,
+            body[data-db="<t t-esc="db"/>"] .o_home_menu {
+              background-color: <t t-esc="clio_theme.sidebar_bg"/> !important;
+            }
+          </t>
+          <t t-if="clio_theme.sidebar_text">
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar ~ .o_action_manager a,
+            body[data-db="<t t-esc="db"/>"] .o_main_navbar ~ .o_action_manager span {
+              color: <t t-esc="clio_theme.sidebar_text"/> !important;
+            }
+          </t>
+          <t t-if="clio_theme.primary_color">
+            body[data-db="<t t-esc="db"/>"] .btn-primary {
+              background-color: <t t-esc="clio_theme.primary_color"/> !important;
+              border-color: <t t-esc="clio_theme.primary_color"/> !important;
+            }
+            body[data-db="<t t-esc="db"/>"] .o_form_view .o_wrap_field > label {
+              color: <t t-esc="clio_theme.primary_color"/> !important;
+            }
+          </t>
         </style>
       </t>
     </xpath>

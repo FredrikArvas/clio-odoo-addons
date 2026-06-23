@@ -30,12 +30,12 @@
     </field>
   </record>
 
-  <!-- List view: skapa/radera inaktiverat (singleton) -->
+  <!-- List view -->
   <record id="view_clio_theme_config_list" model="ir.ui.view">
     <field name="name">clio.theme.config.list</field>
     <field name="model">clio.theme.config</field>
     <field name="arch" type="xml">
-      <list string="Clio Temainstaellningar" create="false" delete="false">
+      <list string="Clio Temainstaellningar" delete="false">
         <field name="navbar_bg"/>
         <field name="sidebar_bg"/>
         <field name="primary_color"/>
