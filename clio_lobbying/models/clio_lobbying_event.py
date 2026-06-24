@@ -185,6 +185,24 @@ class ClioLobbyingEvent(models.Model):
             },
         }
 
+    def action_view_pitches_draft(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Pitchar",
+            "res_model": "clio.lobbying.pitch",
+            "view_mode": "list,form",
+            "domain": [("event_id", "=", self.id)],
+        }
+
+    def action_view_pitches_sent(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Skickade pitchar",
+            "res_model": "clio.lobbying.pitch",
+            "view_mode": "list,form",
+            "domain": [("event_id", "=", self.id), ("state", "in", ["sent", "responded"])],
+        }
+
     def action_mark_review(self):
         self.write({"state": "review"})
 
