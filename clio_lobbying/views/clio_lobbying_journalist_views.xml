@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
   <!-- ── Listvy ─────────────────────────────────────────────────────────── -->
@@ -73,11 +73,11 @@
             <page string="Intresseprofil">
               <field name="topics" placeholder="Kommaseparerade ämnesord (auto-genererade)"/>
               <field name="profile" widget="text" readonly="1"
-                     placeholder="Genereras automatiskt av pipeline (--build-profiles)…"/>
+                     placeholder="Genereras automatiskt av pipeline (--build-profiles)..."/>
             </page>
             <page string="Anteckningar">
               <field name="notes" widget="text"
-                     placeholder="Relationshistorik, kontaktpreferenser, senaste möte…"/>
+                     placeholder="Relationshistorik, kontaktpreferenser, senaste möte..."/>
             </page>
             <page string="Pitchar">
               <field name="pitch_ids" nolabel="1">
@@ -106,13 +106,12 @@
       <search string="Sök journalister">
         <field name="name" string="Namn"/>
         <field name="publication" string="Publikation"/>
-        <field name="topics" string="Ämnesord"/>
         <filter string="UAP/UFO"    name="ufo"        domain="[('domain','=','ufo')]"/>
         <filter string="AI"         name="ai"         domain="[('domain','=','ai')]"/>
         <separator/>
         <filter string="Aktiva"     name="active"     domain="[('state','=','active')]"/>
-        <filter string="Har mail"   name="has_email"  domain="[('email','!=',false)]"/>
-        <filter string="Har profil" name="has_profile" domain="[('profile','!=',false)]"/>
+        <filter string="Har mail"   name="has_email"  domain="[('email','!=', False)]"/>
+        <filter string="Har profil" name="has_profile" domain="[('profile','!=', False)]"/>
         <group expand="0" string="Gruppera efter">
           <filter string="Publikation" name="grp_pub" context="{'group_by':'publication'}"/>
           <filter string="Domän"       name="grp_dom" context="{'group_by':'domain'}"/>
