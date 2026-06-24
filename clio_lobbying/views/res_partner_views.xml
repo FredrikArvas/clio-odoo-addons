@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
   <!-- ── Journalist-flik på res.partner ────────────────────────────────── -->
@@ -8,29 +8,29 @@
     <field name="inherit_id" ref="base.view_partner_form"/>
     <field name="arch" type="xml">
 
-      <!-- Lägg till stat-knapp i button_box -->
+      <!-- Stat-knappar i button_box -->
       <xpath expr="//div[@name='button_box']" position="inside">
         <button class="oe_stat_button" type="object"
                 name="action_create_journalist" icon="fa-microphone"
-                attrs="{'invisible': [('is_journalist', '=', True)]}">
+                invisible="is_journalist">
           <span class="o_stat_text">Lägg till som journalist</span>
         </button>
         <button class="oe_stat_button" type="object"
                 name="action_view_pitches" icon="fa-paper-plane"
-                attrs="{'invisible': [('is_journalist', '=', False)]}">
+                invisible="not is_journalist">
           <field name="lobbying_pitch_count" widget="statinfo" string="Pitchar"/>
         </button>
         <button class="oe_stat_button" type="object"
                 name="action_view_articles" icon="fa-newspaper-o"
-                attrs="{'invisible': [('is_journalist', '=', False)]}">
+                invisible="not is_journalist">
           <field name="vigil_article_count" widget="statinfo" string="Artiklar"/>
         </button>
       </xpath>
 
-      <!-- Lägg till journalist-flik sist i notebook -->
+      <!-- Journalist-flik sist i notebook -->
       <xpath expr="//notebook" position="inside">
         <page string="Journalist" name="journalist_tab"
-              attrs="{'invisible': [('is_journalist', '=', False)]}">
+              invisible="not is_journalist">
           <group>
             <field name="journalist_id" nolabel="1">
               <form>
