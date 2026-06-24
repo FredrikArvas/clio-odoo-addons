@@ -72,7 +72,7 @@
               <field name="subject"/>
               <field name="state" widget="badge"
                      decoration-success="state in ('sent','responded')"
-                     decoration-secondary="state == 'draft'"
+                     decoration-muted="state == 'draft'"
                      decoration-danger="state == 'dismissed'"/>
               <field name="sent_at" string="Skickad"/>
             </list>

@@ -15,7 +15,7 @@
         <field name="sent_count"  string="Skickade"/>
         <field name="triggered_at" string="Senast triggrad" optional="show"/>
         <field name="state" widget="badge"
-               decoration-secondary="state == 'draft'"
+               decoration-muted="state == 'draft'"
                decoration-warning="state == 'pitching'"
                decoration-info="state == 'review'"
                decoration-success="state == 'closed'"/>
@@ -117,7 +117,7 @@
                   <field name="journalist_id"/>
                   <field name="journalist_publication"/>
                   <field name="state" widget="badge"
-                         decoration-secondary="state == 'draft'"
+                         decoration-muted="state == 'draft'"
                          decoration-info="state == 'approved'"
                          decoration-success="state in ('sent','responded')"
                          decoration-danger="state == 'dismissed'"/>
