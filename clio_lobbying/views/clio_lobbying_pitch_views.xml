@@ -14,7 +14,7 @@
         <field name="event_id"/>
         <field name="subject"/>
         <field name="state" widget="badge"
-               decoration-secondary="state == 'draft'"
+               decoration-muted="state == 'draft'"
                decoration-info="state == 'approved'"
                decoration-success="state in ('sent','responded')"
                decoration-danger="state == 'dismissed'"/>
