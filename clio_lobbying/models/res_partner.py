@@ -96,3 +96,28 @@ class ResPartner(models.Model):
                 "default_email":      self.email or "",
             },
         }
+
+    def action_view_pitches(self):
+        self.ensure_one()
+        if not self.journalist_id:
+            return False
+        return {
+            "type":      "ir.actions.act_window",
+            "name":      "Pitchar",
+            "res_model": "clio.lobbying.pitch",
+            "view_mode": "list,form",
+            "domain":    [("journalist_id", "in", self.journalist_id.ids)],
+        }
+
+    def action_view_articles(self):
+        self.ensure_one()
+        if not self.journalist_id:
+            return False
+        publication = self.journalist_id[0].publication
+        return {
+            "type":      "ir.actions.act_window",
+            "name":      "Artiklar",
+            "res_model": "clio.vigil.item",
+            "view_mode": "list,form",
+            "domain":    [("source_name", "=", publication)],
+        }
