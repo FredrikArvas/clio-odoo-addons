@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
   <!-- ── Listvy ─────────────────────────────────────────────────────────── -->
@@ -59,21 +59,21 @@
         <header>
           <button name="action_generate_pitches" type="object"
                   string="Generera pitchar" class="btn-primary"
-                  attrs="{'invisible': [('state', 'in', ['closed'])]}"
+                  invisible="state == 'closed'"
                   confirm="Triggar pitch-generering för alla matchade journalister. Fortsätt?"/>
           <button name="action_extract_journalists" type="object"
                   string="Uppdatera journalister" class="btn-secondary"
-                  attrs="{'invisible': [('state', '=', 'closed')]}"
+                  invisible="state == 'closed'"
                   help="Extraherar bylines och bygger profiler för domänen."/>
           <button name="action_mark_review" type="object"
                   string="Öppna granskning" class="btn-secondary"
-                  attrs="{'invisible': [('state', '!=', 'pitching')]}"/>
+                  invisible="state != 'pitching'"/>
           <button name="action_close" type="object"
                   string="Avsluta kampanj" class="btn-secondary"
-                  attrs="{'invisible': [('state', 'in', ['draft', 'closed'])]}"/>
+                  invisible="state in ('draft', 'closed')"/>
           <button name="action_reopen" type="object"
                   string="Återöppna" class="btn-secondary"
-                  attrs="{'invisible': [('state', '!=', 'closed')]}"/>
+                  invisible="state != 'closed'"/>
           <field name="state" widget="statusbar"
                  statusbar_visible="draft,pitching,review,closed"/>
         </header>
@@ -123,10 +123,10 @@
                          decoration-danger="state == 'dismissed'"/>
                   <field name="subject"/>
                   <field name="sent_at" optional="show"/>
-                  <button name="action_approve"  type="object" string="Godkänn"
-                          attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                  <button name="action_approve"   type="object" string="Godkänn"
+                          invisible="state != 'draft'"/>
                   <button name="action_mark_sent" type="object" string="Markera skickad"
-                          attrs="{'invisible': [('state', 'not in', ['draft','approved'])]}"/>
+                          invisible="state not in ('draft', 'approved')"/>
                 </list>
               </field>
             </page>
@@ -144,9 +144,9 @@
       <search string="Sök händelser">
         <field name="name"/>
         <field name="event_text"/>
-        <filter string="Aktiva"   name="active"   domain="[('state','not in',['closed'])]"/>
-        <filter string="UAP/UFO"  name="ufo"      domain="[('domain','=','ufo')]"/>
-        <filter string="AI"       name="ai"        domain="[('domain','=','ai')]"/>
+        <filter string="Aktiva"     name="active"  domain="[('state','not in',['closed'])]"/>
+        <filter string="UAP/UFO"    name="ufo"     domain="[('domain','=','ufo')]"/>
+        <filter string="AI"         name="ai"      domain="[('domain','=','ai')]"/>
         <filter string="Granskning" name="review"  domain="[('state','=','review')]"/>
       </search>
     </field>

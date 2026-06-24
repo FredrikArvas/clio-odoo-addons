@@ -107,12 +107,12 @@
         <field name="name" string="Namn"/>
         <field name="publication" string="Publikation"/>
         <field name="topics" string="Ämnesord"/>
-        <filter string="UAP/UFO"   name="ufo" domain="[('domain','=','ufo')]"/>
-        <filter string="AI"        name="ai"  domain="[('domain','=','ai')]"/>
+        <filter string="UAP/UFO"    name="ufo"        domain="[('domain','=','ufo')]"/>
+        <filter string="AI"         name="ai"         domain="[('domain','=','ai')]"/>
         <separator/>
-        <filter string="Aktiva"   name="active"    domain="[('state','=','active')]"/>
-        <filter string="Har mail" name="has_email" domain="[('email','!=',False),('email','!=','')]"/>
-        <filter string="Har profil" name="has_profile" domain="[('profile','!=',False)]"/>
+        <filter string="Aktiva"     name="active"     domain="[('state','=','active')]"/>
+        <filter string="Har mail"   name="has_email"  domain="[('email','!=',false)]"/>
+        <filter string="Har profil" name="has_profile" domain="[('profile','!=',false)]"/>
         <group expand="0" string="Gruppera efter">
           <filter string="Publikation" name="grp_pub" context="{'group_by':'publication'}"/>
           <filter string="Domän"       name="grp_dom" context="{'group_by':'domain'}"/>
