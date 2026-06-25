@@ -53,6 +53,11 @@ class ClioRecruiterProfile(models.Model):
         ],
         string = "Senioritetsnivå",
     )
+    candidate_type_ids = fields.Many2many(
+        comodel_name = "clio.recruiter.candidate.type",
+        string       = "Kandidattyper",
+        help         = "Vilka typer av kandidater profilen söker.",
+    )
     target_characteristics = fields.Text(
         string = "Kandidatkaraktäristik",
         help   = "Egenskaper att leta efter — en per rad.",
