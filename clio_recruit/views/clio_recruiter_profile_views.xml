@@ -58,6 +58,9 @@
                      widget="text" placeholder="En bransch per rad…"/>
             </group>
           </group>
+          <group string="Kandidattyper">
+            <field name="candidate_type_ids" widget="many2many_checkboxes" nolabel="1"/>
+          </group>
           <separator string="Kandidatprofil"/>
           <group string="Eftersökta egenskaper">
             <field name="target_characteristics"
