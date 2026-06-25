@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_partner_form_clio_recruit" model="ir.ui.view">
+    <field name="name">res.partner.form.clio_recruit</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+      <notebook position="inside">
+        <page string="Clio Recruit" name="clio_recruit">
+          <field name="clio_recruit_profile_ids" string="Rekryterarprofiler" nolabel="1">
+            <list>
+              <field name="name"        string="Profil"/>
+              <field name="target_role" string="Roll"/>
+              <field name="match_count" string="Matchningar"/>
+              <field name="active"      optional="hide"/>
+            </list>
+          </field>
+        </page>
+      </notebook>
+    </field>
+  </record>
+
+</odoo>

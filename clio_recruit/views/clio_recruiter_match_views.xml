@@ -11,17 +11,17 @@
             decoration-warning="recommended_action == 'bevaka_3_mån'"
             decoration-muted="recommended_action == 'skip'"
             default_order="sent_at desc">
-        <field name="sent_at"           string="Skickat"/>
-        <field name="profile_id"        string="Profil"/>
-        <field name="target_company"    string="Bolag"/>
-        <field name="signal_type"       string="Signaltyp"/>
-        <field name="match_score"       string="Score"/>
+        <field name="sent_at"            string="Skickat"/>
+        <field name="profile_id"         string="Profil"/>
+        <field name="company_id"         string="Bolag"/>
+        <field name="signal_type"        string="Signaltyp" widget="badge"/>
+        <field name="match_score"        string="Score"/>
         <field name="estimated_timeline" string="Horisont"/>
         <field name="recommended_action" string="Åtgärd" widget="badge"
                decoration-success="recommended_action == 'kontakta_nu'"
                decoration-warning="recommended_action == 'bevaka_3_mån'"/>
-        <field name="candidate_profile" string="Kandidattyp" optional="show"/>
-        <field name="article_title"     string="Artikel" optional="show"/>
+        <field name="candidate_type_ids" string="Kandidattyper" widget="many2many_tags" optional="show"/>
+        <field name="article_id"         string="Artikel" optional="show"/>
       </list>
     </field>
   </record>
@@ -42,15 +42,18 @@
               <field name="recommended_action" string="Rekommenderad åtgärd"/>
             </group>
             <group string="Bolag &amp; kandidat">
-              <field name="target_company"    string="Bolag"/>
-              <field name="candidate_profile" string="Kandidattyp"/>
+              <field name="company_id"        string="Bolag"/>
+              <field name="target_company"    string="Bolag (agent)" readonly="1"/>
               <field name="estimated_timeline" string="Tidshorisont"/>
               <field name="contact_hint"      string="Kontakttips"/>
             </group>
           </group>
+          <group string="Kandidattyper">
+            <field name="candidate_type_ids" widget="many2many_checkboxes" nolabel="1"/>
+            <field name="candidate_profile"  string="Beskrivning (agent)" readonly="1"/>
+          </group>
           <group string="Artikel">
-            <field name="article_title" string="Rubrik" nolabel="1"/>
-            <field name="article_url"   string="URL" widget="url" nolabel="1"/>
+            <field name="article_id" string="Artikel" nolabel="1"/>
           </group>
         </sheet>
       </form>
@@ -63,7 +66,7 @@
     <field name="model">clio.recruiter.match</field>
     <field name="arch" type="xml">
       <search string="Sök matchningar">
-        <field name="target_company"/>
+        <field name="company_id"/>
         <field name="profile_id"/>
         <field name="signal_type"/>
         <filter name="kontakta_nu" string="Kontakta nu"
@@ -72,7 +75,7 @@
                 domain="[('recommended_action','=','bevaka_3_mån')]"/>
         <group>
           <filter name="group_profile"  string="Profil"    context="{'group_by': 'profile_id'}"/>
-          <filter name="group_company"  string="Bolag"     context="{'group_by': 'target_company'}"/>
+          <filter name="group_company"  string="Bolag"     context="{'group_by': 'company_id'}"/>
           <filter name="group_signal"   string="Signaltyp" context="{'group_by': 'signal_type'}"/>
         </group>
       </search>

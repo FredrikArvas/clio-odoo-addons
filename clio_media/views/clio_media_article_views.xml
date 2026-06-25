@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ── Listvy ─────────────────────────────────────────────────────────── -->
+  <record id="view_clio_media_article_list" model="ir.ui.view">
+    <field name="name">clio.media.article.list</field>
+    <field name="model">clio.media.article</field>
+    <field name="arch" type="xml">
+      <list string="Artiklar"
+            decoration-success="is_matched == True"
+            default_order="first_seen desc">
+        <field name="first_seen"   string="Sedd"/>
+        <field name="published"    string="Publicerad" optional="show"/>
+        <field name="source"       string="Källa"/>
+        <field name="title"        string="Rubrik"/>
+        <field name="match_score"  string="Score"/>
+        <field name="is_matched"   string="Matchad" widget="boolean"/>
+        <field name="media_type"   string="Typ" widget="badge" optional="hide"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- ── Formulärvy ─────────────────────────────────────────────────────── -->
+  <record id="view_clio_media_article_form" model="ir.ui.view">
+    <field name="name">clio.media.article.form</field>
+    <field name="model">clio.media.article</field>
+    <field name="arch" type="xml">
+      <form string="Artikel">
+        <sheet>
+          <div class="oe_title">
+            <h1><field name="title" readonly="1"/></h1>
+          </div>
+          <group>
+            <group string="Metadata">
+              <field name="source"     string="Källa"/>
+              <field name="media_type" string="Typ"/>
+              <field name="published"  string="Publicerad"/>
+              <field name="first_seen" string="Först sedd" readonly="1"/>
+            </group>
+            <group string="Analys">
+              <field name="match_score" string="Score"/>
+              <field name="is_matched"  string="Matchad"/>
+            </group>
+          </group>
+          <group string="Utdrag">
+            <field name="body_snippet" nolabel="1" readonly="1"/>
+          </group>
+          <group string="URL">
+            <field name="url" widget="url" nolabel="1" readonly="1"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ── Sökvy ──────────────────────────────────────────────────────────── -->
+  <record id="view_clio_media_article_search" model="ir.ui.view">
+    <field name="name">clio.media.article.search</field>
+    <field name="model">clio.media.article</field>
+    <field name="arch" type="xml">
+      <search string="Sök artiklar">
+        <field name="title"/>
+        <field name="source"/>
+        <filter name="matched"   string="Matchade"    domain="[('is_matched','=',True)]"/>
+        <filter name="unmatched" string="Omatchade"   domain="[('is_matched','=',False)]"/>
+        <group>
+          <filter name="group_source" string="Källa"  context="{'group_by': 'source'}"/>
+          <filter name="group_type"   string="Typ"    context="{'group_by': 'media_type'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- ── Action ─────────────────────────────────────────────────────────── -->
+  <record id="action_clio_media_article" model="ir.actions.act_window">
+    <field name="name">Artiklar</field>
+    <field name="res_model">clio.media.article</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- ── Meny ───────────────────────────────────────────────────────────── -->
+  <menuitem id="menu_clio_media_root"
+            name="Clio Media"
+            sequence="99"/>
+  <menuitem id="menu_clio_media_articles"
+            name="Artiklar"
+            parent="menu_clio_media_root"
+            action="action_clio_media_article"/>
+
+</odoo>
