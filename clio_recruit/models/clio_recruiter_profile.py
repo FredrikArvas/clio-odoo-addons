@@ -5,7 +5,7 @@ En profil per rekryteringsuppdrag (t.ex. "CapFM SAP-rekrytering").
 """
 
 import logging
-from odoo import fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -22,9 +22,18 @@ class ClioRecruiterProfile(models.Model):
         index    = True,
         help     = "Internt namn för uppdraget, t.ex. 'CapFM SAP-rekrytering'.",
     )
+    partner_id = fields.Many2one(
+        comodel_name = "res.partner",
+        string       = "Mottagare",
+        domain       = [("email", "!=", False)],
+        help         = "Kontakt dit Clio skickar signalrapporter.",
+    )
     email = fields.Char(
-        string = "Mottagaradress",
-        help   = "E-post dit Clio skickar signalrapporter.",
+        string   = "Mottagaradress",
+        compute  = "_compute_email",
+        store    = True,
+        readonly = True,
+        help     = "Beräknat från partner_id.email — läses av agenten via XML-RPC.",
     )
     language = fields.Selection(
         selection = [("sv", "Svenska"), ("en", "English")],
@@ -35,9 +44,14 @@ class ClioRecruiterProfile(models.Model):
         string = "Målroll",
         help   = "T.ex. 'Senior SAP-arkitekt / SAP-konsult'.",
     )
-    target_seniority = fields.Char(
+    target_seniority = fields.Selection(
+        selection = [
+            ("junior", "Junior (0–3 år)"),
+            ("medel",  "Medel (4–6 år)"),
+            ("senior", "Senior (6–12 år)"),
+            ("expert", "Expert (12+ år)"),
+        ],
         string = "Senioritetsnivå",
-        help   = "T.ex. 'Senior (10+ år)'.",
     )
     target_characteristics = fields.Text(
         string = "Kandidatkaraktäristik",
@@ -82,6 +96,11 @@ class ClioRecruiterProfile(models.Model):
         compute = "_compute_match_count",
         store   = False,
     )
+
+    @api.depends("partner_id.email")
+    def _compute_email(self):
+        for rec in self:
+            rec.email = rec.partner_id.email or ""
 
     def _compute_match_count(self):
         for rec in self:

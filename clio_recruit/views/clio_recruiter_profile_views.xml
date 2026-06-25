@@ -10,7 +10,7 @@
         <field name="name"            string="Profil"/>
         <field name="target_role"     string="Målroll"/>
         <field name="target_seniority" string="Senioritet"/>
-        <field name="email"           string="Mottagare"/>
+        <field name="partner_id"      string="Mottagare"/>
         <field name="language"        string="Språk" widget="badge"/>
         <field name="match_count"     string="Matchningar"/>
         <field name="active"          column_invisible="True"/>
@@ -39,7 +39,7 @@
           </div>
           <group>
             <group string="Rapport">
-              <field name="email"    string="Mottagaradress"/>
+              <field name="partner_id" string="Mottagare"/>
               <field name="language" string="Språk"/>
             </group>
             <group string="Konfidentialitet">
@@ -58,16 +58,22 @@
                      widget="text" placeholder="En bransch per rad…"/>
             </group>
           </group>
-          <group string="Kandidatprofil">
-            <field name="target_characteristics" string="Eftersökta egenskaper"
+          <separator string="Kandidatprofil"/>
+          <group string="Eftersökta egenskaper">
+            <field name="target_characteristics"
                    widget="text" placeholder="En egenskap per rad…" nolabel="1"/>
-            <field name="target_avoid" string="Undvik"
+          </group>
+          <group string="Undvik">
+            <field name="target_avoid"
                    widget="text" placeholder="En per rad…" nolabel="1"/>
           </group>
-          <group string="Triggersignaler">
-            <field name="trigger_signals_high"   string="Högvärda signaler"
+          <separator string="Triggersignaler"/>
+          <group string="Högvärda signaler">
+            <field name="trigger_signals_high"
                    widget="text" placeholder="En signal per rad…" nolabel="1"/>
-            <field name="trigger_signals_medium" string="Medelvärda signaler"
+          </group>
+          <group string="Medelvärda signaler">
+            <field name="trigger_signals_medium"
                    widget="text" placeholder="En signal per rad…" nolabel="1"/>
           </group>
           <notebook>
@@ -80,7 +86,7 @@
                   <field name="match_score"      string="Score"/>
                   <field name="estimated_timeline" string="Horisont"/>
                   <field name="recommended_action" string="Åtgärd"/>
-                  <field name="article_title"    string="Artikel"/>
+                  <field name="article_id"       string="Artikel"/>
                 </list>
               </field>
             </page>
