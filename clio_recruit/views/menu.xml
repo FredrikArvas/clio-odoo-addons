@@ -21,4 +21,11 @@
             action="action_clio_recruiter_match"
             sequence="20"/>
 
+  <!-- ── Clio Media ────────────────────────────────────────────────────── -->
+  <menuitem id="menu_clio_recruit_media"
+            name="Clio Media"
+            parent="menu_clio_recruit_root"
+            action="clio_media.action_clio_media_article"
+            sequence="30"/>
+
 </odoo>
