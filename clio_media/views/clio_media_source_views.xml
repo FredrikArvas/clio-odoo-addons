@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ── Listvy ─────────────────────────────────────────────────────────── -->
+  <record id="view_clio_media_source_list" model="ir.ui.view">
+    <field name="name">clio.media.source.list</field>
+    <field name="model">clio.media.source</field>
+    <field name="arch" type="xml">
+      <list string="Källorna" editable="bottom">
+        <field name="sequence" widget="handle"/>
+        <field name="name"        string="Namn"/>
+        <field name="url"         string="URL"/>
+        <field name="source_type" string="Typ" widget="badge"/>
+        <field name="description" string="Beskrivning" optional="show"/>
+        <field name="enabled"     string="Aktiv" widget="boolean_toggle"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- ── Formulärvy ─────────────────────────────────────────────────────── -->
+  <record id="view_clio_media_source_form" model="ir.ui.view">
+    <field name="name">clio.media.source.form</field>
+    <field name="model">clio.media.source</field>
+    <field name="arch" type="xml">
+      <form string="Nyhetskälla">
+        <sheet>
+          <field name="enabled" widget="boolean_toggle" nolabel="1"/>
+          <div class="oe_title">
+            <h1><field name="name" placeholder="Källans namn…"/></h1>
+          </div>
+          <group>
+            <field name="url"         string="URL"/>
+            <field name="source_type" string="Typ"/>
+            <field name="description" string="Beskrivning"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ── Action ─────────────────────────────────────────────────────────── -->
+  <record id="action_clio_media_source" model="ir.actions.act_window">
+    <field name="name">Källorna</field>
+    <field name="res_model">clio.media.source</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{"search_default_enabled": 1}</field>
+  </record>
+
+</odoo>

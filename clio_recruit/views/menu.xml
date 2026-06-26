@@ -28,4 +28,11 @@
             action="clio_media.action_clio_media_article"
             sequence="30"/>
 
+  <!-- ── Källorna ───────────────────────────────────────────────────────── -->
+  <menuitem id="menu_clio_recruit_kallorna"
+            name="Källorna"
+            parent="menu_clio_recruit_root"
+            action="clio_media.action_clio_media_source"
+            sequence="40"/>
+
 </odoo>

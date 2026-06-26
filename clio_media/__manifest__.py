@@ -8,7 +8,9 @@
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",
+        "data/clio_media_source_data.xml",
         "views/clio_media_article_views.xml",
+        "views/clio_media_source_views.xml",
     ],
     "installable":  True,
     "auto_install": False,

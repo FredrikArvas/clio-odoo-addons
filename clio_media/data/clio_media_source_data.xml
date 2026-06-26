@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+  <record id="source_di" model="clio.media.source">
+    <field name="name">Di — Näringsliv</field>
+    <field name="url">https://www.di.se/rss</field>
+    <field name="source_type">rss</field>
+    <field name="description">Dagens Industri — näringsliv och ekonomi</field>
+    <field name="sequence">10</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_dagens_samhalle" model="clio.media.source">
+    <field name="name">Dagens Samhälle — Offentlig sektor</field>
+    <field name="url">https://www.dagenssamhalle.se/rss</field>
+    <field name="source_type">rss</field>
+    <field name="description">Nyheter om offentlig sektor och kommuner</field>
+    <field name="sequence">20</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_upphandling24" model="clio.media.source">
+    <field name="name">Upphandling24 — LOU-upphandlingar</field>
+    <field name="url">https://upphandling24.se/feed/</field>
+    <field name="source_type">rss</field>
+    <field name="description">Offentliga upphandlingar och LOU</field>
+    <field name="sequence">30</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_computer_sweden" model="clio.media.source">
+    <field name="name">Computer Sweden — IT och digitalisering</field>
+    <field name="url">https://computersweden.se/feed/rss/</field>
+    <field name="source_type">rss</field>
+    <field name="description">IT-nyheter och digitaliseringstrender</field>
+    <field name="sequence">40</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_dagens_arena" model="clio.media.source">
+    <field name="name">Dagens Arena — Fackligt och offentlig sektor</field>
+    <field name="url">https://www.dagensarena.se/feed/</field>
+    <field name="source_type">rss</field>
+    <field name="description">Fackliga nyheter och arbetsmarknad</field>
+    <field name="sequence">50</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_mfn" model="clio.media.source">
+    <field name="name">MFN — Nordiska börsbolags pressreleaser</field>
+    <field name="url">https://mfn.se/all/rss.xml</field>
+    <field name="source_type">rss</field>
+    <field name="description">Börspressreleaser från nordiska bolag</field>
+    <field name="sequence">60</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_sap_news" model="clio.media.source">
+    <field name="name">SAP News — Global SAP-nyheter</field>
+    <field name="url">https://news.sap.com/feed/</field>
+    <field name="source_type">rss</field>
+    <field name="description">Globala SAP-nyheter och migrationsavtal</field>
+    <field name="sequence">70</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_realtid" model="clio.media.source">
+    <field name="name">Realtid — Svensk finans och bolagsnyheter</field>
+    <field name="url">https://www.realtid.se/feed</field>
+    <field name="source_type">rss</field>
+    <field name="description">Finansnyheter och bolagsinfo</field>
+    <field name="sequence">80</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_it_branschen" model="clio.media.source">
+    <field name="name">IT-Branschen — Svensk IT-industri</field>
+    <field name="url">https://itbranschen.com/feed/</field>
+    <field name="source_type">rss</field>
+    <field name="description">Nyheter från svensk IT-bransch</field>
+    <field name="sequence">90</field>
+    <field name="enabled">True</field>
+  </record>
+
+  <record id="source_breakit" model="clio.media.source">
+    <field name="name">Breakit — Startup och investering</field>
+    <field name="url">https://www.breakit.se/feed/articles</field>
+    <field name="source_type">rss</field>
+    <field name="description">Startup- och investeringsnyheter — RSS ej verifierad</field>
+    <field name="sequence">100</field>
+    <field name="enabled">False</field>
+  </record>
+
+</odoo>

@@ -39,4 +39,12 @@
             sequence="40"
             groups="base.group_system"/>
 
+  <!-- Admin: Källorna -->
+  <menuitem id="menu_clio_job_kallorna"
+            name="Källorna"
+            parent="menu_clio_job_root"
+            action="clio_media.action_clio_media_source"
+            sequence="50"
+            groups="base.group_system"/>
+
 </odoo>
