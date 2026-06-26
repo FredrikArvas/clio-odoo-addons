@@ -5,7 +5,7 @@
     "summary":     "Extends res.partner with job-signal profile and match history for Clio automation.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "depends":     ["contacts"],
+    "depends":     ["contacts", "clio_media"],
     "data": [
         "security/groups.xml",
         "security/ir.model.access.csv",

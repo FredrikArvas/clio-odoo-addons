@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_clio_media_article_user,clio.media.article user,model_clio_media_article,base.group_user,1,0,0,0
 access_clio_media_article_admin,clio.media.article admin,model_clio_media_article,base.group_system,1,1,1,1
+access_clio_media_source_user,clio.media.source user,model_clio_media_source,base.group_user,1,0,0,0
+access_clio_media_source_admin,clio.media.source admin,model_clio_media_source,base.group_system,1,1,1,1
