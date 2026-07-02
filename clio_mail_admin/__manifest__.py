@@ -5,9 +5,10 @@
     "summary":     "Admin-panel för clio-agent-mail — kör kommandon direkt från Odoo.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "depends":     ["base"],
+    "depends":     ["base", "mail"],
     "data": [
         "security/ir.model.access.csv",
+        "security/mail_delete_rules.xml",
         "views/clio_mail_admin_views.xml",
         "views/menu.xml",
     ],
