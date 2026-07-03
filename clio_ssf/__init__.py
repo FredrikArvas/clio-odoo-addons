@@ -25,18 +25,18 @@ def _setup_user_passwords(env):
     if fredrik:
         if admin_password:
             fredrik.password = admin_password
-            _logger.info('ssf_install_profile: lösenord satt för fredrik@arvas.se från ARVAS_ADMIN_PASSWORD')
+            _logger.info('clio_ssf: lösenord satt för fredrik@arvas.se från ARVAS_ADMIN_PASSWORD')
         else:
             generated = secrets.token_urlsafe(14)
             fredrik.password = generated
-            _logger.warning('ssf_install_profile: ARVAS_ADMIN_PASSWORD ej satt — genererat lösenord för fredrik@arvas.se: %s', generated)
+            _logger.warning('clio_ssf: ARVAS_ADMIN_PASSWORD ej satt — genererat lösenord för fredrik@arvas.se: %s', generated)
 
     # admin — sätt alltid slumpmässigt lösenord (ta bort admin/admin-risken)
     admin = env['res.users'].search([('login', '=', 'admin')], limit=1)
     if admin:
         admin_random = secrets.token_urlsafe(14)
         admin.password = admin_random
-        _logger.warning('ssf_install_profile: admin-kontots lösenord randomiserat: %s', admin_random)
+        _logger.warning('clio_ssf: admin-kontots lösenord randomiserat: %s', admin_random)
 
 
 def _install_swedish(env):
@@ -52,7 +52,7 @@ def _install_swedish(env):
     env['res.users'].search([
         ('active', '=', True), ('share', '=', False)
     ]).mapped('partner_id').write({'lang': 'sv_SE'})
-    _logger.info('ssf_install_profile: svenska installerat och satt pa alla anvandare')
+    _logger.info('clio_ssf: svenska installerat och satt pa alla anvandare')
 
 
 def _create_ssf_users(env):
@@ -60,7 +60,7 @@ def _create_ssf_users(env):
     group_user = env.ref('base.group_user')
     for u in SSF_USERS:
         if env['res.users'].search([('login', '=', u['login'])]):
-            _logger.info('ssf_install_profile: %s finns redan, hoppar over', u['login'])
+            _logger.info('clio_ssf: %s finns redan, hoppar over', u['login'])
             continue
         group = group_system if u['admin'] else group_user
         env['res.users'].with_context(no_reset_password=True).create({
@@ -70,4 +70,4 @@ def _create_ssf_users(env):
             'lang': 'sv_SE',
             'group_ids': [(6, 0, [group.id])],
         })
-        _logger.info('ssf_install_profile: skapade anvandare %s', u['login'])
+        _logger.info('clio_ssf: skapade anvandare %s', u['login'])

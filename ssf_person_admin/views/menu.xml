@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <menuitem id="menu_ssf_person_admin"
-              name="Chip-koder"
-              parent="ssf_competition.menu_ssf_competition_root"
-              sequence="50"
-              action="ssf_person_chip_action"
-              groups="ssf_crm_access.group_ssf_sf_admin,ssf_crm_access.group_ssf_sdf_admin"/>
-</odoo>
