@@ -7,3 +7,11 @@ access_uap_witness_user,uap.witness user,model_uap_witness,base.group_user,1,0,0
 access_uap_witness_admin,uap.witness admin,model_uap_witness,base.group_system,1,1,1,1
 access_uap_verification_user,uap.verification user,model_uap_verification,base.group_user,1,0,0,0
 access_uap_verification_admin,uap.verification admin,model_uap_verification,base.group_system,1,1,1,1
+access_uap_series_user,uap.series user,model_uap_series,base.group_user,1,0,0,0
+access_uap_series_admin,uap.series admin,model_uap_series,base.group_system,1,1,1,1
+access_uap_database_user,uap.database user,model_uap_database,base.group_user,1,0,0,0
+access_uap_database_admin,uap.database admin,model_uap_database,base.group_system,1,1,1,1
+access_uap_report_user,uap.report user,model_uap_report,base.group_user,1,0,0,0
+access_uap_report_admin,uap.report admin,model_uap_report,base.group_system,1,1,1,1
+access_uap_encounter_witness_user,uap.encounter.witness user,model_uap_encounter_witness,base.group_user,1,0,0,0
+access_uap_encounter_witness_admin,uap.encounter.witness admin,model_uap_encounter_witness,base.group_system,1,1,1,1
