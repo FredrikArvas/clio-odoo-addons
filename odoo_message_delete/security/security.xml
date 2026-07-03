@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- OBS Odoo 19: res.groups har inte längre fälten comment/category_id -->
+    <record id="group_message_delete" model="res.groups">
+        <field name="name">Radera meddelanden</field>
+    </record>
+</odoo>
