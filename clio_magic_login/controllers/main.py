@@ -72,7 +72,10 @@ class MagicLoginController(AuthSignupHome):
         _logger.info("Magic link login: user %s (%s) logged in from %s",
                      user.login, user.id, request.httprequest.remote_addr)
 
-        return request.redirect(redirect or '/odoo')
+        # Endast lokala sokvagar tillats (skydd mot open redirect)
+        if not (redirect and redirect.startswith('/') and not redirect.startswith('//')):
+            redirect = '/odoo'
+        return request.redirect(redirect)
 
     def _magic_link_send(self, login='', redirect='', **kw):
         qcontext = self.get_auth_signup_qcontext()
