@@ -59,6 +59,7 @@ class UapEncounter(models.Model):
             ("2", "2 — Close Encounter"),
             ("3", "3 — Physical Evidence"),
             ("4", "4 — Abduction / Contact"),
+            ("5", "5 — Media / Cultural Reference"),
         ],
         string="Encounter Class",
         index=True,
@@ -119,6 +120,8 @@ class UapEncounter(models.Model):
     # --- Övrigt ---
     research_notes = fields.Text(string="Research Notes")
     neo4j_node_id = fields.Char(string="Neo4j Node ID", readonly=True, copy=False)
+    series_id = fields.Many2one("uap.series", string="Series", index=True, ondelete="set null")
+    database_id = fields.Many2one("uap.database", string="Source Database", index=True, ondelete="set null")
 
     # --- Computed counts för smartbuttons ---
     source_count = fields.Integer(
