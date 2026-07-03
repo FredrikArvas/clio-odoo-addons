@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ssf_timing_export_form" model="ir.ui.view">
+        <field name="name">ssf.timing.export.form</field>
+        <field name="model">ssf.timing.export</field>
+        <field name="arch" type="xml">
+            <form string="Exportera SSFTiming-fil">
+                <group>
+                    <field name="competition_id"/>
+                    <field name="sector_id"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generera CSV"
+                            type="object" class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button string="Stang" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="ssf_timing_export_action" model="ir.actions.act_window">
+        <field name="name">SSFTiming-export</field>
+        <field name="res_model">ssf.timing.export</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

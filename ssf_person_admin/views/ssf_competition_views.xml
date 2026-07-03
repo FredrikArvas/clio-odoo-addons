@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ssf_competition_timing_export_btn" model="ir.ui.view">
+        <field name="name">ssf.competition.timing.export.btn</field>
+        <field name="model">ssf.competition</field>
+        <field name="inherit_id" ref="ssf_competition.view_ssf_competition_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_export_ssftiming"
+                        string="Exportera SSFTiming"
+                        type="object"
+                        class="btn-secondary"
+                        groups="base.group_system,ssf_crm_access.group_ssf_sf_admin,ssf_crm_access.group_ssf_sdf_admin"/>
+                <button name="action_import_ssftiming_results"
+                        string="Importera SSFTiming-resultat"
+                        type="object"
+                        class="btn-secondary"
+                        groups="base.group_system,ssf_crm_access.group_ssf_sf_admin,ssf_crm_access.group_ssf_sdf_admin"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

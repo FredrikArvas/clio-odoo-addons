@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ssf_timing_result_import_form" model="ir.ui.view">
+        <field name="name">ssf.timing.result.import.form</field>
+        <field name="model">ssf.timing.result.import</field>
+        <field name="arch" type="xml">
+            <form string="Importera SSFTiming-resultat">
+                <group invisible="state == 'done'">
+                    <field name="competition_id"/>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <group invisible="state != 'done'">
+                    <field name="result_summary" nolabel="1" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_import" string="Importera"
+                            type="object" class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button string="Stang" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="ssf_timing_result_import_action" model="ir.actions.act_window">
+        <field name="name">Importera SSFTiming-resultat</field>
+        <field name="res_model">ssf.timing.result.import</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

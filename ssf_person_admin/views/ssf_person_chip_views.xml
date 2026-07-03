@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ssf_person_chip_list" model="ir.ui.view">
+        <field name="name">ssf.person.chip.list</field>
+        <field name="model">ssf.person.chip</field>
+        <field name="arch" type="xml">
+            <list string="Chip-koder" create="false">
+                <field name="partner_id"/>
+                <field name="chip_no"/>
+                <field name="sector_id"/>
+                <field name="source"/>
+                <field name="ssfta_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ssf_person_chip_search" model="ir.ui.view">
+        <field name="name">ssf.person.chip.search</field>
+        <field name="model">ssf.person.chip</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="chip_no"/>
+                <field name="sector_id"/>
+                <filter string="SSFTA" name="ssfta" domain="[('source','=','ssfta')]"/>
+                <filter string="Manuella" name="manual" domain="[('source','=','manual')]"/>
+                <group>
+                    <filter string="Gren" name="group_sector"
+                            context="{'group_by': 'sector_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ssf_person_chip_action" model="ir.actions.act_window">
+        <field name="name">Chip-koder</field>
+        <field name="res_model">ssf.person.chip</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>
