@@ -21,6 +21,7 @@
         <field name="match_score"   string="Score"             optional="hide"/>
         <field name="is_matched"    string="Matchad"           widget="boolean" optional="hide"/>
         <field name="protocol_id"   string="Protokoll"         optional="hide"/>
+                <field name="is_false_positive" string="Ej UAP-rel."  optional="show" widget="boolean_toggle"/>
         <field name="media_type"    string="Mediatyp"          widget="badge" optional="hide"/>
       </list>
     </field>
@@ -62,6 +63,7 @@
             </group>
             <group string="Körning">
               <field name="protocol_id" string="Protokoll-ID"/>
+              <field name="is_false_positive" string="Ej UAP-relevant"/>
               <field name="run_id"      string="Körning"/>
             </group>
           </group>
@@ -102,6 +104,9 @@
         <filter name="country_us"           string="USA"                domain="[('country','=','US')]"/>
         <filter name="country_fr"           string="Frankrike"          domain="[('country','=','FR')]"/>
         <filter name="country_br"           string="Brasilien"          domain="[('country','=','BR')]"/>
+        <separator/>
+        <filter name="false_positive"       string="Ej UAP-relevant"   domain="[('is_false_positive','=',True)]"/>
+        <filter name="uap_relevant"         string="UAP-relevanta"      domain="[('is_false_positive','=',False)]"/>
         <group>
           <filter name="group_source"       string="Källa"              context="{'group_by': 'source'}"/>
           <filter name="group_country"      string="Land"               context="{'group_by': 'country'}"/>
