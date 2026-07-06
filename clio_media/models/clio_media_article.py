@@ -93,3 +93,9 @@ class ClioMediaArticle(models.Model):
     )
     run_id      = fields.Char(string="clio-research körning", index=True)
     protocol_id = fields.Char(string="Protokoll-ID", index=True)
+    is_false_positive = fields.Boolean(
+        string="Ej UAP-relevant",
+        default=False,
+        index=True,
+        help="Markera om artikeln inte handlar om UAP/UFO i relevant bemärkelse (t.ex. teaterföreställning, metafor).",
+    )
