@@ -122,3 +122,23 @@ class ClioMediaArticle(models.Model):
         help="Markera att innehållet lagras för privat bruk. Upphovsrätt tillhör respektive utgivare — får ej vidaredistribueras.",
     )
 
+    relevance_class = fields.Selection(
+        selection=[
+            ("not_classified", "Oklassificerad"),
+            ("confirmed",      "Bekräftad UAP"),
+            ("likely",         "Trolig UAP"),
+            ("uncertain",      "Osäker"),
+            ("off_topic",      "Ej UAP (film/spel/metafor)"),
+        ],
+        string="Klassificering",
+        default="not_classified",
+        index=True,
+    )
+    journalist_ids = fields.Many2many(
+        comodel_name = 'res.partner',
+        relation     = 'clio_media_article_journalist_rel',
+        column1      = 'article_id',
+        column2      = 'partner_id',
+        string       = 'Journalister',
+        help         = 'Länkade journalister som res.partner — inkl. e-post.',
+    )
