@@ -46,6 +46,7 @@ class ClioMediaArticle(models.Model):
     )
     tone = fields.Selection(
         selection = [
+            ("bekraftande",          "Bekräftande"),
             ("neutral_faktabaserad", "Neutral / Faktabaserad"),
             ("skeptisk",             "Skeptisk"),
             ("sensationalistisk",    "Sensationalistisk"),

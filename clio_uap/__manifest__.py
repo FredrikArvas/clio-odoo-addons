@@ -1,11 +1,11 @@
 {
     "name":        "Clio UAP Tracking",
-    "version":     "19.0.1.1.0",
+    "version":     "19.0.1.2.0",
     "category":    "Research",
     "summary":     "UAP encounter tracking and classification system.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "depends":     ["base", "contacts"],
+    "depends":     ["base", "contacts", "clio_media"],
     "data": [
         "security/ir.model.access.csv",
         "views/uap_source_views.xml",
@@ -15,6 +15,7 @@
         "views/uap_verification_views.xml",
         "views/uap_encounter_views.xml",
         "views/uap_menus.xml",
+        "views/uap_media_article_views.xml",
     ],
     "installable": True,
     "auto_install": False,
