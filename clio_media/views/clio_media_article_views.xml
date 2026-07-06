@@ -67,11 +67,14 @@
               <field name="run_id"      string="Körning"/>
             </group>
           </group>
-          <group string="Utdrag">
-            <field name="body_snippet" nolabel="1" readonly="1"/>
-          </group>
-          <group string="URL">
+          <group string="Artikel">
             <field name="url" widget="url" nolabel="1" readonly="1"/>
+            <field name="body_snippet" string="Utdrag (auto)" readonly="1"/>
+          </group>
+          <group string="Fulltext">
+            <field name="fetch_status" string="Hämtstatus" widget="badge"/>
+            <field name="is_personal_use" string="Privat bruk — upphovsrätt gäller"/>
+            <field name="body" nolabel="1" placeholder="Klistra in eller hämta artikeltext här..."/>
           </group>
         </sheet>
       </form>
@@ -107,6 +110,10 @@
         <separator/>
         <filter name="false_positive"       string="Ej UAP-relevant"   domain="[('is_false_positive','=',True)]"/>
         <filter name="uap_relevant"         string="UAP-relevanta"      domain="[('is_false_positive','=',False)]"/>
+        <separator/>
+        <filter name="not_fetched"  string="Ej hämtad"   domain="[('fetch_status','=','not_fetched')]"/>
+        <filter name="fetched"      string="Hämtad"       domain="[('fetch_status','in',['success','partial'])]"/>
+        <filter name="paywalled"    string="Betalvägg"    domain="[('fetch_status','=','paywalled')]"/>
         <group>
           <filter name="group_source"       string="Källa"              context="{'group_by': 'source'}"/>
           <filter name="group_country"      string="Land"               context="{'group_by': 'country'}"/>
