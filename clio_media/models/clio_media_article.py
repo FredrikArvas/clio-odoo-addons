@@ -16,15 +16,80 @@ class ClioMediaArticle(models.Model):
         string = "URL",
         index  = True,
     )
-    title = fields.Char(string="Rubrik")
-    source = fields.Char(string="Källa")
-    media_type = fields.Selection(
+    title       = fields.Char(string="Rubrik")
+    source      = fields.Char(string="Källa")
+    media_type  = fields.Selection(
         selection = [("article", "Artikel")],
         string    = "Typ",
         default   = "article",
     )
-    published   = fields.Datetime(string="Publicerad")
-    first_seen  = fields.Datetime(string="Först sedd")
+    published    = fields.Datetime(string="Publicerad")
+    first_seen   = fields.Datetime(string="Först sedd")
     body_snippet = fields.Text(string="Utdrag")
-    match_score = fields.Integer(string="Score", default=-1)
-    is_matched  = fields.Boolean(string="Matchad")
+    match_score  = fields.Integer(string="Score", default=-1)
+    is_matched   = fields.Boolean(string="Matchad")
+
+    # ── Medieanalys-fält (clio-research media_research-spår) ──────────────
+    country = fields.Char(
+        string = "Land",
+        index  = True,
+        help   = "ISO 3166-1 alpha-2 (SE, US, FR, BR).",
+    )
+    language = fields.Char(
+        string = "Språk",
+        help   = "ISO 639-1 (sv, en, fr, pt).",
+    )
+    author = fields.Char(
+        string = "Journalist/Författare",
+        index  = True,
+        help   = "Byline — lämnas tomt om ej tillgängligt via datakällan.",
+    )
+    tone = fields.Selection(
+        selection = [
+            ("neutral_faktabaserad", "Neutral / Faktabaserad"),
+            ("skeptisk",             "Skeptisk"),
+            ("sensationalistisk",    "Sensationalistisk"),
+            ("oklar",                "Oklar"),
+        ],
+        string = "Ton",
+        index  = True,
+    )
+    article_type = fields.Selection(
+        selection = [
+            ("reaktiv",  "Reaktiv"),
+            ("proaktiv", "Proaktiv"),
+            ("oklar",    "Oklar"),
+        ],
+        string = "Artikeltyp",
+    )
+    thematic_frame = fields.Selection(
+        selection = [
+            ("nationell_sakerhet",    "Nationell säkerhet"),
+            ("vetenskap_astronomi",   "Vetenskap / Astronomi"),
+            ("konspirationsteori",    "Konspirationsteori"),
+            ("folklig_kultur",        "Folklig kultur"),
+            ("politisk_transparens",  "Politisk transparens"),
+            ("okategoriserad",        "Okategoriserad"),
+        ],
+        string = "Tematisk inramning",
+        index  = True,
+    )
+    cited_actors = fields.Char(
+        string = "Citerade aktörer",
+        help   = "Kommaseparerade kategorier: militär, myndighet, forskare, vittne, politiker, skeptiker, ufolog_civilsamhälle.",
+    )
+    temporal_marker_match = fields.Char(
+        string = "Tidsmarkör (YYYY-MM-DD)",
+        help   = "Datum för den tidsmarkör som utlöste artikeln (±30 dagar), om identifierad.",
+    )
+    data_source = fields.Selection(
+        selection = [
+            ("gdelt",           "GDELT"),
+            ("vigil_ufo",       "vigil_ufo"),
+            ("google_news_rss", "Google News RSS"),
+        ],
+        string = "Datakälla",
+        help   = "Vilken connector som hämtade artikeln.",
+    )
+    run_id      = fields.Char(string="clio-research körning", index=True)
+    protocol_id = fields.Char(string="Protokoll-ID", index=True)

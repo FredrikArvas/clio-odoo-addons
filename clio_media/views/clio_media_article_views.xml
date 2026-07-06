@@ -9,13 +9,19 @@
       <list string="Artiklar"
             decoration-success="is_matched == True"
             default_order="first_seen desc">
-        <field name="first_seen"   string="Sedd"/>
-        <field name="published"    string="Publicerad" optional="show"/>
-        <field name="source"       string="Källa"/>
-        <field name="title"        string="Rubrik"/>
-        <field name="match_score"  string="Score"/>
-        <field name="is_matched"   string="Matchad" widget="boolean"/>
-        <field name="media_type"   string="Typ" widget="badge" optional="hide"/>
+        <field name="first_seen"    string="Sedd"/>
+        <field name="published"     string="Publicerad" optional="show"/>
+        <field name="country"       string="Land"       optional="show"/>
+        <field name="source"        string="Källa"/>
+        <field name="title"         string="Rubrik"/>
+        <field name="author"        string="Journalist"         optional="show"/>
+        <field name="tone"          string="Ton"               widget="badge" optional="show"/>
+        <field name="article_type"  string="Typ"               widget="badge" optional="show"/>
+        <field name="thematic_frame" string="Inramning"        optional="hide"/>
+        <field name="match_score"   string="Score"             optional="hide"/>
+        <field name="is_matched"    string="Matchad"           widget="boolean" optional="hide"/>
+        <field name="protocol_id"   string="Protokoll"         optional="hide"/>
+        <field name="media_type"    string="Mediatyp"          widget="badge" optional="hide"/>
       </list>
     </field>
   </record>
@@ -32,14 +38,31 @@
           </div>
           <group>
             <group string="Metadata">
-              <field name="source"     string="Källa"/>
-              <field name="media_type" string="Typ"/>
-              <field name="published"  string="Publicerad"/>
-              <field name="first_seen" string="Först sedd" readonly="1"/>
+              <field name="source"      string="Källa"/>
+              <field name="country"     string="Land"/>
+              <field name="language"    string="Språk"/>
+              <field name="author"      string="Journalist"/>
+              <field name="media_type"  string="Mediatyp"/>
+              <field name="published"   string="Publicerad"/>
+              <field name="first_seen"  string="Först sedd" readonly="1"/>
             </group>
+            <group string="Kodning">
+              <field name="tone"                 string="Ton"/>
+              <field name="article_type"         string="Artikeltyp"/>
+              <field name="thematic_frame"       string="Tematisk inramning"/>
+              <field name="cited_actors"         string="Citerade aktörer"/>
+              <field name="temporal_marker_match" string="Tidsmarkör"/>
+            </group>
+          </group>
+          <group>
             <group string="Analys">
-              <field name="match_score" string="Score"/>
-              <field name="is_matched"  string="Matchad"/>
+              <field name="match_score"  string="Score"/>
+              <field name="is_matched"   string="Matchad"/>
+              <field name="data_source"  string="Datakälla"/>
+            </group>
+            <group string="Körning">
+              <field name="protocol_id" string="Protokoll-ID"/>
+              <field name="run_id"      string="Körning"/>
             </group>
           </group>
           <group string="Utdrag">
@@ -61,11 +84,32 @@
       <search string="Sök artiklar">
         <field name="title"/>
         <field name="source"/>
-        <filter name="matched"   string="Matchade"    domain="[('is_matched','=',True)]"/>
-        <filter name="unmatched" string="Omatchade"   domain="[('is_matched','=',False)]"/>
+        <field name="author"/>
+        <field name="protocol_id"/>
+        <field name="run_id"/>
+        <separator/>
+        <filter name="matched"              string="Matchade"           domain="[('is_matched','=',True)]"/>
+        <filter name="unmatched"            string="Omatchade"          domain="[('is_matched','=',False)]"/>
+        <separator/>
+        <filter name="tone_neutral"         string="Neutral"            domain="[('tone','=','neutral_faktabaserad')]"/>
+        <filter name="tone_skeptisk"        string="Skeptisk"           domain="[('tone','=','skeptisk')]"/>
+        <filter name="tone_sensationalist"  string="Sensationalistisk"  domain="[('tone','=','sensationalistisk')]"/>
+        <separator/>
+        <filter name="reaktiv"              string="Reaktiva"           domain="[('article_type','=','reaktiv')]"/>
+        <filter name="proaktiv"             string="Proaktiva"          domain="[('article_type','=','proaktiv')]"/>
+        <separator/>
+        <filter name="country_se"           string="Sverige"            domain="[('country','=','SE')]"/>
+        <filter name="country_us"           string="USA"                domain="[('country','=','US')]"/>
+        <filter name="country_fr"           string="Frankrike"          domain="[('country','=','FR')]"/>
+        <filter name="country_br"           string="Brasilien"          domain="[('country','=','BR')]"/>
         <group>
-          <filter name="group_source" string="Källa"  context="{'group_by': 'source'}"/>
-          <filter name="group_type"   string="Typ"    context="{'group_by': 'media_type'}"/>
+          <filter name="group_source"       string="Källa"              context="{'group_by': 'source'}"/>
+          <filter name="group_country"      string="Land"               context="{'group_by': 'country'}"/>
+          <filter name="group_tone"         string="Ton"                context="{'group_by': 'tone'}"/>
+          <filter name="group_frame"        string="Inramning"          context="{'group_by': 'thematic_frame'}"/>
+          <filter name="group_author"       string="Journalist"         context="{'group_by': 'author'}"/>
+          <filter name="group_protocol"     string="Protokoll"          context="{'group_by': 'protocol_id'}"/>
+          <filter name="group_type"         string="Mediatyp"           context="{'group_by': 'media_type'}"/>
         </group>
       </search>
     </field>
