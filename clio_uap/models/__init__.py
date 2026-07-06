@@ -7,3 +7,4 @@ from . import uap_encounter_witness
 from . import uap_report
 from . import uap_verification
 from . import res_partner_uap
+from . import clio_media_article
