@@ -99,3 +99,26 @@ class ClioMediaArticle(models.Model):
         index=True,
         help="Markera om artikeln inte handlar om UAP/UFO i relevant bemärkelse (t.ex. teaterföreställning, metafor).",
     )
+
+    body = fields.Text(
+        string="Artikeltext",
+        help="Fullständig artikeltext. Upphovsrätt tillhör respektive utgivare.",
+    )
+    fetch_status = fields.Selection(
+        selection=[
+            ("not_fetched", "Ej hämtad"),
+            ("success",     "Hämtad"),
+            ("partial",     "Delvis (betalvägg)"),
+            ("paywalled",   "Betalvägg"),
+            ("error",       "Fel"),
+        ],
+        string="Hämtstatus",
+        default="not_fetched",
+        index=True,
+    )
+    is_personal_use = fields.Boolean(
+        string="Privat bruk",
+        default=False,
+        help="Markera att innehållet lagras för privat bruk. Upphovsrätt tillhör respektive utgivare — får ej vidaredistribueras.",
+    )
+
