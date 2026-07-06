@@ -14,8 +14,10 @@
         <field name="country"       string="Land"       optional="show"/>
         <field name="source"        string="Källa"/>
         <field name="title"         string="Rubrik"/>
-        <field name="author"        string="Journalist"         optional="show"/>
-        <field name="tone"          string="Ton"               widget="badge" optional="show"/>
+        <field name="author"        string="Journalist (rå)"    optional="show"/>
+        <field name="journalist_ids" string="Journalister"         widget="many2many_tags" optional="show"/>
+        <field name="relevance_class" string="Klass" widget="badge" optional="show"/>
+                <field name="tone"          string="Ton"               widget="badge" optional="show"/>
         <field name="article_type"  string="Typ"               widget="badge" optional="show"/>
         <field name="thematic_frame" string="Inramning"        optional="hide"/>
         <field name="match_score"   string="Score"             optional="hide"/>
@@ -42,12 +44,14 @@
               <field name="source"      string="Källa"/>
               <field name="country"     string="Land"/>
               <field name="language"    string="Språk"/>
-              <field name="author"      string="Journalist"/>
+              <field name="author"      string="Journalist (rå)" readonly="1"/>
+              <field name="journalist_ids" string="Journalister" widget="many2many_tags"/>
               <field name="media_type"  string="Mediatyp"/>
               <field name="published"   string="Publicerad"/>
               <field name="first_seen"  string="Först sedd" readonly="1"/>
             </group>
             <group string="Kodning">
+              <field name="relevance_class"      string="Klassificering"/>
               <field name="tone"                 string="Ton"/>
               <field name="article_type"         string="Artikeltyp"/>
               <field name="thematic_frame"       string="Tematisk inramning"/>
@@ -90,6 +94,7 @@
         <field name="title"/>
         <field name="source"/>
         <field name="author"/>
+        <field name="journalist_ids"/>
         <field name="protocol_id"/>
         <field name="run_id"/>
         <separator/>
@@ -111,15 +116,22 @@
         <filter name="false_positive"       string="Ej UAP-relevant"   domain="[('is_false_positive','=',True)]"/>
         <filter name="uap_relevant"         string="UAP-relevanta"      domain="[('is_false_positive','=',False)]"/>
         <separator/>
+        <filter name="class_confirmed" string="Bekräftad UAP"  domain="[('relevance_class','=','confirmed')]"/>
+        <filter name="class_likely"    string="Trolig UAP"     domain="[('relevance_class','=','likely')]"/>
+        <filter name="class_offtopic"  string="Ej UAP"         domain="[('relevance_class','=','off_topic')]"/>
+        <filter name="class_unclassed" string="Oklassificerad"  domain="[('relevance_class','=','not_classified')]"/>
+        <separator/>
         <filter name="not_fetched"  string="Ej hämtad"   domain="[('fetch_status','=','not_fetched')]"/>
         <filter name="fetched"      string="Hämtad"       domain="[('fetch_status','in',['success','partial'])]"/>
         <filter name="paywalled"    string="Betalvägg"    domain="[('fetch_status','=','paywalled')]"/>
         <group>
+          <filter name="group_class"        string="Klassificering"    context="{'group_by': 'relevance_class'}"/>
           <filter name="group_source"       string="Källa"              context="{'group_by': 'source'}"/>
           <filter name="group_country"      string="Land"               context="{'group_by': 'country'}"/>
           <filter name="group_tone"         string="Ton"                context="{'group_by': 'tone'}"/>
           <filter name="group_frame"        string="Inramning"          context="{'group_by': 'thematic_frame'}"/>
-          <filter name="group_author"       string="Journalist"         context="{'group_by': 'author'}"/>
+          <filter name="group_author"       string="Journalist (rå)"    context="{'group_by': 'author'}"/>
+          <filter name="group_journalist"    string="Journalist"         context="{'group_by': 'journalist_ids'}"/>
           <filter name="group_protocol"     string="Protokoll"          context="{'group_by': 'protocol_id'}"/>
           <filter name="group_type"         string="Mediatyp"           context="{'group_by': 'media_type'}"/>
         </group>

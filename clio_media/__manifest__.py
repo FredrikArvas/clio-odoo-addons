@@ -1,6 +1,6 @@
 {
     "name":        "Clio Media — Artikelarkiv",
-    "version":     "19.0.1.3.0",
+    "version":     "19.0.1.4.0",
     "category":    "Extra Tools",
     "summary":     "Delad artikelbank för Clio-agenter (clio_job, clio_recruit, clio_vigil).",
     "author":      "Arvas International AB",
