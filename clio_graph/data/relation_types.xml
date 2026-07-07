@@ -31,4 +31,12 @@
     <field name="right_partner_type">p</field>
   </record>
 
+  <record id="rel_type_delar_adress" model="res.partner.relation.type">
+    <field name="name">delar adress med</field>
+    <field name="name_inverse">delar adress med</field>
+    <field name="is_symmetric">True</field>
+    <field name="left_partner_type">p</field>
+    <field name="right_partner_type">p</field>
+  </record>
+
 </odoo>
