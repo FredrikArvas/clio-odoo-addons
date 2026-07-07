@@ -30,3 +30,28 @@ class TestSmokeClioGraph(TransactionCase):
                 "type_id": rel_type.id,
             })
             self.assertFalse(rel.sync_to_neo4j)
+
+    def test_action_sync_address_relations(self):
+        """action_sync_address_relations ska koppla ihop partners med samma adress."""
+        p1 = self.env["res.partner"].create({
+            "name": "Adress-partner-A",
+            "street": "Testvägen 1",
+            "zip": "123 45",
+            "city": "Testby",
+        })
+        p2 = self.env["res.partner"].create({
+            "name": "Adress-partner-B",
+            "street": "Testvägen 1",
+            "zip": "123 45",
+            "city": "Testby",
+        })
+        result = self.env["res.partner.relation"].action_sync_address_relations()
+        self.assertEqual(result.get("type"), "ir.actions.client")
+
+        rel_type = self.env.ref("clio_graph.rel_type_delar_adress")
+        relation = self.env["res.partner.relation"].search([
+            ("type_id", "=", rel_type.id),
+            ("left_partner_id", "=", p1.id),
+            ("right_partner_id", "=", p2.id),
+        ])
+        self.assertTrue(relation)
