@@ -81,3 +81,33 @@ Clio Media
 Lägg till nya värden i `media_type`-Selection på `clio.media.article` och eventuellt
 separata modeller (`clio.media.podcast` etc.) när agenten stöder fler typer.
 `clio_media`-modulen äger namnrymden `clio.media.*`.
+
+---
+
+## Andra konsumenter: clio-research (media_research-spår)
+
+Utöver `clio-agent-job` skriver även `clio-research` (`~/18.0/clio-tools/clio-research/odoo_media_writer.py`)
+till `clio.media.article` — för medieanalysrapporter (t.ex. clio-research-004, UAP/UFO-bevakning).
+Detta spår använder fler fält än grundmodellen ovan visar:
+
+| Fält | Typ | Syfte |
+|------|-----|-------|
+| `country` / `language` | Char | Land/språk för artikeln |
+| `author` | Char | Rå byline från källan (oftast tomt — GDELT/RSS saknar bylines) |
+| `journalist_ids` | Many2many → res.partner | Kopplade journalist-kontakter (kräver A2-skrapning, ej byggd) |
+| `tone` | Selection | neutral_faktabaserad / skeptisk / sensationalistisk / oklar |
+| `article_type` | Selection | reaktiv / proaktiv |
+| `thematic_frame` | Selection | nationell_sakerhet / vetenskap_astronomi / konspirationsteori / folklig_kultur / politisk_transparens / okategoriserad |
+| `cited_actors` | Char (kommaseparerad) | militär, myndighet, forskare, vittne, politiker, skeptiker, ufolog_civilsamhälle |
+| `temporal_marker_match` | Char | Datum för matchad tidsmarkör (±30 dagar) |
+| `data_source` | Selection | gdelt / google_news_rss / vigil_ufo |
+| `protocol_id` / `run_id` | Char (index) | Vilket clio-research-protokoll/körning artikeln kommer från |
+
+**⚠️ Viktig gotcha (upptäckt 2026-07-07):** Modulen måste uppgraderas i **varje databas** där den
+används efter schemaändringar — `state: installed` med gammal `latest_version` i `ir_module_module`
+räcker inte, XML-RPC-`create()` misslyckas tyst (fångas av brett except) om en kolumn saknas i
+databasschemat. Kör alltid:
+```
+docker exec odoo19-odoo-1 odoo -d <db> -u clio_media --stop-after-init
+```
+i **varje** databas som ska ta emot skrivningar (t.ex. både `aiab` och `uap`) — inte bara en.
