@@ -19,7 +19,7 @@ class TestSmokeClioGraph(TransactionCase):
         # Ingen exception == OK
 
     def test_sync_field_default(self):
-        """sync_to_neo4j ska ha False som default."""
+        """sync_to_neo4j ska ha True som default (nya relationer synkas mot Neo4j om inget annat anges)."""
         p1 = self.env["res.partner"].create({"name": "Graph-partner-A"})
         p2 = self.env["res.partner"].create({"name": "Graph-partner-B"})
         rel_type = self.env["res.partner.relation.type"].search([], limit=1)
@@ -29,7 +29,7 @@ class TestSmokeClioGraph(TransactionCase):
                 "right_partner_id": p2.id,
                 "type_id": rel_type.id,
             })
-            self.assertFalse(rel.sync_to_neo4j)
+            self.assertTrue(rel.sync_to_neo4j)
 
     def test_action_sync_address_relations(self):
         """action_sync_address_relations ska koppla ihop partners med samma adress."""
