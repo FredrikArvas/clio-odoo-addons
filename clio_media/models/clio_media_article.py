@@ -92,6 +92,30 @@ class ClioMediaArticle(models.Model):
         string = "Datakälla",
         help   = "Vilken connector som hämtade artikeln.",
     )
+
+    # ── Lokal/nationell-hypotestest (komplement till clio-research-004) ───
+    press_tier = fields.Selection(
+        selection = [
+            ("nationell", "Nationell"),
+            ("regional",  "Regional"),
+            ("lokal",     "Lokal"),
+            ("okand",     "Okänd"),
+        ],
+        string = "Pressnivå",
+        index  = True,
+        help   = "Geografisk räckvidd för mediet. Klassificerat av Claude per artikel "
+                 "utifrån domän/titel/land — se dokumenterad regel i "
+                 "hypotes_lokal_nationell/fas2_resultat.md. 'nationell' sätts även "
+                 "manuellt för de 9 ursprungliga flaggskeppsmedierna i clio-research-004.",
+    )
+    press_tier_confidence = fields.Selection(
+        selection = [
+            ("hog",   "Hög"),
+            ("medel", "Medel"),
+            ("lag",   "Låg"),
+        ],
+        string = "Pressnivå — konfidens",
+    )
     run_id      = fields.Char(string="clio-research körning", index=True)
     protocol_id = fields.Char(string="Protokoll-ID", index=True)
     is_false_positive = fields.Boolean(
