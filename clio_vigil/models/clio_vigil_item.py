@@ -38,7 +38,7 @@ class ClioVigilItem(models.Model):
         index     = True,
     )
     source_type = fields.Selection(
-        selection = [("rss", "RSS"), ("youtube", "YouTube"), ("web", "Webb")],
+        selection = [("rss", "RSS"), ("youtube", "YouTube"), ("web", "Webb"), ("google_news", "Google News")],
         string    = "Källtyp",
     )
     source_name = fields.Char(string="Källa", index=True)
