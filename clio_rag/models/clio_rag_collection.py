@@ -8,7 +8,7 @@ class ClioRagCollection(models.Model):
 
     key = fields.Char(required=True, index=True, readonly=True)
     label = fields.Char(required=True, readonly=True)
-    active = fields.Boolean(
+    enabled = fields.Boolean(
         string = "Aktiv",
         default = False,
         help = "Styr om detta korpus visas i RAG-sökningens källval för den här databasen.",
@@ -19,7 +19,7 @@ class ClioRagCollection(models.Model):
     def action_sync_collections(self):
         """Hämta hela listan över tillgängliga korpus från clio-service och
         skapa/uppdatera poster. Nya korpus läggs till som inaktiva; befintliga
-        admin-val (active) rörs inte."""
+        admin-val (enabled) rörs inte."""
         from .clio_rag import _call
 
         result = _call(self.env, "/rag/collections")
@@ -33,7 +33,7 @@ class ClioRagCollection(models.Model):
                 if existing[key].label != label:
                     existing[key].label = label
             else:
-                self.create({"key": key, "label": label, "active": False})
+                self.create({"key": key, "label": label, "enabled": False})
                 created += 1
 
         return {
