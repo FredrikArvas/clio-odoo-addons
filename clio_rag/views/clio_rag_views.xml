@@ -9,9 +9,9 @@
     <field name="model">clio.rag</field>
     <field name="arch" type="xml">
       <form string="Clio — RAG Knowledge Base">
-        <sheet>
+        <sheet style="max-width: none; width: 100%;">
           <group string="Knowledge Base">
-            <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:6px; overflow:hidden; margin-bottom:12px;">
+            <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:0; overflow:hidden; margin-bottom:12px;">
               <field name="rag_query"
                      placeholder="Ask a question… (Enter to search)"
                      nolabel="1"
@@ -24,7 +24,7 @@
             </div>
             <field name="rag_result" widget="text" nolabel="1"
                    invisible="not rag_result"
-                   style="font-family:monospace; white-space:pre-wrap; background:#f8f9fa; padding:12px; border-radius:6px; border:1px solid #e9ecef; width:100%;"/>
+                   style="font-family:monospace; white-space:pre-wrap; background:#f8f9fa; padding:12px; border-radius:0; border:1px solid #e9ecef; width:100%;"/>
           </group>
         </sheet>
       </form>
