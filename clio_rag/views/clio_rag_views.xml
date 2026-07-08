@@ -10,22 +10,21 @@
     <field name="arch" type="xml">
       <form string="Clio — RAG Knowledge Base">
         <sheet>
-          <group string="Knowledge Base" col="1">
-            <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:0; overflow:hidden; margin-bottom:12px;">
-              <field name="rag_query"
-                     placeholder="Ask a question… (Enter to search)"
-                     nolabel="1"
-                     style="flex:1; border:none; border-radius:0; box-shadow:none; font-size:1rem; padding:8px 12px;"/>
-              <field name="rag_mode" nolabel="1"
-                     style="width:160px; border:none; border-left:1px solid #dee2e6; border-radius:0; box-shadow:none; background:#f8f9fa;"/>
-              <button name="action_rag_search" type="object"
-                      string="🔍 Search" class="btn-primary"
-                      style="border-radius:0; padding:8px 18px; white-space:nowrap;"/>
-            </div>
-            <field name="rag_result" widget="text" nolabel="1"
-                   invisible="not rag_result"
-                   style="font-family:monospace; white-space:pre-wrap; background:#f8f9fa; padding:12px; border-radius:0; border:1px solid #e9ecef; width:100%;"/>
-          </group>
+          <div style="font-weight:bold; text-transform:uppercase; font-size:0.85rem; color:#555; margin-bottom:8px;">Knowledge Base</div>
+          <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:0; overflow:hidden; margin-bottom:12px; width:100%;">
+            <field name="rag_query"
+                   placeholder="Ask a question… (Enter to search)"
+                   nolabel="1"
+                   style="flex:1; border:none; border-radius:0; box-shadow:none; font-size:1rem; padding:8px 12px;"/>
+            <field name="rag_mode" nolabel="1"
+                   style="width:160px; border:none; border-left:1px solid #dee2e6; border-radius:0; box-shadow:none; background:#f8f9fa;"/>
+            <button name="action_rag_search" type="object"
+                    string="🔍 Search" class="btn-primary"
+                    style="border-radius:0; padding:8px 18px; white-space:nowrap;"/>
+          </div>
+          <field name="rag_result" widget="text" nolabel="1"
+                 invisible="not rag_result"
+                 style="display:block; font-family:monospace; white-space:pre-wrap; background:#f8f9fa; padding:12px; border-radius:0; border:1px solid #e9ecef; width:100%;"/>
         </sheet>
       </form>
     </field>
