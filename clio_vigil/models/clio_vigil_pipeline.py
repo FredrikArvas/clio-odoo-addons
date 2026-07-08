@@ -99,7 +99,13 @@ class ClioVigilPipeline(models.TransientModel):
                 "triggered_at": datetime.now(timezone.utc).isoformat(),
                 "triggered_by": self.env.user.login,
             }
-            Path(_TRIGGER_FILE).write_text(json.dumps(payload))
+            # Atomär skrivning: skriv till temp-fil i samma katalog och byt namn.
+            # write_text() rakt av kan trigga clio-vigil-trigger.path (PathChanged)
+            # innan innehållet är helt skrivet — trigger_runner.py läser då en tom
+            # fil och kraschar (JSONDecodeError). os.replace är atomärt på samma fs.
+            tmp_path = f"{_TRIGGER_FILE}.tmp"
+            Path(tmp_path).write_text(json.dumps(payload))
+            os.replace(tmp_path, _TRIGGER_FILE)
             _logger.info("clio-vigil trigger skriven: %s av %s", step, self.env.user.login)
         except Exception as exc:
             _logger.error("Kunde inte skriva trigger-fil: %s", exc)
