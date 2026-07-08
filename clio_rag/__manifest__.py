@@ -15,6 +15,7 @@
     "assets": {
         "web.assets_backend": [
             "clio_rag/static/src/js/rag_enter.js",
+            "clio_rag/static/src/scss/clio_rag.scss",
         ],
     },
     "installable": True,
