@@ -9,8 +9,8 @@
     <field name="model">clio.rag</field>
     <field name="arch" type="xml">
       <form string="Clio — RAG Knowledge Base">
-        <sheet class="o_clio_rag_wide">
-          <group string="Knowledge Base">
+        <sheet>
+          <group string="Knowledge Base" col="1">
             <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:0; overflow:hidden; margin-bottom:12px;">
               <field name="rag_query"
                      placeholder="Ask a question… (Enter to search)"
