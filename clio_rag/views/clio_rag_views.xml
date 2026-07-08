@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       VY: RAG — Kunskapsbas
+  ══════════════════════════════════════════════════════════════════════ -->
+  <record id="view_clio_rag_form" model="ir.ui.view">
+    <field name="name">clio.rag.form</field>
+    <field name="model">clio.rag</field>
+    <field name="arch" type="xml">
+      <form string="Clio — RAG Knowledge Base">
+        <sheet>
+          <group string="Knowledge Base">
+            <div style="display:flex; align-items:stretch; gap:0; border:1px solid #dee2e6; border-radius:6px; overflow:hidden; margin-bottom:12px;">
+              <field name="rag_query"
+                     placeholder="Ask a question… (Enter to search)"
+                     nolabel="1"
+                     style="flex:1; border:none; border-radius:0; box-shadow:none; font-size:1rem; padding:8px 12px;"/>
+              <field name="rag_mode" nolabel="1"
+                     style="width:160px; border:none; border-left:1px solid #dee2e6; border-radius:0; box-shadow:none; background:#f8f9fa;"/>
+              <button name="action_rag_search" type="object"
+                      string="🔍 Search" class="btn-primary"
+                      style="border-radius:0; padding:8px 18px; white-space:nowrap;"/>
+            </div>
+            <field name="rag_result" widget="text" nolabel="1"
+                   invisible="not rag_result"
+                   style="font-family:monospace; white-space:pre-wrap; background:#f8f9fa; padding:12px; border-radius:6px; border:1px solid #e9ecef; width:100%;"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_clio_rag" model="ir.actions.act_window">
+    <field name="name">RAG — Kunskapsbas</field>
+    <field name="res_model">clio.rag</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_clio_rag_form"/>
+    <field name="target">current</field>
+  </record>
+
+</odoo>

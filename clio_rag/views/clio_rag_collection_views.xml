@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       VY: Inställningar — vilka korpus som visas i denna databas
+  ══════════════════════════════════════════════════════════════════════ -->
+  <record id="view_clio_rag_collection_list" model="ir.ui.view">
+    <field name="name">clio.rag.collection.list</field>
+    <field name="model">clio.rag.collection</field>
+    <field name="arch" type="xml">
+      <list string="RAG — Tillgängliga korpus" editable="bottom">
+        <field name="label"/>
+        <field name="key"/>
+        <field name="active" widget="boolean_toggle"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="action_clio_rag_collection" model="ir.actions.act_window">
+    <field name="name">RAG — Inställningar</field>
+    <field name="res_model">clio.rag.collection</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <record id="action_clio_rag_collection_sync" model="ir.actions.server">
+    <field name="name">Uppdatera lista från clio-service</field>
+    <field name="model_id" ref="model_clio_rag_collection"/>
+    <field name="binding_model_id" ref="model_clio_rag_collection"/>
+    <field name="binding_view_types">list</field>
+    <field name="state">code</field>
+    <field name="code">action = model.action_sync_collections()</field>
+  </record>
+
+</odoo>
