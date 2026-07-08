@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_clio_rag_user,clio.rag (user),model_clio_rag,base.group_user,1,1,1,1
+access_clio_rag_collection_user,clio.rag.collection (user read),model_clio_rag_collection,base.group_user,1,0,0,0
+access_clio_rag_collection_admin,clio.rag.collection (admin),model_clio_rag_collection,base.group_system,1,1,1,1

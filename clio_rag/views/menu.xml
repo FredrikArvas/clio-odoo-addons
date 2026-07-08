@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Toppnivå — egen app -->
+  <menuitem id="menu_clio_rag_root"
+            name="Clio RAG"
+            sequence="86"/>
+
+  <menuitem id="menu_clio_rag_search"
+            name="🔍 Sök"
+            parent="menu_clio_rag_root"
+            action="action_clio_rag"
+            sequence="10"/>
+
+  <!-- Synlig bara för databasadministratörer -->
+  <menuitem id="menu_clio_rag_settings"
+            name="⚙️ Inställningar"
+            parent="menu_clio_rag_root"
+            action="action_clio_rag_collection"
+            groups="base.group_system"
+            sequence="20"/>
+
+</odoo>
