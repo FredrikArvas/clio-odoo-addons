@@ -51,8 +51,8 @@ class ClioRag(models.TransientModel):
     rag_result = fields.Text(string="Answer", readonly=True)
 
     def _get_rag_modes(self):
-        active = self.env["clio.rag.collection"].search([("active", "=", True)])
-        return [(c.key, c.label) for c in active] or [("clio_books", "Böcker")]
+        enabled = self.env["clio.rag.collection"].search([("enabled", "=", True)])
+        return [(c.key, c.label) for c in enabled] or [("clio_books", "Böcker")]
 
     def action_rag_search(self):
         if not self.rag_query:

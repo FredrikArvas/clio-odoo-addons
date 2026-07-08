@@ -11,7 +11,7 @@
       <list string="RAG — Tillgängliga korpus" editable="bottom">
         <field name="label"/>
         <field name="key"/>
-        <field name="active" widget="boolean_toggle"/>
+        <field name="enabled" widget="boolean_toggle"/>
       </list>
     </field>
   </record>
