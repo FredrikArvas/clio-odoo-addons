@@ -1,0 +1,6 @@
+// Sheet-taggen har ett inbyggt max-width (~860px) från Odoos formulärtema.
+// Inline style på <sheet> hörsammas inte av vyrenderaren — måste overridas via klass.
+.o_clio_rag_wide.o_form_sheet {
+    max-width: none !important;
+    width: 100% !important;
+}
