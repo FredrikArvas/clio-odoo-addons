@@ -8,7 +8,7 @@
     <field name="arch" type="xml">
       <list string="Bevakningsobjekt"
             decoration-success="state in ('indexed', 'notified', 'captioned')"
-            decoration-warning="state in ('queued', 'transcribing')"
+            decoration-warning="state in ('queued', 'downloaded', 'transcribing')"
             decoration-info="state == 'transcribed'"
             decoration-muted="state == 'filtered_out'"
             default_order="priority_score desc">
@@ -26,7 +26,7 @@
         <field name="title"          string="Titel"/>
         <field name="state"          string="Tillstånd" widget="badge"
                decoration-success="state in ('indexed','notified','captioned')"
-               decoration-warning="state in ('queued','transcribing')"
+               decoration-warning="state in ('queued','downloaded','transcribing')"
                decoration-info="state == 'transcribed'"
                decoration-muted="state == 'filtered_out'"/>
         <field name="summary"        string="Sammanfattning" optional="hide"/>

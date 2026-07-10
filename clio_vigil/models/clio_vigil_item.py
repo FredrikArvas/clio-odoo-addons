@@ -81,6 +81,7 @@ class ClioVigilItem(models.Model):
             ("filtered_in", "Passerade filter"),
             ("filtered_out","Filtrerades bort"),
             ("queued",      "I kö"),
+            ("downloaded",  "Audio nedladdad"),
             ("transcribing","Transkriberas"),
             ("transcribed", "Transkriberad"),
             ("captioned",   "Auto-textad (YouTube)"),  # Sprint B
