@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Formulärutökning: länk till Vigil-pipeline-objekt -->
+  <record id="view_clio_media_article_vigil_form" model="ir.ui.view">
+    <field name="name">clio.media.article.vigil.form</field>
+    <field name="model">clio.media.article</field>
+    <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet/group[last()]" position="after">
+        <group string="Vigil-pipeline" invisible="not vigil_item_id">
+          <field name="vigil_item_id" readonly="1"/>
+          <field name="audio_downloaded" widget="boolean_toggle" readonly="1"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Listutökning: vigil_item_id-kolumn -->
+  <record id="view_clio_media_article_vigil_list" model="ir.ui.view">
+    <field name="name">clio.media.article.vigil.list</field>
+    <field name="model">clio.media.article</field>
+    <field name="inherit_id" ref="clio_media.view_clio_media_article_list"/>
+    <field name="arch" type="xml">
+      <xpath expr="//list/field[@name='media_type']" position="after">
+        <field name="vigil_item_id" string="Vigil" optional="hide"/>
+        <field name="audio_downloaded" string="Nedladdad" widget="boolean" optional="hide"/>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Action: Clio Vigil → Alla objekt (via clio.media.article) -->
+  <record id="action_clio_vigil_media_all" model="ir.actions.act_window">
+    <field name="name">Alla objekt</field>
+    <field name="res_model">clio.media.article</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="domain">[('data_source', 'in', ['vigil_ufo', 'vigil_ai'])]</field>
+    <field name="context">{'default_data_source': 'vigil_ufo'}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Inga bevakningsobjekt ännu.</p>
+      <p>Kör <code>python main.py --run</code> för att samla in objekt.</p>
+    </field>
+  </record>
+
+</odoo>
