@@ -116,6 +116,7 @@
               <field name="media_type"  string="Mediatyp"/>
               <field name="published"   string="Publicerad"/>
               <field name="first_seen"  string="Först sedd" readonly="1"/>
+              <field name="url" widget="url" string="URL" readonly="1" colspan="2"/>
             </group>
             <group string="Kodning">
               <field name="relevance_class"      string="Klassificering"/>
@@ -139,7 +140,6 @@
             </group>
           </group>
           <group string="Artikel">
-            <field name="url" widget="url" nolabel="1" readonly="1"/>
             <field name="body_snippet" string="Utdrag (auto)" readonly="1"/>
           </group>
           <group string="Fulltext">
