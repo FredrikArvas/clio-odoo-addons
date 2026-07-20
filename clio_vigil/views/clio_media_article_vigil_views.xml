@@ -7,6 +7,12 @@
     <field name="model">clio.media.article</field>
     <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
     <field name="arch" type="xml">
+      <xpath expr="//field[@name='body_snippet']" position="attributes">
+        <attribute name="colspan">2</attribute>
+      </xpath>
+      <xpath expr="//field[@name='body']" position="attributes">
+        <attribute name="colspan">2</attribute>
+      </xpath>
       <xpath expr="//sheet" position="before">
         <header invisible="not vigil_item_id">
           <field name="vigil_state" widget="statusbar"
