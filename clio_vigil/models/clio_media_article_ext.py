@@ -20,6 +20,14 @@ class ClioMediaArticleVigilExt(models.Model):
         readonly = True,
     )
 
+    vigil_notified_at = fields.Datetime(
+        related  = "vigil_item_id.notified_at",
+        string   = "Skickad i digest",
+        store    = True,
+        index    = True,
+        readonly = True,
+    )
+
     @api.depends("vigil_item_id")
     def _compute_audio_downloaded(self):
         for rec in self:
