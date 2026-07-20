@@ -19,7 +19,7 @@ class ClioMediaArticle(models.Model):
     title       = fields.Char(string="Rubrik")
     source      = fields.Char(string="Källa")
     media_type  = fields.Selection(
-        selection = [("article", "Artikel")],
+        selection = [("article", "Artikel"), ("podcast", "Podcast"), ("video", "Video")],
         string    = "Typ",
         default   = "article",
     )
@@ -86,7 +86,8 @@ class ClioMediaArticle(models.Model):
     data_source = fields.Selection(
         selection = [
             ("gdelt",           "GDELT"),
-            ("vigil_ufo",       "vigil_ufo"),
+            ("vigil_ufo", "vigil_ufo"),
+            ("vigil_ai",  "vigil_ai"),
             ("google_news_rss", "Google News RSS"),
         ],
         string = "Datakälla",
