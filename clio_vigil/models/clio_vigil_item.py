@@ -38,7 +38,7 @@ class ClioVigilItem(models.Model):
         index     = True,
     )
     source_type = fields.Selection(
-        selection = [("rss", "RSS"), ("youtube", "YouTube"), ("web", "Webb"), ("google_news", "Google News")],
+        selection = [("rss", "RSS"), ("youtube", "YouTube / Facebook"), ("web", "Webb"), ("google_news", "Google News")],
         string    = "Källtyp",
     )
     source_name = fields.Char(string="Källa", index=True)
@@ -105,6 +105,13 @@ class ClioVigilItem(models.Model):
         help   = "Första 500 tecken av transkriptionen.",
     )
 
+    # ── Audio ────────────────────────────────────────────────────────────────
+
+    audio_path = fields.Char(
+        string = "Audio-sökväg",
+        help   = "Absolut sökväg till audio-filen på servern (sätts av downloader).",
+    )
+
     # ── Sprint C: Arkivering ─────────────────────────────────────────────────
 
     archive_downloaded = fields.Boolean(
@@ -113,8 +120,8 @@ class ClioVigilItem(models.Model):
         help    = "Episoden finns nedladdad lokalt på servern.",
     )
     archive_path = fields.Char(
-        string = "Lokal sökväg",
-        help   = "Absolut sökväg till den nedladdade filen på servern.",
+        string = "Arkivsökväg",
+        help   = "Absolut sökväg till arkiverad fil på servern.",
     )
 
     # ── Tidsstämplar ─────────────────────────────────────────────────────────
@@ -130,18 +137,47 @@ class ClioVigilItem(models.Model):
     # ── Åtgärder ─────────────────────────────────────────────────────────────
 
     def action_boost(self):
-        """Boostar objektet till toppen av transkriptionskön (prio 999)."""
+        """Boostar objektet till toppen av alla köer (prio 999).
+
+        State-logik:
+        - discovered / filtered_out / filtered_in → queued  (börja om från download-kön)
+        - queued / downloaded / transcribing / transcribed /
+          captioned / uap_classified / indexed / notified → behåll state, höj bara prio
+
+        Manuellt skapade poster kräver domain + source_type för att pipelinen ska kunna
+        importera dem till SQLite. Visar ett varningsmeddelande om dessa saknas.
+        """
         self.ensure_one()
+
+        missing = []
+        if not self.domain:
+            missing.append("Domän")
+        if not self.source_type:
+            missing.append("Källtyp")
+        if missing:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": "Fält saknas",
+                    "message": f"Sätt {' och '.join(missing)} innan du boostar — pipelinen behöver dem för att importera posten.",
+                    "type": "warning",
+                    "sticky": True,
+                },
+            }
+
+        early_states = {"discovered", "filtered_out", "filtered_in"}
+        new_state = "queued" if self.state in early_states else self.state
         self.write({
             "priority_score": 999.0,
-            "state": "queued",
+            "state": new_state,
         })
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
                 "title": "Boostade!",
-                "message": f"'{self.title or self.url[:60]}' boostad till toppen av kön.",
+                "message": f"'{self.title or self.url[:60]}' boostad till toppen av kön (state: {new_state}).",
                 "type": "success",
                 "sticky": False,
             },

@@ -12,6 +12,14 @@ class ClioMediaArticleVigilExt(models.Model):
         help         = "Länk till det underliggande pipeline-objektet i clio.vigil.item.",
     )
 
+    vigil_state = fields.Selection(
+        related  = "vigil_item_id.state",
+        string   = "Pipeline-status",
+        store    = True,
+        index    = True,
+        readonly = True,
+    )
+
     @api.depends("vigil_item_id")
     def _compute_audio_downloaded(self):
         for rec in self:
