@@ -29,13 +29,14 @@
                decoration-info="vigil_state == 'transcribed'"
                decoration-muted="vigil_state == 'filtered_out'"
                optional="show"/>
+        <field name="vigil_notified_at" string="Skickad" optional="hide"/>
         <field name="vigil_item_id" string="Vigil" optional="hide"/>
         <field name="audio_downloaded" string="Nedladdad" widget="boolean" optional="hide"/>
       </xpath>
     </field>
   </record>
 
-  <!-- Sökutökning: group_by vigil_state -->
+  <!-- Sökutökning: group_by vigil_state + vigil_notified_at -->
   <record id="view_clio_media_article_vigil_search" model="ir.ui.view">
     <field name="name">clio.media.article.vigil.search</field>
     <field name="model">clio.media.article</field>
@@ -44,6 +45,8 @@
       <xpath expr="//search/group" position="inside">
         <filter name="group_vigil_state" string="Pipeline-status"
                 context="{'group_by': 'vigil_state'}"/>
+        <filter name="group_vigil_notified_at" string="Skickad (datum)"
+                context="{'group_by': 'vigil_notified_at:day'}"/>
       </xpath>
     </field>
   </record>
@@ -70,7 +73,7 @@
     <field name="res_model">clio.media.article</field>
     <field name="view_mode">list,kanban,graph,pivot,form</field>
     <field name="domain">[('data_source','in',['vigil_ufo','vigil_ai']),('vigil_item_id.state','in',['indexed','notified','uap_classified','captioned'])]</field>
-    <field name="context">{'default_data_source': 'vigil_ufo', 'search_default_group_class': 1}</field>
+    <field name="context">{'default_data_source': 'vigil_ufo', 'search_default_group_vigil_notified_at': 1}</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">
         Inga klara objekt ännu.
