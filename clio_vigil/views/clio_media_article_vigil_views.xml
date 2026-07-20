@@ -7,6 +7,13 @@
     <field name="model">clio.media.article</field>
     <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
     <field name="arch" type="xml">
+      <xpath expr="//sheet" position="before">
+        <header invisible="not vigil_item_id">
+          <field name="vigil_state" widget="statusbar"
+                 statusbar_visible="queued,downloaded,transcribed,indexed,notified"
+                 readonly="1"/>
+        </header>
+      </xpath>
       <xpath expr="//sheet/group[last()]" position="after">
         <group string="Vigil-pipeline" invisible="not vigil_item_id">
           <field name="vigil_item_id" readonly="1"/>
