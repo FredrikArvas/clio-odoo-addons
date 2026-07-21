@@ -9,12 +9,19 @@
     <field name="arch" type="xml">
       <xpath expr="//field[@name='body_snippet']" position="attributes">
         <attribute name="colspan">2</attribute>
+        <attribute name="nolabel">1</attribute>
       </xpath>
       <xpath expr="//field[@name='body']" position="attributes">
         <attribute name="colspan">2</attribute>
       </xpath>
       <xpath expr="//sheet" position="before">
         <header invisible="not vigil_item_id">
+          <button name="action_boost_vigil"
+                  string="⚡ Boosta till kön"
+                  type="object"
+                  class="btn-primary"
+                  invisible="vigil_state in ('transcribing','transcribed','indexed','notified')"
+                  confirm="Boosta detta objekt till toppen av transkriptions-/indexeringskön?"/>
           <field name="vigil_state" widget="statusbar"
                  statusbar_visible="queued,downloaded,transcribed,indexed,notified"
                  readonly="1"/>
@@ -41,6 +48,7 @@
                decoration-warning="vigil_state in ('queued','downloaded','transcribing')"
                decoration-info="vigil_state == 'transcribed'"
                decoration-muted="vigil_state == 'filtered_out'"
+               decoration-danger="vigil_state == 'crashed'"
                optional="show"/>
         <field name="vigil_notified_at" string="Skickad" optional="hide"/>
         <field name="vigil_item_id" string="Vigil" optional="hide"/>
@@ -71,8 +79,8 @@
     <field name="name">Kö</field>
     <field name="res_model">clio.media.article</field>
     <field name="view_mode">list,kanban,graph,pivot,form</field>
-    <field name="domain">[('data_source','in',['vigil_ufo','vigil_ai']),('vigil_item_id.state','in',['queued','downloaded','transcribing','transcribed'])]</field>
-    <field name="context">{'default_data_source': 'vigil_ufo'}</field>
+    <field name="domain">[('data_source','in',['vigil_ufo','vigil_ai']),('vigil_item_id.state','in',['queued','downloaded','transcribing','transcribed','crashed'])]</field>
+    <field name="context">{'default_data_source': 'vigil_ufo', 'search_default_group_vigil_state': 1}</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">
         Kön är tom — inga objekt bearbetas just nu.

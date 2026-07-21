@@ -11,6 +11,7 @@
             decoration-warning="state in ('queued', 'downloaded', 'transcribing')"
             decoration-info="state == 'transcribed'"
             decoration-muted="state == 'filtered_out'"
+            decoration-danger="state == 'crashed'"
             default_order="priority_score desc">
         <field name="priority_score" string="Prio" optional="show"/>
         <field name="published_at"   string="Publicerat" widget="date" optional="show"/>
@@ -28,7 +29,8 @@
                decoration-success="state in ('indexed','notified','captioned')"
                decoration-warning="state in ('queued','downloaded','transcribing')"
                decoration-info="state == 'transcribed'"
-               decoration-muted="state == 'filtered_out'"/>
+               decoration-muted="state == 'filtered_out'"
+               decoration-danger="state == 'crashed'"/>
         <field name="summary"        string="Sammanfattning" optional="hide"/>
         <button name="action_boost" type="object" icon="fa-bolt"
                 string="Boosta" title="Boosta till toppen av kön"
@@ -97,6 +99,10 @@
             <field name="transcript_snippet" string="" nolabel="1"
                    widget="text" readonly="1"/>
           </group>
+          <group string="Felmeddelande" invisible="not error_message">
+            <field name="error_message" string="" nolabel="1"
+                   widget="text" readonly="1"/>
+          </group>
         </sheet>
       </form>
     </field>
@@ -122,6 +128,8 @@
                 domain="[('state','=','notified')]"/>
         <filter name="filtered_out" string="Filtrerades bort"
                 domain="[('state','=','filtered_out')]"/>
+        <filter name="crashed" string="Kraschade"
+                domain="[('state','=','crashed')]"/>
         <separator/>
         <filter name="ufo" string="UFO/UAP" domain="[('domain','=','ufo')]"/>
         <filter name="ai"  string="AI"      domain="[('domain','=','ai')]"/>
@@ -195,6 +203,17 @@
         <field name="domain" type="col"/>
       </graph>
     </field>
+  </record>
+
+  <!-- ── Admin-vy: rådata i clio.vigil.item för felsökning ─────────────────
+       Målet är att alla objekt hanteras via clio.media.article — den här
+       vyn visar bara det underliggande pipeline-objektet direkt, för
+       felsökning (t.ex. kraschade objekt, indexed_chunks-progress). -->
+  <record id="action_clio_vigil_item_debug" model="ir.actions.act_window">
+    <field name="name">Felsökning (rådata)</field>
+    <field name="res_model">clio.vigil.item</field>
+    <field name="view_mode">list,kanban,graph,form</field>
+    <field name="domain">[('media_article_ids', '=', False)]</field>
   </record>
 
 </odoo>
