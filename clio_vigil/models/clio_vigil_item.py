@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -140,6 +140,16 @@ class ClioVigilItem(models.Model):
         inverse_name = "vigil_item_id",
         string       = "Mediaposter",
     )
+    has_media_article = fields.Boolean(
+        string  = "Har mediapost",
+        compute = "_compute_has_media_article",
+        store   = True,
+    )
+
+    @api.depends("media_article_ids")
+    def _compute_has_media_article(self):
+        for rec in self:
+            rec.has_media_article = bool(rec.media_article_ids)
 
     _url_uniq = models.Constraint(
         "UNIQUE(url)",
