@@ -39,3 +39,10 @@ class ClioMediaArticleVigilExt(models.Model):
         compute = "_compute_audio_downloaded",
         store   = True,
     )
+
+    def action_boost_vigil(self):
+        """Delegerar till det underliggande clio.vigil.item:s action_boost()."""
+        self.ensure_one()
+        if not self.vigil_item_id:
+            return
+        return self.vigil_item_id.action_boost()

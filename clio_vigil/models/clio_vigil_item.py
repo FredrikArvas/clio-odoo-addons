@@ -88,6 +88,7 @@ class ClioVigilItem(models.Model):
             ("uap_classified", "UAP-klassificerad"),
             ("indexed",     "Indexerad"),
             ("notified",    "Skickad i digest"),
+            ("crashed",     "Kraschad"),
         ],
         string  = "Tillstånd",
         default = "discovered",
@@ -103,6 +104,11 @@ class ClioVigilItem(models.Model):
     transcript_snippet = fields.Text(
         string = "Transkript (utdrag)",
         help   = "Första 500 tecken av transkriptionen.",
+    )
+    error_message = fields.Text(
+        string   = "Felmeddelande",
+        readonly = True,
+        help     = "Undantaget som fick pipelinen att sätta state=crashed.",
     )
 
     # ── Audio ────────────────────────────────────────────────────────────────
@@ -129,6 +135,12 @@ class ClioVigilItem(models.Model):
     created_at  = fields.Datetime(string="Skapad",       copy=False)
     notified_at = fields.Datetime(string="Notifierad",   copy=False)
 
+    media_article_ids = fields.One2many(
+        comodel_name = "clio.media.article",
+        inverse_name = "vigil_item_id",
+        string       = "Mediaposter",
+    )
+
     _url_uniq = models.Constraint(
         "UNIQUE(url)",
         "Objekt-URL måste vara unik.",
@@ -140,7 +152,7 @@ class ClioVigilItem(models.Model):
         """Boostar objektet till toppen av alla köer (prio 999).
 
         State-logik:
-        - discovered / filtered_out / filtered_in → queued  (börja om från download-kön)
+        - discovered / filtered_out / filtered_in / crashed → queued  (börja om från download-kön)
         - queued / downloaded / transcribing / transcribed /
           captioned / uap_classified / indexed / notified → behåll state, höj bara prio
 
@@ -166,7 +178,7 @@ class ClioVigilItem(models.Model):
                 },
             }
 
-        early_states = {"discovered", "filtered_out", "filtered_in"}
+        early_states = {"discovered", "filtered_out", "filtered_in", "crashed"}
         new_state = "queued" if self.state in early_states else self.state
         self.write({
             "priority_score": 999.0,
