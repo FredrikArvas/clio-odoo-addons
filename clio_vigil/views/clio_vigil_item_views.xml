@@ -130,6 +130,8 @@
                 domain="[('state','=','filtered_out')]"/>
         <filter name="crashed" string="Kraschade"
                 domain="[('state','=','crashed')]"/>
+        <filter name="orphans" string="Saknar mediapost"
+                domain="[('has_media_article','=',False)]"/>
         <separator/>
         <filter name="ufo" string="UFO/UAP" domain="[('domain','=','ufo')]"/>
         <filter name="ai"  string="AI"      domain="[('domain','=','ai')]"/>
@@ -213,7 +215,8 @@
     <field name="name">Felsökning (rådata)</field>
     <field name="res_model">clio.vigil.item</field>
     <field name="view_mode">list,kanban,graph,form</field>
-    <field name="domain">[('media_article_ids', '=', False)]</field>
+    <field name="context">{'search_default_orphans': 1}</field>
+    <field name="search_view_id" ref="view_clio_vigil_item_search"/>
   </record>
 
 </odoo>
