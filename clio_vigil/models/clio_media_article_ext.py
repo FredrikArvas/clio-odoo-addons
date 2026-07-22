@@ -28,6 +28,21 @@ class ClioMediaArticleVigilExt(models.Model):
         readonly = True,
     )
 
+    vigil_notified_date = fields.Char(
+        string  = "Skickad (datum)",
+        compute = "_compute_vigil_notified_date",
+        store   = True,
+        index   = True,
+    )
+
+    @api.depends("vigil_notified_at")
+    def _compute_vigil_notified_date(self):
+        for rec in self:
+            if rec.vigil_notified_at:
+                rec.vigil_notified_date = rec.vigil_notified_at.strftime("%Y-%m-%d")
+            else:
+                rec.vigil_notified_date = False
+
     @api.depends("vigil_item_id")
     def _compute_audio_downloaded(self):
         for rec in self:
