@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ── Intervju-sida (token-baserad, ingen inloggning) ───────────────── -->
+  <template id="page_interview" name="GSF Jubileum — Intervju">
+    <t t-call="website.layout">
+      <t t-set="head">
+        <meta name="robots" content="noindex, nofollow"/>
+      </t>
+      <div class="gsf-interview-root"
+           t-att-data-token="token"
+           t-att-data-submitted="'true' if inlamnad else 'false'">
+
+        <header class="gsf-header">
+          <div class="gsf-header-inner">
+            <span class="gsf-logo">GSF</span>
+            <span class="gsf-subtitle">Guldboda 80 år — berättelser om era fastigheter</span>
+          </div>
+        </header>
+
+        <main class="gsf-main">
+
+          <!-- Inlämnad-vy -->
+          <t t-if="inlamnad">
+            <div class="gsf-submitted-box">
+              <h2>Tack!</h2>
+              <p>
+                Er berättelse om <strong><t t-esc="fastighet.namn"/></strong> är mottagen.
+                Fredrik Arvas tar del av den inför jubileumsskriften.
+              </p>
+              <p class="text-muted small">
+                Vill du ändra något eller har frågor? Hör av dig direkt till
+                <a href="mailto:fredrik@arvas.se">fredrik@arvas.se</a>.
+              </p>
+            </div>
+          </t>
+
+          <!-- Chatt-vy -->
+          <t t-else="">
+            <div class="gsf-intro">
+              <h1>Välkommen!</h1>
+              <p>
+                Du är inbjuden att berätta om
+                <strong><t t-esc="fastighet.namn"/></strong>
+                till Guldboda Samfällighetsförenings 80-årsjubileumsskrift.
+              </p>
+              <p>
+                Clio — vår digitala intervjuare — ställer frågorna en i taget
+                och hjälper dig att formulera minnen. Konversationen sparas
+                löpande; du kan stänga webbläsaren och komma tillbaka senare
+                via samma länk.
+              </p>
+              <p class="text-muted small">
+                Deltagandet är frivilligt. Du granskar och godkänner allt
+                material innan det publiceras.
+              </p>
+            </div>
+
+            <!-- Chattfönster -->
+            <div class="gsf-chat-window" id="gsf-chat-window">
+              <t t-foreach="history" t-as="msg">
+                <div t-attf-class="gsf-bubble gsf-bubble-#{msg['role']}">
+                  <span class="gsf-bubble-sender">
+                    <t t-if="msg['role'] == 'assistant'">Clio</t>
+                    <t t-else="">Du</t>
+                  </span>
+                  <p><t t-esc="msg['content']"/></p>
+                </div>
+              </t>
+              <div id="gsf-typing" class="gsf-typing" style="display:none;">
+                <span>Clio skriver</span><span class="gsf-dots">…</span>
+              </div>
+            </div>
+
+            <!-- Inmatning -->
+            <div class="gsf-input-area">
+              <textarea id="gsf-input" class="gsf-textarea"
+                        placeholder="Skriv ditt svar här…"
+                        rows="4"></textarea>
+              <div class="gsf-input-actions">
+                <button id="gsf-send-btn" class="gsf-btn gsf-btn-primary">Skicka</button>
+                <button id="gsf-submit-btn" class="gsf-btn gsf-btn-secondary"
+                        style="display:none;">
+                  Skicka in berättelsen →
+                </button>
+              </div>
+            </div>
+
+            <!-- Samtycke / bekräftelsepanel (aktiveras av JS) -->
+            <div id="gsf-summary-panel" class="gsf-summary-panel" style="display:none;">
+              <h2>Granska och skicka in</h2>
+              <p>Kontrollera konversationen ovan och bekräfta sedan:</p>
+              <label class="gsf-checkbox-label">
+                <input type="checkbox" id="gsf-consent-publish"/>
+                Jag godkänner att berättelsen kan publiceras i jubileumsskriften.
+              </label>
+              <label class="gsf-checkbox-label">
+                <input type="checkbox" id="gsf-consent-contact"/>
+                Fredrik får kontakta mig igen om han har följdfrågor.
+              </label>
+              <textarea id="gsf-consent-comment" class="gsf-textarea"
+                        placeholder="Ev. villkor (t.ex. 'publicera utan mitt fullständiga namn')"
+                        rows="2"></textarea>
+              <button id="gsf-confirm-submit-btn" class="gsf-btn gsf-btn-primary">
+                Bekräfta och skicka in
+              </button>
+            </div>
+          </t>
+
+        </main>
+
+        <footer class="gsf-footer">
+          <p>
+            Guldboda Samfällighetsförening ·
+            <a href="mailto:fredrik@arvas.se">Kontakta Fredrik</a>
+          </p>
+        </footer>
+
+      </div>
+    </t>
+  </template>
+
+  <!-- ── Stängd/ogiltig länk ────────────────────────────────────────────── -->
+  <template id="page_already_closed" name="GSF Jubileum — Länk inte aktiv">
+    <t t-call="website.layout">
+      <div class="gsf-interview-root">
+        <main class="gsf-main">
+          <div class="gsf-submitted-box">
+            <h2>Länken är inte längre aktiv</h2>
+            <p>
+              Om du har frågor — kontakta
+              <a href="mailto:fredrik@arvas.se">fredrik@arvas.se</a>.
+            </p>
+          </div>
+        </main>
+      </div>
+    </t>
+  </template>
+
+</odoo>

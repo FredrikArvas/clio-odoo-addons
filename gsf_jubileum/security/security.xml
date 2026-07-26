@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="module_category_gsf" model="ir.module.category">
+    <field name="name">GSF</field>
+    <field name="sequence">50</field>
+  </record>
+
+  <record id="group_redaktor" model="res.groups">
+    <field name="name">Redaktör</field>
+    <field name="category_id" ref="module_category_gsf"/>
+    <field name="comment">Läs- och skrivrättigheter till jubileumsinsamlingen.</field>
+  </record>
+
+  <record id="group_admin" model="res.groups">
+    <field name="name">Administratör</field>
+    <field name="category_id" ref="module_category_gsf"/>
+    <field name="implied_ids" eval="[(4, ref('group_redaktor'))]"/>
+    <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+  </record>
+
+</odoo>
