@@ -148,7 +148,7 @@
         <filter name="kanal_mejl"    string="Mejl"         domain="[('kanal','=','skriftligt')]"/>
         <filter name="kanal_samtal"  string="Samtal"       domain="[('kanal','=','samtal')]"/>
         <separator/>
-        <group expand="0" string="Gruppera på">
+        <group string="Gruppera på">
           <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
           <filter name="group_kanal"  string="Kanal"  context="{'group_by': 'kanal'}"/>
         </group>
