@@ -10,7 +10,6 @@
   <record id="group_admin" model="res.groups">
     <field name="name">GSF Jubileum Administratör</field>
     <field name="implied_ids" eval="[(4, ref('group_redaktor'))]"/>
-    <field name="users" eval="[(4, ref('base.user_admin'))]"/>
   </record>
 
 </odoo>
