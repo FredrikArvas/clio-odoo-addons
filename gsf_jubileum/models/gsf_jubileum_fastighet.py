@@ -26,7 +26,7 @@ class GsfJubileumFastighet(models.Model):
         "res.partner",
         string="Kontaktperson",
         ondelete="set null",
-        domain="[('tag_ids.name', '=', 'GSF:Agare')]",
+        domain="[('category_id.name', '=', 'GSF:Agare')]",
     )
     epost = fields.Char(
         string="E-post",
