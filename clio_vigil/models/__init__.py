@@ -5,3 +5,4 @@ from . import clio_vigil_keyword
 from . import clio_vigil_delivery
 from . import clio_vigil_wizard
 from . import clio_vigil_pipeline
+from . import clio_media_article_ext
