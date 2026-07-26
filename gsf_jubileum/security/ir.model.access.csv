@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fastighet_redaktor,gsf.jubileum.fastighet redaktor,model_gsf_jubileum_fastighet,gsf_jubileum.group_redaktor,1,1,1,1
+access_fastighet_admin,gsf.jubileum.fastighet admin,model_gsf_jubileum_fastighet,gsf_jubileum.group_admin,1,1,1,1
+access_svar_redaktor,gsf.jubileum.svar redaktor,model_gsf_jubileum_svar,gsf_jubileum.group_redaktor,1,1,1,1
+access_svar_admin,gsf.jubileum.svar admin,model_gsf_jubileum_svar,gsf_jubileum.group_admin,1,1,1,1
+access_samtycke_redaktor,gsf.jubileum.samtycke redaktor,model_gsf_jubileum_samtycke,gsf_jubileum.group_redaktor,1,1,1,1
+access_samtycke_admin,gsf.jubileum.samtycke admin,model_gsf_jubileum_samtycke,gsf_jubileum.group_admin,1,1,1,1
