@@ -66,6 +66,18 @@ class GsfJubileumPortal(http.Controller):
             return request.render("gsf_jubileum.page_already_closed", {"fastighet": fastighet})
 
         history = json.loads(fastighet.coaching_history or "[]")
+
+        if not history:
+            opener = (
+                f"Hej och välkommen! Jag heter Clio och hjälper er att berätta om "
+                f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
+                f"Vi tar det lugnt, en fråga i taget — och du kan alltid komma tillbaka "
+                f"via samma länk om du vill pausa. "
+                f"Vi börjar från början: Vilket år kom familjen till Guldboda, och vem var det som ursprungligen hittade hit?"
+            )
+            history = [{"role": "assistant", "content": opener}]
+            fastighet.write({"coaching_history": json.dumps(history, ensure_ascii=False)})
+
         inlamnad = fastighet.status in ("inlamnad", "vantar_godkannande",
                                         "godkand_for_publicering", "vill_ej_publiceras")
         return request.render("gsf_jubileum.page_interview", {
@@ -75,7 +87,7 @@ class GsfJubileumPortal(http.Controller):
             "inlamnad": inlamnad,
         })
 
-    @http.route("/jubileum/<string:token>/chat", type="json", auth="public")
+    @http.route("/jubileum/<string:token>/chat", type="jsonrpc", auth="public")
     def jubileum_chat(self, token, message="", **kw):
         fastighet = _get_fastighet(token)
         if not fastighet:
@@ -91,7 +103,10 @@ class GsfJubileumPortal(http.Controller):
 
         try:
             import anthropic
-            api_key = request.env["ir.config_parameter"].sudo().get_param("clio.anthropic.api_key")
+            api_key = (
+                request.env["ir.config_parameter"].sudo().get_param("gsf.anthropic.api_key")
+                or request.env["ir.config_parameter"].sudo().get_param("clio.anthropic.api_key")
+            )
             if not api_key:
                 return {"error": "API-nyckel saknas — kontakta Fredrik."}
 
@@ -99,12 +114,16 @@ class GsfJubileumPortal(http.Controller):
                 namn=fastighet.namn,
                 fragor=_fragor_text(),
             )
+            api_messages = history + [{"role": "user", "content": message}]
+            if api_messages[0]["role"] != "user":
+                api_messages = [{"role": "user", "content": "[start]"}] + api_messages
+
             client = anthropic.Anthropic(api_key=api_key)
             response = client.messages.create(
                 model="claude-sonnet-4-6",
                 max_tokens=600,
                 system=system,
-                messages=history + [{"role": "user", "content": message}],
+                messages=api_messages,
             )
             reply = response.content[0].text
 
@@ -123,7 +142,7 @@ class GsfJubileumPortal(http.Controller):
         })
         return {"reply": reply}
 
-    @http.route("/jubileum/<string:token>/submit", type="json", auth="public")
+    @http.route("/jubileum/<string:token>/submit", type="jsonrpc", auth="public")
     def jubileum_submit(self, token, samtycke=None, kommentar="", **kw):
         fastighet = _get_fastighet(token)
         if not fastighet:
@@ -145,7 +164,7 @@ class GsfJubileumPortal(http.Controller):
         for idx, (nr, rubrik, fraga_text) in enumerate(FRAGOR):
             SvarModel.create({
                 "fastighet_id": fastighet.id,
-                "fraga_nr": nr,
+                "fraga_nr": str(nr),
                 "fraga_text": fraga_text,
                 "svar_text": user_messages[idx] if idx < len(user_messages) else "",
                 "kalla": "clio_chatt",
