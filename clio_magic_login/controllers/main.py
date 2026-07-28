@@ -1,5 +1,5 @@
 import logging
-import werkzeug.urls
+from urllib.parse import quote as url_quote, urlencode as url_encode
 
 from odoo import http, _
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
@@ -117,7 +117,7 @@ class MagicLoginController(AuthSignupHome):
         base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url', '')
         verify_url = '%s/web/magic_login/verify?token=%s' % (base_url, token)
         if redirect:
-            verify_url += '&redirect=%s' % werkzeug.urls.url_quote(redirect)
+            verify_url += '&redirect=%s' % url_quote(redirect)
 
         template = request.env.ref(
             'clio_magic_login.email_template_magic_link', raise_if_not_found=False
@@ -129,5 +129,5 @@ class MagicLoginController(AuthSignupHome):
 
     def _magic_login_redirect_error(self, message):
         # Redirect to login page with error as URL param — avoids website-context issues
-        url = '/web/login?%s' % werkzeug.urls.url_encode({'magic_login_error': message})
+        url = '/web/login?%s' % url_encode({'magic_login_error': message})
         return request.redirect(url)
