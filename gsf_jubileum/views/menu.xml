@@ -6,7 +6,7 @@
             sequence="90"/>
 
   <menuitem id="menu_gsf_jubileum_fastigheter"
-            name="Fastigheter"
+            name="Berättelser"
             parent="menu_gsf_jubileum_root"
             action="action_gsf_jubileum_fastigheter"
             sequence="10"/>

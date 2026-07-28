@@ -5,7 +5,7 @@
     "summary":     "Insamling av fastighetshistorier till Guldboda 80-årsjubileum.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "depends":     ["base", "web", "portal", "website"],
+    "depends":     ["base", "web", "portal", "website", "property_mgmt"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",

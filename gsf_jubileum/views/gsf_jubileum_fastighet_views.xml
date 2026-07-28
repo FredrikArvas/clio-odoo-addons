@@ -40,12 +40,13 @@
     <field name="name">gsf.jubileum.fastighet.list</field>
     <field name="model">gsf.jubileum.fastighet</field>
     <field name="arch" type="xml">
-      <list string="Fastigheter"
+      <list string="Berättelser"
             decoration-success="status == 'godkand_for_publicering'"
             decoration-info="status == 'inlamnad'"
             decoration-warning="status == 'vantar_godkannande'"
             decoration-muted="status == 'vill_ej_publiceras'">
-        <field name="namn"            string="Fastighet"/>
+        <field name="property_id"     string="Fastighet (register)" optional="show"/>
+        <field name="namn"            string="Visningsnamn"/>
         <field name="kontakt_id"      string="Kontakt"   optional="show"/>
         <field name="epost"           string="E-post"    optional="show"/>
         <field name="status"          string="Status"    widget="badge"/>
@@ -67,37 +68,36 @@
           <button name="action_markera_inbjuden" type="object"
                   string="Markera som inbjuden" class="btn-primary"
                   invisible="status != 'ej_kontaktad'"/>
-          <button name="action_kopiera_chattlank" type="object"
-                  string="Visa chatt-länk" class="btn-secondary"/>
-          <field name="status" widget="statusbar"
+<field name="status" widget="statusbar"
                  statusbar_visible="ej_kontaktad,inbjuden,paborjad,inlamnad,godkand_for_publicering"/>
         </header>
         <sheet>
           <group>
             <group string="Fastighet">
-              <field name="namn"       string="Beteckning/adress"/>
-              <field name="kontakt_id" string="Kontaktperson"
-                     options="{'no_create': True}"/>
-              <field name="epost"      string="E-post"/>
+              <field name="property_id" string="Fastighet (register)"
+                     options="{'no_create': True, 'no_create_edit': True}"/>
+              <field name="namn"        string="Visningsnamn (kan skrivas över)"/>
+              <field name="kontakt_id"  string="Kontaktperson"/>
+              <field name="epost"       string="E-post"/>
             </group>
             <group string="Status">
               <field name="kanal"          string="Kanal"/>
               <field name="datum_inbjudan" string="Datum inbjudan"/>
               <field name="datum_inlamnad" string="Datum inlämnad"/>
-              <field name="unik_token"     string="Token (chatt-länk)"/>
+              <field name="chatt_url"      string="Länk (besökare)" widget="url"/>
+              <field name="unik_token"     string="Token" optional="show"/>
               <button name="action_generera_token" type="object"
                       string="Generera ny token" class="btn-link"
                       confirm="En ny token ogiltigförklarar den gamla länken. Fortsätt?"/>
             </group>
           </group>
 
-          <group string="Fredriks anteckningar">
-            <field name="anteckningar" nolabel="1" widget="text"
-                   style="min-height: 80px;"
-                   placeholder="Interna notat — syns ej för familjen."/>
-          </group>
-
           <notebook>
+            <page string="Redaktörens anteckningar" name="anteckningar">
+              <field name="anteckningar" nolabel="1" widget="text"
+                     style="min-height: 200px; width: 100%;"
+                     placeholder="Interna notat — syns ej för familjen."/>
+            </page>
             <page string="Svar (10 frågor)" name="svar">
               <field name="svar_ids" nolabel="1">
                 <list editable="bottom">
@@ -135,7 +135,8 @@
     <field name="model">gsf.jubileum.fastighet</field>
     <field name="arch" type="xml">
       <search string="Sök fastigheter">
-        <field name="namn" string="Fastighet"/>
+        <field name="property_id" string="Fastighet"/>
+        <field name="namn" string="Visningsnamn"/>
         <field name="epost" string="E-post"/>
         <field name="kontakt_id" string="Kontaktperson"/>
         <filter name="ej_kontaktad"  string="Ej kontaktad"  domain="[('status','=','ej_kontaktad')]"/>
@@ -148,7 +149,7 @@
         <filter name="kanal_mejl"    string="Mejl"         domain="[('kanal','=','skriftligt')]"/>
         <filter name="kanal_samtal"  string="Samtal"       domain="[('kanal','=','samtal')]"/>
         <separator/>
-        <group string="Gruppera på">
+        <group>
           <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
           <filter name="group_kanal"  string="Kanal"  context="{'group_by': 'kanal'}"/>
         </group>

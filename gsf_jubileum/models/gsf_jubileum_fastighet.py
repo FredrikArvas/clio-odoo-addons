@@ -7,26 +7,36 @@ from odoo import api, fields, models
 _logger = logging.getLogger(__name__)
 
 
-def _default_token():
-    return str(uuid.uuid4())
-
-
 class GsfJubileumFastighet(models.Model):
     _name = "gsf.jubileum.fastighet"
-    _description = "GSF Jubileum — Fastighet"
+    _description = "GSF Jubileum — Berättelse"
     _order = "namn"
     _rec_name = "namn"
 
-    _sql_constraints = [
-        ("unik_token_unique", "UNIQUE(unik_token)", "Token måste vara unikt per fastighet."),
-    ]
+    _unik_token_unique = models.Constraint(
+        "UNIQUE(unik_token)",
+        "Token måste vara unikt per fastighet.",
+    )
 
-    namn = fields.Char(string="Fastighet/adress", required=True, index=True)
+    property_id = fields.Many2one(
+        "property.property",
+        string="Fastighet",
+        required=True,
+        ondelete="restrict",
+        index=True,
+    )
+    namn = fields.Char(
+        string="Visningsnamn",
+        compute="_compute_namn",
+        store=True,
+        readonly=False,
+        index=True,
+        help="Hämtas från fastighetens beteckning, kan skrivas över manuellt.",
+    )
     kontakt_id = fields.Many2one(
         "res.partner",
         string="Kontaktperson",
         ondelete="set null",
-        domain="[('category_id.name', '=', 'GSF:Agare')]",
     )
     epost = fields.Char(
         string="E-post",
@@ -37,7 +47,7 @@ class GsfJubileumFastighet(models.Model):
     )
     unik_token = fields.Char(
         string="Token",
-        default=_default_token,
+        default=lambda self: str(uuid.uuid4()),
         index=True,
         copy=False,
         readonly=True,
@@ -45,13 +55,13 @@ class GsfJubileumFastighet(models.Model):
     )
     status = fields.Selection(
         [
-            ("ej_kontaktad",           "Ej kontaktad"),
-            ("inbjuden",               "Inbjuden"),
-            ("paborjad",               "Påbörjad"),
-            ("inlamnad",               "Inlämnad"),
-            ("vantar_godkannande",     "Väntar godkännande"),
-            ("godkand_for_publicering","Godkänd för publicering"),
-            ("vill_ej_publiceras",     "Vill ej publiceras"),
+            ("ej_kontaktad",            "Ej kontaktad"),
+            ("inbjuden",                "Inbjuden"),
+            ("paborjad",                "Påbörjad"),
+            ("inlamnad",                "Inlämnad"),
+            ("vantar_godkannande",      "Väntar godkännande"),
+            ("godkand_for_publicering", "Godkänd för publicering"),
+            ("vill_ej_publiceras",      "Vill ej publiceras"),
         ],
         string="Status",
         default="ej_kontaktad",
@@ -60,10 +70,10 @@ class GsfJubileumFastighet(models.Model):
     )
     kanal = fields.Selection(
         [
-            ("skriftligt",         "Skriftligt (mejl)"),
-            ("samtal",             "Samtal med Fredrik"),
-            ("clio_chatt",         "Clio-chatt (webbgränssnitt)"),
-            ("ej_valt",            "Ej valt"),
+            ("skriftligt",  "Skriftligt (mejl)"),
+            ("samtal",      "Samtal med Fredrik"),
+            ("clio_chatt",  "Clio-chatt (webbgränssnitt)"),
+            ("ej_valt",     "Ej valt"),
         ],
         string="Kanal",
         default="ej_valt",
@@ -76,12 +86,29 @@ class GsfJubileumFastighet(models.Model):
         help="JSON-array [{role, content}] — sparas löpande under Clio-chatten.",
     )
     anteckningar = fields.Text(
-        string="Fredriks anteckningar",
+        string="Redaktörens anteckningar",
         help="Interna redaktörsnotat, syns ej för familjen.",
     )
-
+    chatt_url = fields.Char(
+        string="Länk till besökarformuläret",
+        compute="_compute_chatt_url",
+    )
     svar_ids = fields.One2many("gsf.jubileum.svar", "fastighet_id", string="Svar")
     samtycke_id = fields.One2many("gsf.jubileum.samtycke", "fastighet_id", string="Samtycke")
+
+    @api.depends("property_id")
+    def _compute_namn(self):
+        for rec in self:
+            p = rec.property_id
+            if p:
+                rec.namn = p.code or p.name or ""
+            elif not rec.namn:
+                rec.namn = ""
+
+    def _compute_chatt_url(self):
+        base = self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
+        for rec in self:
+            rec.chatt_url = f"{base}/jubileum/{rec.unik_token}" if rec.unik_token else ""
 
     @api.depends("kontakt_id")
     def _compute_epost(self):
@@ -91,7 +118,7 @@ class GsfJubileumFastighet(models.Model):
 
     def action_generera_token(self):
         self.ensure_one()
-        self.unik_token = _default_token()
+        self.unik_token = str(uuid.uuid4())
 
     def action_kopiera_chattlank(self):
         self.ensure_one()
