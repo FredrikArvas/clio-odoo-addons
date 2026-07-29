@@ -109,7 +109,7 @@
               </field>
             </page>
             <page string="Samtycke" name="samtycke">
-              <field name="samtycke_id" nolabel="1">
+              <field name="samtycke_ids" nolabel="1">
                 <list>
                   <field name="godkand_publicering"    string="Godkänner publicering" widget="boolean_toggle"/>
                   <field name="vill_bli_kontaktad_igen" string="Vill bli kontaktad igen" widget="boolean_toggle"/>
