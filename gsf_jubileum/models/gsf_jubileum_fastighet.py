@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 class GsfJubileumFastighet(models.Model):
     _name = "gsf.jubileum.fastighet"
     _description = "GSF Jubileum — Berättelse"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "namn"
     _rec_name = "namn"
 
@@ -67,6 +68,7 @@ class GsfJubileumFastighet(models.Model):
         default="ej_kontaktad",
         required=True,
         index=True,
+        tracking=True,
     )
     kanal = fields.Selection(
         [
@@ -77,6 +79,7 @@ class GsfJubileumFastighet(models.Model):
         ],
         string="Kanal",
         default="ej_valt",
+        tracking=True,
     )
     datum_inbjudan = fields.Date(string="Datum — inbjudan", copy=False)
     datum_inlamnad = fields.Date(string="Datum — inlämnad", copy=False)
@@ -139,6 +142,7 @@ class GsfJubileumFastighet(models.Model):
         template = self.env.ref("gsf_jubileum.mail_template_jubileum_inbjudan")
         for rec in self:
             if not rec.epost:
+                rec.message_post(body="⚠️ Ingen e-postadress registrerad — inbjudan ej skickad.")
                 continue
             template.send_mail(rec.id, force_send=True)
             if rec.status == "ej_kontaktad":
@@ -146,6 +150,7 @@ class GsfJubileumFastighet(models.Model):
                     "status": "inbjuden",
                     "datum_inbjudan": fields.Date.today(),
                 })
+            rec.message_post(body=f"📧 Inbjudan skickad till {rec.epost}.")
 
     @api.model
     def skicka_lank_for_email(self, email):
