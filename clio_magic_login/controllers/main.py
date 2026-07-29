@@ -17,14 +17,11 @@ class MagicLoginController(AuthSignupHome):
     def web_login(self, *args, **kw):
         ensure_db()
 
-        # Intercept magic link POST before super handles it
         if request.httprequest.method == 'POST' and request.params.get('type') == 'magic_link':
             return self._magic_link_send(**kw)
 
-        # Let parent handle password POST and all redirect/session logic
         response = super().web_login(*args, **kw)
 
-        # For GET requests when not yet logged in: replace with our signup-first template
         qcontext = getattr(response, 'qcontext', None)
         if qcontext is not None and request.httprequest.method == 'GET' and not request.session.uid:
             qcontext['magic_link_sent'] = bool(request.params.get('magic_link_sent'))
@@ -60,10 +57,8 @@ class MagicLoginController(AuthSignupHome):
         if not user.active:
             return self._magic_login_redirect_error(_("Kontot är inaktiverat."))
 
-        # Invalidate token by clearing signup_type (prevents reuse within expiry window)
         partner.sudo().write({'signup_type': False})
 
-        # Log in the user directly via session.finalize pattern
         request.session['pre_login'] = user.login
         request.session['pre_uid'] = user.id
         request.session.finalize(request.env)
@@ -72,7 +67,6 @@ class MagicLoginController(AuthSignupHome):
         _logger.info("Magic link login: user %s (%s) logged in from %s",
                      user.login, user.id, request.httprequest.remote_addr)
 
-        # Endast lokala sokvagar tillats (skydd mot open redirect)
         if not (redirect and redirect.startswith('/') and not redirect.startswith('//')):
             redirect = '/odoo'
         return request.redirect(redirect)
@@ -88,7 +82,6 @@ class MagicLoginController(AuthSignupHome):
             new_response.headers['X-Frame-Options'] = 'SAMEORIGIN'
             return new_response
 
-        # Look up portal user — don't reveal whether account exists
         User = request.env['res.users'].sudo()
         user = User.search([
             ('login', '=', login),
@@ -99,11 +92,18 @@ class MagicLoginController(AuthSignupHome):
         if user:
             try:
                 self._send_magic_link_email(user, redirect)
+                qcontext['magic_link_sent'] = True
             except Exception:
                 _logger.exception("Failed to send magic link to %s", login)
+                qcontext['error'] = _("Något gick fel vid mailutskicket. Försök igen om en stund.")
+        else:
+            # Unknown address — notify admin silently, don't reveal to visitor
+            try:
+                self._notify_admin_unknown_login(login)
+            except Exception:
+                _logger.exception("Failed to send admin notification for unknown login %s", login)
+            qcontext['magic_link_sent'] = True  # security: don't reveal whether account exists
 
-        # Always show "check your email" — don't leak account existence
-        qcontext['magic_link_sent'] = True
         new_response = request.render('clio_magic_login.login', qcontext)
         new_response.headers['X-Frame-Options'] = 'SAMEORIGIN'
         new_response.headers['Content-Security-Policy'] = "frame-ancestors 'self'"
@@ -111,8 +111,9 @@ class MagicLoginController(AuthSignupHome):
 
     def _send_magic_link_email(self, user, redirect=''):
         partner = user.partner_id.sudo()
-        partner.write({'signup_type': 'magic'})
-        token = partner._generate_signup_token(expiration=MAGIC_LINK_EXPIRY_HOURS)
+        # signup_prepare is the correct Odoo 19 API — writes token to partner.signup_token
+        partner.signup_prepare(signup_type='magic', expiration=MAGIC_LINK_EXPIRY_HOURS)
+        token = partner.signup_token
 
         base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url', '')
         verify_url = '%s/web/magic_login/verify?token=%s' % (base_url, token)
@@ -122,12 +123,51 @@ class MagicLoginController(AuthSignupHome):
         template = request.env.ref(
             'clio_magic_login.email_template_magic_link', raise_if_not_found=False
         )
-        if template:
-            template.sudo().with_context(verify_url=verify_url).send_mail(
-                user.id, force_send=True
+        if not template:
+            raise RuntimeError("Mail-template clio_magic_login.email_template_magic_link saknas")
+
+        # Use company email as sender — generic, works in any database
+        company = user.sudo().company_id
+        email_from = (
+            company.email
+            or request.env['ir.config_parameter'].sudo().get_param('mail.default.from', '')
+        )
+        email_values = {'email_from': email_from} if email_from else {}
+
+        template.sudo().with_context(verify_url=verify_url).send_mail(
+            user.id, force_send=True, email_values=email_values
+        )
+
+    def _notify_admin_unknown_login(self, login):
+        ICP = request.env['ir.config_parameter'].sudo()
+        notify_email = ICP.get_param('clio_magic_login.admin_notify_email', '')
+        company = request.env['res.company'].sudo().search([], limit=1, order='id asc')
+        if not notify_email:
+            notify_email = company.email if company else ''
+        if not notify_email:
+            _logger.warning(
+                "clio_magic_login: ingen admin-epost konfigurerad "
+                "(clio_magic_login.admin_notify_email), hoppar notis för %s", login
             )
+            return
+
+        company_name = company.name if company else request.env.cr.dbname
+        from_email = company.email if company else ''
+
+        request.env['mail.mail'].sudo().create({
+            'subject': f'Magic login-försök — okänd e-post ({company_name})',
+            'email_from': from_email,
+            'email_to': notify_email,
+            'body_html': (
+                f'<p>En e-postadress som saknar portalkonto försökte logga in via magic link:</p>'
+                f'<p><strong>{login}</strong></p>'
+                f'<p>Databas: {request.env.cr.dbname} ({company_name})<br>'
+                f'IP: {request.httprequest.remote_addr}</p>'
+                f'<p>Vill du ge personen tillgång? Lägg till dem som portalanvändare i Odoo.</p>'
+            ),
+            'auto_delete': True,
+        }).send()
 
     def _magic_login_redirect_error(self, message):
-        # Redirect to login page with error as URL param — avoids website-context issues
         url = '/web/login?%s' % url_encode({'magic_login_error': message})
         return request.redirect(url)
