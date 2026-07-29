@@ -68,7 +68,9 @@
           <button name="action_markera_inbjuden" type="object"
                   string="Markera som inbjuden" class="btn-primary"
                   invisible="status != 'ej_kontaktad'"/>
-<field name="status" widget="statusbar"
+          <button name="action_kopiera_chattlank" type="object"
+                  string="Visa chatt-länk" class="btn-secondary"/>
+          <field name="status" widget="statusbar"
                  statusbar_visible="ej_kontaktad,inbjuden,paborjad,inlamnad,godkand_for_publicering"/>
         </header>
         <sheet>
@@ -77,7 +79,8 @@
               <field name="property_id" string="Fastighet (register)"
                      options="{'no_create': True, 'no_create_edit': True}"/>
               <field name="namn"        string="Visningsnamn (kan skrivas över)"/>
-              <field name="kontakt_id"  string="Kontaktperson"/>
+              <field name="kontakt_id"  string="Kontaktperson"
+                     options="{'no_create': True}"/>
               <field name="epost"       string="E-post"/>
             </group>
             <group string="Status">
@@ -92,12 +95,13 @@
             </group>
           </group>
 
+          <group string="Redaktörens anteckningar">
+            <field name="anteckningar" nolabel="1" widget="text"
+                   style="min-height: 160px; width: 100%;"
+                   placeholder="Interna notat — syns ej för familjen."/>
+          </group>
+
           <notebook>
-            <page string="Redaktörens anteckningar" name="anteckningar">
-              <field name="anteckningar" nolabel="1" widget="text"
-                     style="min-height: 200px; width: 100%;"
-                     placeholder="Interna notat — syns ej för familjen."/>
-            </page>
             <page string="Svar (10 frågor)" name="svar">
               <field name="svar_ids" nolabel="1">
                 <list editable="bottom">
@@ -124,7 +128,6 @@
             </page>
           </notebook>
         </sheet>
-        <chatter/>
       </form>
     </field>
   </record>
@@ -156,17 +159,6 @@
         </group>
       </search>
     </field>
-  </record>
-
-  <!-- ── Server Actions ───────────────────────────────────────────────── -->
-
-  <record id="action_server_skicka_inbjudan" model="ir.actions.server">
-    <field name="name">Skicka inbjudan</field>
-    <field name="model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
-    <field name="binding_model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
-    <field name="binding_view_types">list</field>
-    <field name="state">code</field>
-    <field name="code">records.action_skicka_inbjudan()</field>
   </record>
 
   <!-- ── Action ─────────────────────────────────────────────────────────── -->
