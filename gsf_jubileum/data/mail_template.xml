@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data noupdate="1">
+  <data noupdate="0">
 
     <record id="mail_template_jubileum_inbjudan" model="mail.template">
       <field name="name">GSF Jubileum — Inbjudan</field>
@@ -17,12 +17,12 @@
     <h1 style="color: #FFFFFF; font-size: 20px; margin: 8px 0 0;">Guldboda 80 år — din berättelse</h1>
   </div>
   <div style="padding: 32px 40px;">
-    <p>Hej <strong>{{ object.kontakt_id.name or 'fastighetsägare' }}</strong>,</p>
+    <p>Hej <strong><t t-out="object.kontakt_id.name or 'fastighetsägare'"/></strong>,</p>
     <p>Guldboda Samfällighetsförening fyller 80 år, och vi samlar in berättelser från fastighetsägare om livet vid Muskö.</p>
-    <p>Vi skulle gärna höra din historia om <strong>{{ object.namn }}</strong> — hur ni hittade dit, minnen från åren, vad platsen betyder för er.</p>
+    <p>Vi skulle gärna höra din historia om <strong><t t-out="object.namn"/></strong> — hur ni hittade dit, minnen från åren, vad platsen betyder för er.</p>
     <p>Det går till så här: du klickar på länken nedan och får ett samtal med Clio, vår AI-assistent, som ställer några enkla frågor. Dina svar bearbetas sedan av Roland Berndt och mig till jubileumspublikationen.</p>
     <p style="margin: 32px 0;">
-      <a href="{{ object.chatt_url }}"
+      <a t-att-href="object.chatt_url"
          style="background: #1559ED; color: #FFFFFF; font-weight: 600; padding: 12px 28px;
                 border-radius: 4px; text-decoration: none; display: inline-block;">
         → Starta ditt samtal med Clio
