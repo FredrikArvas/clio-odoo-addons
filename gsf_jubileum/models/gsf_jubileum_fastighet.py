@@ -135,6 +135,33 @@ class GsfJubileumFastighet(models.Model):
             },
         }
 
+    def action_skicka_inbjudan(self):
+        template = self.env.ref("gsf_jubileum.mail_template_jubileum_inbjudan")
+        for rec in self:
+            if not rec.epost:
+                continue
+            template.send_mail(rec.id, force_send=True)
+            if rec.status == "ej_kontaktad":
+                rec.write({
+                    "status": "inbjuden",
+                    "datum_inbjudan": fields.Date.today(),
+                })
+
+    @api.model
+    def skicka_lank_for_email(self, email):
+        email = (email or "").strip().lower()
+        if not email:
+            return
+        records = self.search([
+            ("epost", "ilike", email),
+            ("status", "not in", ["vill_ej_publiceras"]),
+        ])
+        if not records:
+            return
+        template = self.env.ref("gsf_jubileum.mail_template_jubileum_inbjudan")
+        for rec in records:
+            template.send_mail(rec.id, force_send=True)
+
     def action_markera_inbjuden(self):
         for rec in self:
             if rec.status == "ej_kontaktad":

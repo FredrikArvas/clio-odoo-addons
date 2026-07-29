@@ -120,6 +120,63 @@
     </t>
   </template>
 
+  <!-- ── Begär länk ────────────────────────────────────────────────────── -->
+  <template id="page_hamta_lank" name="GSF Jubileum — Begär länk">
+    <t t-call="website.layout">
+      <t t-set="head">
+        <meta name="robots" content="noindex, nofollow"/>
+      </t>
+      <div class="gsf-interview-root">
+        <header class="gsf-header">
+          <div class="gsf-header-inner">
+            <span class="gsf-logo">GSF</span>
+            <span class="gsf-subtitle">Guldboda 80 år — berättelser om era fastigheter</span>
+          </div>
+        </header>
+        <main class="gsf-main">
+          <div class="gsf-submitted-box">
+            <t t-if="sent">
+              <h2>Tack!</h2>
+              <p>
+                Om din e-postadress finns i systemet skickar vi din personliga länk inom kort.
+                Kolla gärna skräpposten om du inte ser mailet inom några minuter.
+              </p>
+              <p class="text-muted small">
+                Frågor? Hör av dig till
+                <a href="mailto:fredrik@arvas.se">fredrik@arvas.se</a>.
+              </p>
+            </t>
+            <t t-else="">
+              <h2>Begär din personliga länk</h2>
+              <p>
+                Fyll i din e-postadress så skickar vi länken till ditt Clio-samtal.
+              </p>
+              <form action="/jubileum/hamta-lank" method="post"
+                    style="max-width: 400px; margin-top: 1.5rem;">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-bold">E-postadress</label>
+                  <input type="email" name="email" id="email" class="form-control"
+                         placeholder="din@epost.se" required="1"/>
+                </div>
+                <button type="submit" class="btn btn-primary px-4"
+                        style="background: #1559ED; border: none; font-weight: 600;">
+                  Skicka min länk
+                </button>
+              </form>
+            </t>
+          </div>
+        </main>
+        <footer class="gsf-footer">
+          <p>
+            Guldboda Samfällighetsförening ·
+            <a href="mailto:fredrik@arvas.se">Kontakta Fredrik</a>
+          </p>
+        </footer>
+      </div>
+    </t>
+  </template>
+
   <!-- ── Stängd/ogiltig länk ────────────────────────────────────────────── -->
   <template id="page_already_closed" name="GSF Jubileum — Länk inte aktiv">
     <t t-call="website.layout">
