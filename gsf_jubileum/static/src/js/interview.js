@@ -7,7 +7,11 @@
 
     const token      = root.dataset.token;
     const submitted  = root.dataset.submitted === "true";
-    if (submitted) return;
+    const LS_KEY     = "gsf_jubileum_draft_" + token;
+    if (submitted) {
+        localStorage.removeItem(LS_KEY);
+        return;
+    }
 
     const chatWindow = document.getElementById("gsf-chat-window");
     const input      = document.getElementById("gsf-input");
@@ -47,12 +51,6 @@
         input.disabled   = on;
         if (typing) typing.style.display = on ? "block" : "none";
         scrollToBottom();
-    }
-
-    // Enkel CSRF-token-hämtning (Odoo sätter den i meta-taggen)
-    function getCsrf() {
-        const m = document.querySelector("meta[name='csrf-token']");
-        return m ? m.content : "";
     }
 
     async function jsonRpc(path, params) {
@@ -136,6 +134,7 @@
                     },
                 });
                 if (result && result.ok) {
+                    localStorage.removeItem(LS_KEY);
                     // Ladda om sidan — servern visar tackvyn
                     window.location.reload();
                 } else {
@@ -153,7 +152,6 @@
     }
 
     // ── localStorage-backup av pågående inmatning ─────────────────────────
-    const LS_KEY = "gsf_jubileum_draft_" + token;
     const saved  = localStorage.getItem(LS_KEY);
     if (saved && input) input.value = saved;
 
@@ -165,11 +163,6 @@
                 localStorage.setItem(LS_KEY, input.value);
             }, 1500);
         });
-    }
-
-    // Rensa draft vid lyckad inlämning (sker på nästa sidladdning)
-    if (submitted) {
-        localStorage.removeItem(LS_KEY);
     }
 
     // Scrolla till botten vid sidladdning om konversation finns

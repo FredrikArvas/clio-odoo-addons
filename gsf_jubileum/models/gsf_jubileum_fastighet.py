@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 import uuid
 
 from odoo import api, fields, models
@@ -97,7 +98,7 @@ class GsfJubileumFastighet(models.Model):
         compute="_compute_chatt_url",
     )
     svar_ids = fields.One2many("gsf.jubileum.svar", "fastighet_id", string="Svar")
-    samtycke_id = fields.One2many("gsf.jubileum.samtycke", "fastighet_id", string="Samtycke")
+    samtycke_ids = fields.One2many("gsf.jubileum.samtycke", "fastighet_id", string="Samtycke")
 
     @api.depends("property_id")
     def _compute_namn(self):
@@ -155,10 +156,12 @@ class GsfJubileumFastighet(models.Model):
     @api.model
     def skicka_lank_for_email(self, email):
         email = (email or "").strip().lower()
-        if not email:
+        if not email or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
             return
+        # Escapa LIKE-wildcards — annars kan t.ex. "%" matcha alla poster
+        pattern = email.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         records = self.search([
-            ("epost", "ilike", email),
+            ("epost", "=ilike", pattern),
             ("status", "not in", ["vill_ej_publiceras"]),
         ])
         if not records:
