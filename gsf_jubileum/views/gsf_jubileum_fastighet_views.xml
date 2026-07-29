@@ -157,6 +157,17 @@
     </field>
   </record>
 
+  <!-- ── Server Actions ───────────────────────────────────────────────── -->
+
+  <record id="action_server_skicka_inbjudan" model="ir.actions.server">
+    <field name="name">Skicka inbjudan</field>
+    <field name="model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
+    <field name="binding_model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
+    <field name="binding_view_types">list</field>
+    <field name="state">code</field>
+    <field name="code">records.action_skicka_inbjudan()</field>
+  </record>
+
   <!-- ── Action ─────────────────────────────────────────────────────────── -->
 
   <record id="action_gsf_jubileum_fastigheter" model="ir.actions.act_window">

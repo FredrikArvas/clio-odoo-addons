@@ -9,6 +9,7 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "data/mail_template.xml",
         "views/gsf_jubileum_fastighet_views.xml",
         "views/gsf_jubileum_portal_templates.xml",
         "views/menu.xml",

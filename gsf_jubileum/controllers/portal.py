@@ -57,6 +57,18 @@ def _get_fastighet(token):
 
 class GsfJubileumPortal(http.Controller):
 
+    @http.route("/jubileum/hamta-lank", type="http", auth="public", website=True,
+                methods=["GET", "POST"])
+    def hamta_lank(self, **post):
+        sent = False
+        if request.httprequest.method == "POST":
+            email = (post.get("email") or "").strip()
+            if email:
+                request.env["gsf.jubileum.fastighet"].sudo().skicka_lank_for_email(email)
+            sent = True
+        return request.render("gsf_jubileum.page_hamta_lank", {"sent": sent})
+
+
     @http.route("/jubileum/<string:token>", type="http", auth="public", website=True)
     def jubileum_index(self, token, **kw):
         fastighet = _get_fastighet(token)

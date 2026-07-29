@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <record id="mail_template_jubileum_inbjudan" model="mail.template">
+      <field name="name">GSF Jubileum — Inbjudan</field>
+      <field name="model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
+      <field name="subject">Din berättelse om {{ object.namn }} — Guldboda 80 år</field>
+      <field name="email_from">clio@arvas.international</field>
+      <field name="email_to">{{ object.epost }}</field>
+      <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #3A4F66;">
+  <div style="background: #192A3D; padding: 32px 40px 24px;">
+    <p style="color: #A8BFDA; margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .07em;">
+      Guldboda Samfällighetsförening
+    </p>
+    <h1 style="color: #FFFFFF; font-size: 20px; margin: 8px 0 0;">Guldboda 80 år — din berättelse</h1>
+  </div>
+  <div style="padding: 32px 40px;">
+    <p>Hej <strong>{{ object.kontakt_id.name or 'fastighetsägare' }}</strong>,</p>
+    <p>Guldboda Samfällighetsförening fyller 80 år, och vi samlar in berättelser från fastighetsägare om livet vid Muskö.</p>
+    <p>Vi skulle gärna höra din historia om <strong>{{ object.namn }}</strong> — hur ni hittade dit, minnen från åren, vad platsen betyder för er.</p>
+    <p>Det går till så här: du klickar på länken nedan och får ett samtal med Clio, vår AI-assistent, som ställer några enkla frågor. Dina svar bearbetas sedan av Roland Berndt och mig till jubileumspublikationen.</p>
+    <p style="margin: 32px 0;">
+      <a href="{{ object.chatt_url }}"
+         style="background: #1559ED; color: #FFFFFF; font-weight: 600; padding: 12px 28px;
+                border-radius: 4px; text-decoration: none; display: inline-block;">
+        → Starta ditt samtal med Clio
+      </a>
+    </p>
+    <p style="font-size: 13px; color: #6B7F99;">
+      Länken är personlig och gäller just din fastighet. Du kan avbryta och fortsätta när du vill.
+    </p>
+    <hr style="border: none; border-top: 1px solid #E2E8EF; margin: 24px 0;"/>
+    <p>Har du frågor är du välkommen att höra av dig till
+       <a href="mailto:fredrik@arvas.se" style="color: #1559ED;">fredrik@arvas.se</a>.
+    </p>
+    <p>Varmt tack,<br/>
+       <strong>Fredrik Arvas</strong><br/>
+       Ordförande, Guldboda Samfällighetsförening
+    </p>
+  </div>
+</div>
+      </field>
+    </record>
+
+  </data>
+</odoo>
