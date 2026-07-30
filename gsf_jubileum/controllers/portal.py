@@ -7,7 +7,7 @@ from odoo.http import request
 _logger = logging.getLogger(__name__)
 
 FRAGOR = [
-    (1,  "Öppning",         "Vilken tomt/fastighet gäller det, och vilket år kom familjen till Guldboda?"),
+    (1,  "Öppning",         "Hur kom familjen till Guldboda — och vem var det som ursprungligen hittade hit?"),
     (2,  "Ursprung",        "Vem köpte eller byggde stället, och varför just den platsen?"),
     (3,  "Släktträd",       "Vilka har bott eller vistats där? Berätta om generationer, namn och perioder."),
     (4,  "Huset och platsen","Har det skett ombyggnader eller gjorts speciella detaljer? Har tomten ett eget namn?"),
@@ -23,7 +23,11 @@ SYSTEM_PROMPT_TEMPLATE = """\
 Du är Clio, en varm och nyfiken intervjuare som hjälper familjer i Guldboda \
 att berätta sin fastighetshistoria till GSF:s 80-årsjubileumsskrift.
 
-Fastigheten/adressen du intervjuar om: {namn}
+Känd information om fastigheten:
+- Beteckning: {namn}
+- Förvärvsdatum: {forvarvsdatum}
+
+Använd denna information aktivt — fråga inte om saker du redan vet.
 
 Ditt uppdrag är att ställa nedanstående 10 frågor i naturlig, följsam ordning — \
 inte som ett stelbent formulär. Lyssna aktivt, ställ gärna en spontan följdfråga \
@@ -80,13 +84,22 @@ class GsfJubileumPortal(http.Controller):
         history = json.loads(fastighet.coaching_history or "[]")
 
         if not history:
-            opener = (
-                f"Hej och välkommen! Jag heter Clio och hjälper er att berätta om "
-                f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
-                f"Vi tar det lugnt, en fråga i taget — och du kan alltid komma tillbaka "
-                f"via samma länk om du vill pausa. "
-                f"Vi börjar från början: Vilket år kom familjen till Guldboda, och vem var det som ursprungligen hittade hit?"
-            )
+            acquired = fastighet.property_id.acquired_date if fastighet.property_id else None
+            if acquired:
+                opener = (
+                    f"Hej och välkommen! Jag heter Clio och hjälper er att berätta om "
+                    f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
+                    f"Vi kan se att fastigheten förvärvades {acquired.year} — berätta gärna hur familjen hittade till Guldboda! "
+                    f"Vi tar det lugnt, en fråga i taget, och du kan alltid komma tillbaka via samma länk om du vill pausa."
+                )
+            else:
+                opener = (
+                    f"Hej och välkommen! Jag heter Clio och hjälper er att berätta om "
+                    f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
+                    f"Vi tar det lugnt, en fråga i taget — och du kan alltid komma tillbaka "
+                    f"via samma länk om du vill pausa. "
+                    f"Vi börjar från början: Vilket år kom familjen till Guldboda, och vem var det som ursprungligen hittade hit?"
+                )
             history = [{"role": "assistant", "content": opener}]
             fastighet.write({"coaching_history": json.dumps(history, ensure_ascii=False)})
 
@@ -122,8 +135,11 @@ class GsfJubileumPortal(http.Controller):
             if not api_key:
                 return {"error": "API-nyckel saknas — kontakta Fredrik."}
 
+            acquired = fastighet.property_id.acquired_date if fastighet.property_id else None
+            forvarvsdatum = str(acquired.year) if acquired else "okänt"
             system = SYSTEM_PROMPT_TEMPLATE.format(
                 namn=fastighet.namn,
+                forvarvsdatum=forvarvsdatum,
                 fragor=_fragor_text(),
             )
             api_messages = history + [{"role": "user", "content": message}]
