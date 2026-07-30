@@ -1,54 +1,24 @@
 import json
 import logging
 
+import requests
+
 from odoo import fields, http
 from odoo.http import request
 
+from ..fragor import FRAGOR
+
 _logger = logging.getLogger(__name__)
 
-FRAGOR = [
-    (1,  "Öppning",         "Hur kom familjen till Guldboda — och vem var det som ursprungligen hittade hit?"),
-    (2,  "Ursprung",        "Vem köpte eller byggde stället, och varför just den platsen?"),
-    (3,  "Släktträd",       "Vilka har bott eller vistats där? Berätta om generationer, namn och perioder."),
-    (4,  "Huset och platsen","Har det skett ombyggnader eller gjorts speciella detaljer? Har tomten ett eget namn?"),
-    (5,  "Musik",           "Finns det musik som förknippas med somrarna där?"),
-    (6,  "Spel och böcker", "Vilka sällskapsspel eller böcker hör ihop med stället?"),
-    (7,  "Lekar och sport", "Vilka lekar eller sporter är kopplade till tomten eller familjen?"),
-    (8,  "En anekdot",      "Finns det en historia som alltid berättas när ni pratar om Guldboda?"),
-    (9,  "Fritt utrymme",   "Är det något mer du vill ha med — något vi inte frågat om?"),
-    (10, "Avslutning",      "Vill du bli kontaktad igen? Godkänner du att berättelsen kan publiceras i jubileumsskriften?"),
-]
+BRIDGE_TIMEOUT = 45
 
-SYSTEM_PROMPT_TEMPLATE = """\
-Du är Clio, en varm och nyfiken intervjuare som hjälper familjer i Guldboda \
-att berätta sin fastighetshistoria till GSF:s 80-årsjubileumsskrift.
-
-Känd information om fastigheten:
-- Beteckning: {namn}
-- Förvärvsdatum: {forvarvsdatum}
-
-Använd denna information aktivt — fråga inte om saker du redan vet.
-
-Ditt uppdrag är att ställa nedanstående 10 frågor i naturlig, följsam ordning — \
-inte som ett stelbent formulär. Lyssna aktivt, ställ gärna en spontan följdfråga \
-om något är intressant, och hjälp familjen att formulera minnen i ord.
-
-Frågelista (ställ dem ungefärligt i denna ordning):
-{fragor}
-
-Regler:
-- Svara alltid på svenska.
-- En fråga (eller kortare uppföljning) per svar — överskölj aldrig med flera frågor.
-- Håll tonen varm, nyfiken och respektfull.
-- Fråga 10 handlar om samtycke — ställ den mot slutet och formulera den tydligt.
-- Skriv inte berättelsen åt familjen — coacha dem att berätta själva.
-- När alla 10 frågor är besvarade (eller familjen signalerar att de är klara): \
-avsluta med en kort summering och en instruktion att klicka på "Skicka in".\
-"""
-
-
-def _fragor_text():
-    return "\n".join(f"{nr}. {rubrik}: {text}" for nr, rubrik, text in FRAGOR)
+BRIDGE_ERROR_MESSAGES = {
+    "for_langt_meddelande": "Meddelandet var för långt — korta ner det lite och skicka igen.",
+    "for_manga_turer": "Den här intervjun har nått sitt maxantal meddelanden. "
+                        "Kontakta oss om du vill fortsätta.",
+    "rate_limit": "Lite för många meddelanden på kort tid — vänta en liten stund och försök igen.",
+}
+GENERISKT_FEL = "AI-tjänsten är tillfälligt otillgänglig. Försök igen om en stund."
 
 
 def _get_fastighet(token):
@@ -57,6 +27,22 @@ def _get_fastighet(token):
     return request.env["gsf.jubileum.fastighet"].sudo().search(
         [("unik_token", "=", token)], limit=1
     ) or None
+
+
+def _bridge_call(path, payload):
+    icp = request.env["ir.config_parameter"].sudo()
+    url = icp.get_param("gsf.bridge.url", "http://172.19.0.1:8090")
+    secret = icp.get_param("gsf.bridge.secret")
+    if not secret:
+        raise RuntimeError("gsf.bridge.secret saknas")
+    resp = requests.post(
+        f"{url}{path}",
+        json=payload,
+        headers={"X-Bridge-Secret": secret},
+        timeout=BRIDGE_TIMEOUT,
+    )
+    resp.raise_for_status()
+    return resp.json()
 
 
 class GsfJubileumPortal(http.Controller):
@@ -89,8 +75,10 @@ class GsfJubileumPortal(http.Controller):
                 opener = (
                     f"Hej och välkommen! Jag heter Clio och hjälper er att berätta om "
                     f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
-                    f"Vi kan se att fastigheten förvärvades {acquired.year} — berätta gärna hur familjen hittade till Guldboda! "
-                    f"Vi tar det lugnt, en fråga i taget, och du kan alltid komma tillbaka via samma länk om du vill pausa."
+                    f"Vi kan se att fastigheten förvärvades {acquired.year} — berätta gärna "
+                    f"hur familjen hittade till Guldboda! "
+                    f"Vi tar det lugnt, en fråga i taget, och du kan alltid komma tillbaka "
+                    f"via samma länk om du vill pausa."
                 )
             else:
                 opener = (
@@ -98,7 +86,7 @@ class GsfJubileumPortal(http.Controller):
                     f"{fastighet.namn} till Guldboda Samfällighetsförenings 80-årsjubileum. "
                     f"Vi tar det lugnt, en fråga i taget — och du kan alltid komma tillbaka "
                     f"via samma länk om du vill pausa. "
-                    f"Vi börjar från början: Vilket år kom familjen till Guldboda, och vem var det som ursprungligen hittade hit?"
+                    f"Vi börjar från början: {FRAGOR[0][2]}"
                 )
             history = [{"role": "assistant", "content": opener}]
             fastighet.write({"coaching_history": json.dumps(history, ensure_ascii=False)})
@@ -117,7 +105,8 @@ class GsfJubileumPortal(http.Controller):
         fastighet = _get_fastighet(token)
         if not fastighet:
             return {"error": "Ogiltig länk."}
-        if fastighet.status in ("inlamnad", "godkand_for_publicering", "vill_ej_publiceras"):
+        if fastighet.status in ("inlamnad", "vantar_godkannande",
+                                "godkand_for_publicering", "vill_ej_publiceras"):
             return {"error": "Den här berättelsen är redan inlämnad."}
 
         message = (message or "").strip()
@@ -126,38 +115,31 @@ class GsfJubileumPortal(http.Controller):
 
         history = json.loads(fastighet.coaching_history or "[]")
 
+        acquired = fastighet.property_id.acquired_date if fastighet.property_id else None
+        forvarvsdatum = str(acquired.year) if acquired else ""
         try:
-            import anthropic
-            api_key = (
-                request.env["ir.config_parameter"].sudo().get_param("gsf.anthropic.api_key")
-                or request.env["ir.config_parameter"].sudo().get_param("clio.anthropic.api_key")
-            )
-            if not api_key:
-                return {"error": "API-nyckel saknas — kontakta Fredrik."}
-
-            acquired = fastighet.property_id.acquired_date if fastighet.property_id else None
-            forvarvsdatum = str(acquired.year) if acquired else "okänt"
-            system = SYSTEM_PROMPT_TEMPLATE.format(
-                namn=fastighet.namn,
-                forvarvsdatum=forvarvsdatum,
-                fragor=_fragor_text(),
-            )
-            api_messages = history + [{"role": "user", "content": message}]
-            if api_messages[0]["role"] != "user":
-                api_messages = [{"role": "user", "content": "[start]"}] + api_messages
-
-            client = anthropic.Anthropic(api_key=api_key)
-            response = client.messages.create(
-                model="claude-sonnet-4-6",
-                max_tokens=600,
-                system=system,
-                messages=api_messages,
-            )
-            reply = response.content[0].text
-
+            result = _bridge_call("/chat", {
+                "fastighet_token": token,
+                "namn": fastighet.namn,
+                "forvarvsdatum": forvarvsdatum,
+                "message": message,
+                "fragor": FRAGOR,
+                "history": history,
+            })
         except Exception as e:
-            _logger.error("gsf_jubileum chat error for token %s: %s", token, e)
-            return {"error": "AI-tjänsten är tillfälligt otillgänglig. Försök igen om en stund."}
+            _logger.error("gsf_jubileum bridge /chat error for token %s: %s", token, e)
+            return {"error": GENERISKT_FEL}
+
+        if result.get("error"):
+            bridge_err = result["error"]
+            _logger.warning("gsf_jubileum bridge /chat returned error %s for token %s",
+                             bridge_err, token)
+            return {"error": BRIDGE_ERROR_MESSAGES.get(bridge_err, GENERISKT_FEL)}
+
+        reply = result.get("reply")
+        if not reply:
+            _logger.error("gsf_jubileum bridge /chat gave no reply for token %s", token)
+            return {"error": GENERISKT_FEL}
 
         history.append({"role": "user", "content": message})
         history.append({"role": "assistant", "content": reply})
@@ -175,8 +157,10 @@ class GsfJubileumPortal(http.Controller):
         fastighet = _get_fastighet(token)
         if not fastighet:
             return {"error": "Ogiltig länk."}
-        if fastighet.status in ("inlamnad", "godkand_for_publicering"):
+        if fastighet.status in ("inlamnad", "vantar_godkannande", "godkand_for_publicering"):
             return {"ok": True, "already_submitted": True}
+        if fastighet.status == "vill_ej_publiceras":
+            return {"error": "Den här länken är inte längre aktiv."}
 
         samtycke = samtycke or {}
         godkand = bool(samtycke.get("godkand_publicering"))
@@ -187,19 +171,31 @@ class GsfJubileumPortal(http.Controller):
         SvarModel = request.env["gsf.jubileum.svar"].sudo()
         fastighet.svar_ids.unlink()
 
-        # Para ihop user-svar med frågor i ordning (Clio frågar 1–10 sekventiellt)
-        user_messages = [m["content"] for m in history if m["role"] == "user"]
-        for idx, (nr, rubrik, fraga_text) in enumerate(FRAGOR):
-            SvarModel.create({
-                "fastighet_id": fastighet.id,
-                "fraga_nr": str(nr),
-                "fraga_text": fraga_text,
-                "svar_text": user_messages[idx] if idx < len(user_messages) else "",
-                "kalla": "clio_chatt",
+        svar_map = None
+        try:
+            result = _bridge_call("/extract", {
+                "fastighet_token": token,
+                "history": history,
+                "fragor": FRAGOR,
             })
+            svar_map = result.get("svar")
+        except Exception as e:
+            _logger.error("gsf_jubileum bridge /extract error for token %s: %s", token, e)
+
+        # Extraktion misslyckad: lamna svar_ids tomt, redaktoren arbetar fran
+        # coaching_history (ra-JSON) istallet for att aldrig blockera inlamningen.
+        if svar_map:
+            for nr, rubrik, fraga_text in FRAGOR:
+                SvarModel.create({
+                    "fastighet_id": fastighet.id,
+                    "fraga_nr": str(nr),
+                    "fraga_text": fraga_text,
+                    "svar_text": svar_map.get(str(nr), "") or "",
+                    "kalla": "clio_chatt",
+                })
 
         SamtyckeModel = request.env["gsf.jubileum.samtycke"].sudo()
-        fastighet.samtycke_id.unlink()
+        fastighet.samtycke_ids.unlink()
         SamtyckeModel.create({
             "fastighet_id": fastighet.id,
             "godkand_publicering": godkand,
@@ -213,5 +209,3 @@ class GsfJubileumPortal(http.Controller):
             "datum_inlamnad": fields.Date.today(),
         })
         return {"ok": True}
-
-

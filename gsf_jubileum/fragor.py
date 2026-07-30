@@ -1,6 +1,6 @@
 # Gemensam frågelista — enda källan, används av både models och controllers.
 FRAGOR = [
-    (1,  "Öppning",          "Vilken tomt/fastighet gäller det, och vilket år kom familjen till Guldboda?"),
+    (1,  "Öppning",          "Hur kom familjen till Guldboda — och vem var det som ursprungligen hittade hit?"),
     (2,  "Ursprung",         "Vem köpte eller byggde stället, och varför just den platsen?"),
     (3,  "Släktträd",        "Vilka har bott eller vistats där? Berätta om generationer, namn och perioder."),
     (4,  "Huset och platsen","Har det skett ombyggnader eller gjorts speciella detaljer? Har tomten ett eget namn?"),
