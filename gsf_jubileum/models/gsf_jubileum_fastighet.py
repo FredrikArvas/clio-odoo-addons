@@ -35,14 +35,14 @@ class GsfJubileumFastighet(models.Model):
         index=True,
         help="Hämtas från fastighetens beteckning, kan skrivas över manuellt.",
     )
-    kontakt_id = fields.Many2one(
+    partner_id = fields.Many2one(
         "res.partner",
         string="Kontaktperson",
         ondelete="set null",
     )
-    epost = fields.Char(
+    email = fields.Char(
         string="E-post",
-        compute="_compute_epost",
+        compute="_compute_email",
         store=True,
         readonly=False,
         help="Hämtas från kontaktpersonen, kan skrivas över manuellt.",
@@ -114,11 +114,11 @@ class GsfJubileumFastighet(models.Model):
         for rec in self:
             rec.chatt_url = f"{base}/jubileum/{rec.unik_token}" if rec.unik_token else ""
 
-    @api.depends("kontakt_id")
-    def _compute_epost(self):
+    @api.depends("partner_id")
+    def _compute_email(self):
         for rec in self:
-            if rec.kontakt_id and rec.kontakt_id.email:
-                rec.epost = rec.kontakt_id.email
+            if rec.partner_id and rec.partner_id.email:
+                rec.email = rec.partner_id.email
 
     def action_generera_token(self):
         self.ensure_one()
@@ -126,8 +126,7 @@ class GsfJubileumFastighet(models.Model):
 
     def action_kopiera_chattlank(self):
         self.ensure_one()
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
-        url = f"{base_url}/jubileum/{self.unik_token}"
+        url = self.chatt_url
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
@@ -142,7 +141,7 @@ class GsfJubileumFastighet(models.Model):
     def action_skicka_inbjudan(self):
         template = self.env.ref("gsf_jubileum.mail_template_jubileum_inbjudan")
         for rec in self:
-            if not rec.epost:
+            if not rec.email:
                 rec.message_post(body="⚠️ Ingen e-postadress registrerad — inbjudan ej skickad.")
                 continue
             template.send_mail(rec.id, force_send=True)
@@ -151,7 +150,7 @@ class GsfJubileumFastighet(models.Model):
                     "status": "inbjuden",
                     "datum_inbjudan": fields.Date.today(),
                 })
-            rec.message_post(body=f"📧 Inbjudan skickad till {rec.epost}.")
+            rec.message_post(body=f"📧 Inbjudan skickad till {rec.email}.")
 
     @api.model
     def skicka_lank_for_email(self, email):
@@ -161,7 +160,7 @@ class GsfJubileumFastighet(models.Model):
         # Escapa LIKE-wildcards — annars kan t.ex. "%" matcha alla poster
         pattern = email.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         records = self.search([
-            ("epost", "=ilike", pattern),
+            ("email", "=ilike", pattern),
             ("status", "not in", ["vill_ej_publiceras"]),
         ])
         if not records:
