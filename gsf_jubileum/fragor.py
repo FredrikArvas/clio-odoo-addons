@@ -7,9 +7,10 @@ FRAGOR = [
     (5,  "Musik",            "Finns det musik som förknippas med somrarna där?"),
     (6,  "Spel och böcker",  "Vilka sällskapsspel eller böcker hör ihop med stället?"),
     (7,  "Lekar och sport",  "Vilka lekar eller sporter är kopplade till tomten eller familjen?"),
-    (8,  "En anekdot",       "Finns det en historia som alltid berättas när ni pratar om Guldboda?"),
-    (9,  "Fritt utrymme",    "Är det något mer du vill ha med — något vi inte frågat om?"),
-    (10, "Avslutning",       "Vill du bli kontaktad igen? Godkänner du att berättelsen kan publiceras i jubileumsskriften?"),
+    (8,  "En anekdot",        "Finns det en historia som alltid berättas när ni pratar om Guldboda?"),
+    (9,  "Ovanliga händelser","Har det hänt något ovanligt på tomten — oväntade besök, spöken eller händelser som familjen minns?"),
+    (10, "Fritt utrymme",    "Är det något mer du vill ha med — något vi inte frågat om?"),
+    (11, "Avslutning",       "Vill du bli kontaktad igen? Godkänner du att berättelsen kan publiceras i jubileumsskriften?"),
 ]
 
 
