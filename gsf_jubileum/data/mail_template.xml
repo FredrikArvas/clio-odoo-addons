@@ -8,6 +8,8 @@
       <field name="subject">Din berättelse om {{ object.namn }} — Guldboda 80 år</field>
       <field name="email_from">clio@arvas.international</field>
       <field name="email_to">{{ object.email }}</field>
+      <field name="use_default_to">False</field>
+      <field name="auto_delete">False</field>
       <field name="body_html" type="html">
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #3A4F66;">
   <div style="background: #192A3D; padding: 32px 40px 24px;">
