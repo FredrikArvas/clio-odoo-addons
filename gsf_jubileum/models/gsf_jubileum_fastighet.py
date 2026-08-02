@@ -142,7 +142,11 @@ class GsfJubileumFastighet(models.Model):
         template = self.env.ref("gsf_jubileum.mail_template_jubileum_inbjudan")
         for rec in self:
             if not rec.email:
-                rec.message_post(body="⚠️ Ingen e-postadress registrerad — inbjudan ej skickad.")
+                rec.message_post(
+                    body="⚠️ Ingen e-postadress registrerad — inbjudan ej skickad.",
+                    message_type="comment",
+                    subtype_xmlid="mail.mt_note",
+                )
                 continue
             template.send_mail(rec.id, force_send=True)
             if rec.status == "ej_kontaktad":
@@ -150,7 +154,11 @@ class GsfJubileumFastighet(models.Model):
                     "status": "inbjuden",
                     "datum_inbjudan": fields.Date.today(),
                 })
-            rec.message_post(body=f"📧 Inbjudan skickad till {rec.email}.")
+            rec.message_post(
+                body=f"📧 Inbjudan skickad till {rec.email}.",
+                message_type="comment",
+                subtype_xmlid="mail.mt_note",
+            )
 
     @api.model
     def skicka_lank_for_email(self, email):
