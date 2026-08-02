@@ -100,7 +100,7 @@ class GsfJubileumFastighet(models.Model):
     svar_ids = fields.One2many("gsf.jubileum.svar", "fastighet_id", string="Svar")
     samtycke_ids = fields.One2many("gsf.jubileum.samtycke", "fastighet_id", string="Samtycke")
 
-    @api.depends("property_id")
+    @api.depends("property_id", "property_id.code", "property_id.name")
     def _compute_namn(self):
         for rec in self:
             p = rec.property_id
@@ -114,7 +114,7 @@ class GsfJubileumFastighet(models.Model):
         for rec in self:
             rec.chatt_url = f"{base}/jubileum/{rec.unik_token}" if rec.unik_token else ""
 
-    @api.depends("partner_id")
+    @api.depends("partner_id", "partner_id.email")
     def _compute_email(self):
         for rec in self:
             if rec.partner_id and rec.partner_id.email:
