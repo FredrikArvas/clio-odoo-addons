@@ -65,8 +65,11 @@
     <field name="arch" type="xml">
       <form string="Fastighet">
         <header>
+          <button name="action_skicka_inbjudan" type="object"
+                  string="Skicka inbjudan" class="btn-primary"
+                  invisible="not email or status in ('inlamnad','vantar_godkannande','godkand_for_publicering','vill_ej_publiceras')"/>
           <button name="action_markera_inbjuden" type="object"
-                  string="Markera som inbjuden" class="btn-primary"
+                  string="Markera som inbjuden (utan mejl)" class="btn-secondary"
                   invisible="status != 'ej_kontaktad'"/>
 <field name="status" widget="statusbar"
                  statusbar_visible="ej_kontaktad,inbjuden,paborjad,inlamnad,godkand_for_publicering"/>
