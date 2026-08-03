@@ -63,7 +63,7 @@
                   groups="base.group_system"
                   confirm="Återställ objektet till 'discovered'? Transkription och summering rensas inte automatiskt."/>
           <field name="state" widget="statusbar"
-                 statusbar_visible="filtered_in,queued,downloaded,transcribed,indexed,notified"/>
+                 statusbar_visible="queued,downloaded,transcribing,transcribed,summarized,indexed,notified"/>
         </header>
         <sheet>
           <group>
