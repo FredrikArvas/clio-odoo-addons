@@ -85,6 +85,7 @@ class ClioVigilItem(models.Model):
             ("transcribing","Transkriberas"),
             ("transcribed", "Transkriberad"),
             ("captioned",   "Auto-textad (YouTube)"),  # Sprint B
+            ("summarized",  "Summerad"),
             ("uap_classified", "UAP-klassificerad"),
             ("indexed",     "Indexerad"),
             ("notified",    "Skickad i digest"),
