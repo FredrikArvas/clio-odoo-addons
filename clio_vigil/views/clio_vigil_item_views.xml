@@ -11,7 +11,7 @@
             decoration-warning="state in ('queued', 'downloaded', 'transcribing')"
             decoration-info="state == 'transcribed'"
             decoration-muted="state == 'filtered_out'"
-            decoration-danger="state == 'crashed'"
+            decoration-danger="state == 'failed'"
             default_order="priority_score desc">
         <field name="priority_score" string="Prio" optional="show"/>
         <field name="published_at"   string="Publicerat" widget="date" optional="show"/>
@@ -30,7 +30,7 @@
                decoration-warning="state in ('queued','downloaded','transcribing')"
                decoration-info="state == 'transcribed'"
                decoration-muted="state == 'filtered_out'"
-               decoration-danger="state == 'crashed'"/>
+               decoration-danger="state == 'failed'"/>
         <field name="summary"        string="Sammanfattning" optional="hide"/>
         <button name="action_boost" type="object" icon="fa-bolt"
                 string="Boosta" title="Boosta till toppen av kön"
@@ -128,8 +128,8 @@
                 domain="[('state','=','notified')]"/>
         <filter name="filtered_out" string="Filtrerades bort"
                 domain="[('state','=','filtered_out')]"/>
-        <filter name="crashed" string="Kraschade"
-                domain="[('state','=','crashed')]"/>
+        <filter name="failed" string="Misslyckade"
+                domain="[('state','=','failed')]"/>
         <filter name="orphans" string="Saknar mediapost"
                 domain="[('has_media_article','=',False)]"/>
         <separator/>
