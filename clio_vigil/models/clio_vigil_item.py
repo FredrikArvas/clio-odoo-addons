@@ -88,7 +88,7 @@ class ClioVigilItem(models.Model):
             ("uap_classified", "UAP-klassificerad"),
             ("indexed",     "Indexerad"),
             ("notified",    "Skickad i digest"),
-            ("crashed",     "Kraschad"),
+            ("failed",      "Misslyckad"),
         ],
         string  = "Tillstånd",
         default = "discovered",
