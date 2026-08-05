@@ -22,6 +22,12 @@
                   class="btn-primary"
                   invisible="vigil_state in ('transcribing','transcribed','indexed','notified')"
                   confirm="Boosta detta objekt till toppen av transkriptions-/indexeringskön?"/>
+          <button name="action_requeue_vigil"
+                  string="↩ Lägg till kö"
+                  type="object"
+                  class="btn-secondary"
+                  invisible="vigil_state != 'failed'"
+                  confirm="Återkö detta objekt? Pipelinen hämtar det vid nästa körning."/>
           <field name="vigil_state" widget="statusbar"
                  statusbar_visible="queued,downloaded,transcribed,indexed,notified"
                  readonly="1"/>
@@ -32,6 +38,28 @@
           <field name="vigil_item_id" readonly="1"/>
           <field name="audio_downloaded" widget="boolean_toggle" readonly="1"/>
         </group>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Kanban-utökning: vigil-fält + Lägg till kö-knapp vid state=failed -->
+  <record id="view_clio_media_article_vigil_kanban" model="ir.ui.view">
+    <field name="name">clio.media.article.vigil.kanban</field>
+    <field name="model">clio.media.article</field>
+    <field name="inherit_id" ref="clio_media.view_clio_media_article_kanban"/>
+    <field name="arch" type="xml">
+      <xpath expr="//kanban/field[@name='data_source']" position="after">
+        <field name="vigil_state"/>
+        <field name="vigil_item_id"/>
+      </xpath>
+      <xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="inside">
+        <t t-if="record.vigil_state.raw_value == 'failed'">
+          <button name="action_requeue_vigil" type="object"
+                  class="btn btn-sm btn-warning ms-auto"
+                  confirm="Återkö detta objekt? Pipelinen hämtar det vid nästa körning.">
+            ↩ Lägg till kö
+          </button>
+        </t>
       </xpath>
     </field>
   </record>
@@ -48,7 +76,7 @@
                decoration-warning="vigil_state in ('queued','downloaded','transcribing')"
                decoration-info="vigil_state == 'transcribed'"
                decoration-muted="vigil_state == 'filtered_out'"
-               decoration-danger="vigil_state == 'crashed'"
+               decoration-danger="vigil_state in ('crashed','failed')"
                optional="show"/>
         <field name="vigil_notified_date" string="Skickad" optional="hide"/>
         <field name="vigil_item_id" string="Vigil" optional="hide"/>
@@ -69,6 +97,20 @@
         <filter name="group_vigil_notified_date" string="Skickad (datum)"
                 context="{'group_by': 'vigil_notified_date'}"/>
       </xpath>
+    </field>
+  </record>
+
+  <!-- ── Server action: Återkö valda objekt (bunden till clio.media.article list) -->
+  <record id="action_clio_vigil_media_requeue" model="ir.actions.server">
+    <field name="name">Återkö</field>
+    <field name="model_id"         ref="clio_media.model_clio_media_article"/>
+    <field name="binding_model_id" ref="clio_media.model_clio_media_article"/>
+    <field name="binding_view_types">list</field>
+    <field name="state">code</field>
+    <field name="code">
+records = env['clio.media.article'].browse(env.context.get('active_ids', []))
+targets = records.filtered(lambda r: r.vigil_item_id)
+targets.write({'vigil_state': 'queued'})
     </field>
   </record>
 
@@ -102,7 +144,7 @@
       <p>
         Objekt hamnar här efter att de indexerats i RAG och
         sammanfattats av Claude.
-      </p>
+        </p>
     </field>
   </record>
 

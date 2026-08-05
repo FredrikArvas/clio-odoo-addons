@@ -17,7 +17,7 @@ class ClioMediaArticleVigilExt(models.Model):
         string   = "Pipeline-status",
         store    = True,
         index    = True,
-        readonly = True,
+        readonly = False,  # Skrivbart → kanban drag-drop fungerar (write-through till vigil_item_id.state)
     )
 
     vigil_notified_at = fields.Datetime(
@@ -61,3 +61,8 @@ class ClioMediaArticleVigilExt(models.Model):
         if not self.vigil_item_id:
             return
         return self.vigil_item_id.action_boost()
+
+    def action_requeue_vigil(self):
+        """Återkö: sätt vigil_state = queued (write-through till vigil_item_id.state).
+        Pipelinen synkar SQLite vid nästa körning via pull_state_changes."""
+        self.filtered("vigil_item_id").write({"vigil_state": "queued"})
