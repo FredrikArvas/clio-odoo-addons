@@ -11,3 +11,7 @@ access_clio_vigil_delivery_user,clio.vigil.delivery user,model_clio_vigil_delive
 access_clio_vigil_delivery_admin,clio.vigil.delivery admin,model_clio_vigil_delivery,base.group_system,1,1,1,1
 access_clio_vigil_set_state_wizard_user,clio.vigil.set.state.wizard user,model_clio_vigil_set_state_wizard,base.group_user,1,1,1,1
 access_clio_vigil_pipeline_user,clio.vigil.pipeline user,model_clio_vigil_pipeline,base.group_user,1,1,1,1
+clio_vigil.access_clio_podcast_geo,access_clio_podcast_geo,clio_vigil.model_clio_podcast_geo,base.group_user,1,0,0,0
+clio_vigil.access_clio_podcast_geo_admin,access_clio_podcast_geo_admin,clio_vigil.model_clio_podcast_geo,base.group_system,1,1,1,1
+clio_vigil.access_clio_podcast_background,access_clio_podcast_background,clio_vigil.model_clio_podcast_background,base.group_user,1,0,0,0
+clio_vigil.access_clio_podcast_background_admin,access_clio_podcast_background_admin,clio_vigil.model_clio_podcast_background,base.group_system,1,1,1,1

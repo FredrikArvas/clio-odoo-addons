@@ -42,6 +42,14 @@ class ClioVigilItem(models.Model):
         string    = "Källtyp",
     )
     source_name = fields.Char(string="Källa", index=True)
+    source_id = fields.Many2one(
+        comodel_name = "clio.vigil.source",
+        string       = "Källpost",
+        index        = True,
+        ondelete     = "set null",
+        help         = "Länk till källans Odoo-post. "
+                       "language ärvs härifrån om fältet saknas.",
+    )
     source_maturity = fields.Selection(
         selection = [
             ("tidig",     "Tidig källa"),
@@ -119,6 +127,79 @@ class ClioVigilItem(models.Model):
         help   = "Absolut sökväg till audio-filen på servern (sätts av downloader).",
     )
 
+    # ── Språk ────────────────────────────────────────────────────────────────
+
+    language = fields.Selection(
+        selection = [
+            ("en",    "Engelska"),
+            ("sv",    "Svenska"),
+            ("pt",    "Portugisiska"),
+            ("other", "Annat"),
+        ],
+        string = "Språk",
+        index  = True,
+        help   = "Ärvs från källans grundspråk vid skapande. "
+                 "Transkriptionen kan korrigera fältet om detekterat språk avviker (≥85% konfidensgrad).",
+    )
+
+    # ── Podcast-taggar ────────────────────────────────────────────────────────
+
+    podcast_format = fields.Selection(
+        selection = [
+            ("interview",    "Intervju"),
+            ("monologue",    "Monolog"),
+            ("lecture",      "Föreläsning"),
+            ("testimony",    "Vittnesmål"),
+            ("channeling",   "Channeling"),
+            ("audiobook",    "Ljudbok / läsning"),
+            ("panel",        "Paneldiskussion"),
+            ("documentary",  "Dokumentär"),
+            ("other",        "Övrigt"),
+        ],
+        string = "Podcastformat",
+    )
+    podcast_topic = fields.Selection(
+        selection = [
+            ("contact_experience", "Kontaktupplevelse"),
+            ("uap_sighting",       "UAP-observation"),
+            ("abduction",          "Bortförande / MILAB"),
+            ("nde",                "Nära-döden-upplevelse"),
+            ("consciousness",      "Medvetande / psykik"),
+            ("channeling_msg",     "Channeling-budskap"),
+            ("ancient_history",    "Forntida historia"),
+            ("disclosure",         "Disclosure / officiellt"),
+            ("spirituality",       "Andlighet"),
+            ("physics",            "Fysik / teknik"),
+            ("news",               "Nyheter"),
+            ("other",              "Övrigt"),
+        ],
+        string = "Ämne",
+    )
+    podcast_witness_score = fields.Float(
+        string = "Vittnespoäng",
+        digits = (5, 2),
+        help   = "0–10: trovärdighet och detaljrikedom hos vittnet/gästen.",
+    )
+    podcast_keep = fields.Boolean(
+        string  = "Bevara",
+        default = False,
+        help    = "Markerat av taggaren: avsnittet är värt att transkribera.",
+    )
+    podcast_geo_ids = fields.Many2many(
+        comodel_name = "clio.podcast.geo",
+        relation     = "clio_vigil_item_geo_rel",
+        column1      = "item_id",
+        column2      = "geo_id",
+        string       = "Geografiska platser",
+    )
+    podcast_background_ids = fields.Many2many(
+        comodel_name = "clio.podcast.background",
+        relation     = "clio_vigil_item_bg_rel",
+        column1      = "item_id",
+        column2      = "bg_id",
+        string       = "Vittnesbakgrunder",
+    )
+
     # ── Sprint C: Arkivering ─────────────────────────────────────────────────
 
     archive_downloaded = fields.Boolean(
@@ -156,6 +237,26 @@ class ClioVigilItem(models.Model):
         "UNIQUE(url)",
         "Objekt-URL måste vara unik.",
     )
+
+    # ── Odoo-standard: språkärv från källpost ─────────────────────────────────
+
+    @api.onchange("source_id")
+    def _onchange_source_id(self):
+        """Fyller i språk automatiskt när källpost väljs i formuläret."""
+        if self.source_id and not self.language:
+            src_lang = self.source_id.language
+            # "multi" på källan = okänt på avsnittsnivå — vänta på transkription
+            self.language = src_lang if src_lang != "multi" else False
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Ärvt källspråk vid massskapning om language saknas och source_id finns."""
+        for vals in vals_list:
+            if not vals.get("language") and vals.get("source_id"):
+                src = self.env["clio.vigil.source"].browse(vals["source_id"])
+                if src.language and src.language != "multi":
+                    vals["language"] = src.language
+        return super().create(vals_list)
 
     # ── Åtgärder ─────────────────────────────────────────────────────────────
 
