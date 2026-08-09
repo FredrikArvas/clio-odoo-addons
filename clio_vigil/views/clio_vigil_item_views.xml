@@ -14,7 +14,8 @@
             decoration-danger="state == 'failed'"
             default_order="priority_score desc">
         <field name="priority_score" string="Prio" optional="show"/>
-        <field name="published_at"   string="Publicerat" widget="date" optional="show"/>
+        <field name="published_at"   string="Publicerat" widget="date"/>
+        <field name="created_at"     string="Sedd" widget="date" optional="hide"/>
         <field name="domain"         string="Domän" widget="badge"
                decoration-info="domain == 'ai'"
                decoration-warning="domain == 'ufo'"/>
@@ -86,7 +87,7 @@
               <field name="relevance_score" string="Relevansscore"/>
               <field name="priority_score"  string="Prioritet"/>
               <field name="audio_path"      string="Audio-fil" readonly="1"/>
-              <field name="created_at"      string="Skapad"    readonly="1"/>
+              <field name="created_at"      string="Sedd/importerad" readonly="1"/>
               <field name="notified_at"     string="Notifierad" readonly="1"/>
             </group>
           </group>
