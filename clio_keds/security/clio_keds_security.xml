@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Grupp: User -->
+        <record id="group_clio_keds_user" model="res.groups">
+            <field name="name">Clio KEDS / User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Grupp: Admin -->
+        <record id="group_clio_keds_admin" model="res.groups">
+            <field name="name">Clio KEDS / Admin</field>
+            <field name="implied_ids" eval="[(4, ref('group_clio_keds_user'))]"/>
+        </record>
+
+        <!-- Record rule: User ser bara sina egna poster -->
+        <record id="rule_clio_keds_result_user" model="ir.rule">
+            <field name="name">KEDS: User ser bara egna poster</field>
+            <field name="model_id" ref="model_clio_keds_result"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_clio_keds_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Record rule: Admin ser alla poster (global override) -->
+        <record id="rule_clio_keds_result_admin" model="ir.rule">
+            <field name="name">KEDS: Admin ser alla poster</field>
+            <field name="model_id" ref="model_clio_keds_result"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_clio_keds_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

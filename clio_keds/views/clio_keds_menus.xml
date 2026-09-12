@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <!-- Rotmeny -->
+    <menuitem
+        id="menu_clio_keds_root"
+        name="Clio KEDS"
+        sequence="90"
+        groups="clio_keds.group_clio_keds_user"
+        web_icon="clio_keds,static/description/icon.png"
+    />
+
+    <!-- Mina resultat (User + Admin) -->
+    <menuitem
+        id="menu_clio_keds_my"
+        name="Mina resultat"
+        parent="menu_clio_keds_root"
+        action="action_clio_keds_result"
+        sequence="10"
+        groups="clio_keds.group_clio_keds_user"
+    />
+
+    <!-- Alla resultat (Admin only) -->
+    <menuitem
+        id="menu_clio_keds_all"
+        name="Alla resultat"
+        parent="menu_clio_keds_root"
+        action="action_clio_keds_result_all"
+        sequence="20"
+        groups="clio_keds.group_clio_keds_admin"
+    />
+
+</data>
+</odoo>
