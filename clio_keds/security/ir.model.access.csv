@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_clio_keds_result_user,clio.keds.result user,model_clio_keds_result,group_clio_keds_user,1,1,1,0
+access_clio_keds_result_admin,clio.keds.result admin,model_clio_keds_result,group_clio_keds_admin,1,1,1,1

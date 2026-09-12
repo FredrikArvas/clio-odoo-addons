@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FORMULÄRVY
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_clio_keds_result_form" model="ir.ui.view">
+        <field name="name">clio.keds.result.form</field>
+        <field name="model">clio.keds.result</field>
+        <field name="arch" type="xml">
+            <form string="KEDS Självskattning">
+                <header>
+                    <field name="risk_level" widget="statusbar"
+                           statusbar_visible="low,high"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- Metainfo -->
+                    <group>
+                        <group string="Allmänt">
+                            <field name="user_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group string="Resultat">
+                            <field name="score"/>
+                            <field name="risk_level"/>
+                        </group>
+                    </group>
+
+                    <!-- Instruktion -->
+                    <div class="alert alert-info" role="alert">
+                        <strong>Instruktion:</strong>
+                        Sätt ett värde 0–6 per fråga utifrån hur du mått de
+                        <em>senaste två veckorna</em>.
+                        0 = inget besvär · 2 = ibland · 4 = ofta · 6 = maximalt besvär.
+                        Gräns för ökad risk: totalpoäng ≥ 19.
+                    </div>
+
+                    <!-- Frågorna -->
+                    <notebook>
+                        <page string="Frågor 1–5">
+                            <group>
+                                <group string="1. Koncentrationsförmåga">
+                                    <div class="text-muted mb-2">
+                                        Ta ställning till din förmåga att hålla tankarna samlade.
+                                        Tänk på läsning, TV-tittande och samtal.
+                                        <br/>
+                                        0 = Inga svårigheter · 2 = Ibland svårt ·
+                                        4 = Ofta svårt · 6 = Kan inte koncentrera mig alls
+                                    </div>
+                                    <field name="q1" nolabel="1"/>
+                                </group>
+                                <group string="2. Minne">
+                                    <div class="text-muted mb-2">
+                                        Din förmåga att komma ihåg namn, datum och vardagliga ärenden.
+                                        <br/>
+                                        0 = Minns som vanligt · 2 = Glömmer ibland oväsentligt ·
+                                        4 = Glömmer ofta möten/namn · 6 = Glömmer dagligen viktiga saker
+                                    </div>
+                                    <field name="q2" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="3. Kroppslig uttröttbarhet">
+                                    <div class="text-muted mb-2">
+                                        Hur du klarar fysisk aktivitet och hur trött du blir.
+                                        <br/>
+                                        0 = Som vanligt · 2 = Mer trött men rör mig normalt ·
+                                        4 = Klarar inte ökat tempo · 6 = Orkar knappt röra mig
+                                    </div>
+                                    <field name="q3" nolabel="1"/>
+                                </group>
+                                <group string="4. Uthållighet">
+                                    <div class="text-muted mb-2">
+                                        Om du blir lättare psykiskt trött än vanligt i vardagen.
+                                        <br/>
+                                        0 = Lika mycket energi som vanligt · 2 = Fortare trött, fler pauser ·
+                                        4 = Utmattad av vardagssysslor · 6 = Orkar ingenting
+                                    </div>
+                                    <field name="q4" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="5. Återhämtningsförmåga">
+                                    <div class="text-muted mb-2">
+                                        Hur väl och snabbt du återhämtar dig psykiskt och fysiskt.
+                                        <br/>
+                                        0 = Behöver inte vila på dagen · 2 = En liten paus räcker ·
+                                        4 = Behöver långa pauser · 6 = Kan inte ladda om alls
+                                    </div>
+                                    <field name="q5" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Frågor 6–9">
+                            <group>
+                                <group string="6. Sömn">
+                                    <div class="text-muted mb-2">
+                                        Hur du sover och om du känner dig utvilad.
+                                        <br/>
+                                        0 = Sover gott och känner mig utvilad · 2 = Ibland orolig sömn ·
+                                        4 = Ofta orolig sömn · 6 = Aldrig utvilad
+                                    </div>
+                                    <field name="q6" nolabel="1"/>
+                                </group>
+                                <group string="7. Överkänslighet för sinnesintryck">
+                                    <div class="text-muted mb-2">
+                                        Om ljud, ljus, dofter eller beröring känns mer påträngande.
+                                        <br/>
+                                        0 = Inte känsligare än vanligt · 2 = Ibland obehagligt ·
+                                        4 = Ofta störande · 6 = Drar mig undan för att vila sinnena
+                                    </div>
+                                    <field name="q7" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="8. Upplevelse av krav">
+                                    <div class="text-muted mb-2">
+                                        Hur du reagerar på krav från omgivningen eller dig själv.
+                                        <br/>
+                                        0 = Hanterar krav utan besvär · 2 = Ibland krävande ·
+                                        4 = Ofta stark stress · 6 = Allt känns omöjligt
+                                    </div>
+                                    <field name="q8" nolabel="1"/>
+                                </group>
+                                <group string="9. Irritation och ilska">
+                                    <div class="text-muted mb-2">
+                                        Hur lättirriterad eller arg du känner dig inombords.
+                                        <br/>
+                                        0 = Inte särskilt lättirriterad · 2 = Mer otålig än vanligt ·
+                                        4 = Förlorar ibland fattningen · 6 = Alldeles rasande invärtes
+                                    </div>
+                                    <field name="q9" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Anteckningar">
+                            <field name="notes" placeholder="Valfria anteckningar om testtillfället..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         LISTVY
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_clio_keds_result_list" model="ir.ui.view">
+        <field name="name">clio.keds.result.list</field>
+        <field name="model">clio.keds.result</field>
+        <field name="arch" type="xml">
+            <list string="KEDS Resultat" decoration-danger="risk_level == 'high'"
+                  decoration-success="risk_level == 'low'">
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="q1" string="K"/>
+                <field name="q2" string="M"/>
+                <field name="q3" string="Fy"/>
+                <field name="q4" string="U"/>
+                <field name="q5" string="Å"/>
+                <field name="q6" string="S"/>
+                <field name="q7" string="Si"/>
+                <field name="q8" string="Kr"/>
+                <field name="q9" string="I"/>
+                <field name="score" string="Total" widget="integer"/>
+                <field name="risk_level" widget="badge"
+                       decoration-danger="risk_level == 'high'"
+                       decoration-success="risk_level == 'low'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SÖKVY
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_clio_keds_result_search" model="ir.ui.view">
+        <field name="name">clio.keds.result.search</field>
+        <field name="model">clio.keds.result</field>
+        <field name="arch" type="xml">
+            <search string="Sök KEDS">
+                <field name="user_id"/>
+                <field name="date"/>
+                <separator/>
+                <filter name="filter_my_results" string="Mina resultat"
+                        domain="[('user_id', '=', uid)]"/>
+                <filter name="filter_high_risk" string="Ökad risk"
+                        domain="[('risk_level', '=', 'high')]"/>
+                <filter name="filter_low_risk" string="Låg risk"
+                        domain="[('risk_level', '=', 'low')]"/>
+                <group>
+                    <filter name="group_user" string="Användare"
+                            context="{'group_by': 'user_id'}"/>
+                    <filter name="group_month" string="Månad"
+                            context="{'group_by': 'date:month'}"/>
+                    <filter name="group_risk" string="Risknivå"
+                            context="{'group_by': 'risk_level'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         DIAGRAMVY — poäng över tid
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_clio_keds_result_graph" model="ir.ui.view">
+        <field name="name">clio.keds.result.graph</field>
+        <field name="model">clio.keds.result</field>
+        <field name="arch" type="xml">
+            <graph string="KEDS Trend" type="line" stacked="False">
+                <field name="date" type="row"/>
+                <field name="score" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PIVOTVY — jämförelse per fråga
+    ═══════════════════════════════════════════════════════ -->
+    <record id="view_clio_keds_result_pivot" model="ir.ui.view">
+        <field name="name">clio.keds.result.pivot</field>
+        <field name="model">clio.keds.result</field>
+        <field name="arch" type="xml">
+            <pivot string="KEDS Jämförelse per fråga">
+                <field name="date" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="q1" type="measure" string="1.Konc"/>
+                <field name="q2" type="measure" string="2.Minne"/>
+                <field name="q3" type="measure" string="3.Fy.utt"/>
+                <field name="q4" type="measure" string="4.Uth"/>
+                <field name="q5" type="measure" string="5.Åter"/>
+                <field name="q6" type="measure" string="6.Sömn"/>
+                <field name="q7" type="measure" string="7.Sinne"/>
+                <field name="q8" type="measure" string="8.Krav"/>
+                <field name="q9" type="measure" string="9.Irrit"/>
+                <field name="score" type="measure" string="Total"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ACTION
+    ═══════════════════════════════════════════════════════ -->
+    <record id="action_clio_keds_result" model="ir.actions.act_window">
+        <field name="name">KEDS Resultat</field>
+        <field name="res_model">clio.keds.result</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_clio_keds_result_search"/>
+        <field name="context">{'search_default_filter_my_results': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Gör ditt första KEDS-test
+            </p>
+            <p>
+                Klicka på Nytt för att starta ett självskattningstest.
+                Resultaten sparas och visas som trend över tid.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: Alla resultat (Admin) -->
+    <record id="action_clio_keds_result_all" model="ir.actions.act_window">
+        <field name="name">Alla KEDS Resultat</field>
+        <field name="res_model">clio.keds.result</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_clio_keds_result_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Inga KEDS-resultat registrerade ännu
+            </p>
+        </field>
+    </record>
+
+</data>
+</odoo>
