@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_clio_location_user,clio.location user,model_clio_location,base.group_user,1,0,0,0
 access_clio_location_manager,clio.location manager,model_clio_location,base.group_system,1,1,1,1
+access_clio_location_overlap_wizard,clio.location.overlap.wizard,model_clio_location_overlap_wizard,base.group_system,1,1,1,1
+access_clio_location_overlap_line,clio.location.overlap.line,model_clio_location_overlap_line,base.group_system,1,1,1,1
