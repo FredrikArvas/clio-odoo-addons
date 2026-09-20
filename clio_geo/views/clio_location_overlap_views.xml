@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_clio_location_overlap_wizard_form" model="ir.ui.view">
+        <field name="name">clio.location.overlap.wizard.form</field>
+        <field name="model">clio.location.overlap.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Överlappande platser">
+                <sheet>
+                    <field name="line_ids" nolabel="1">
+                        <list editable="bottom" delete="0">
+                            <field name="distance_m" string="Avstånd (m)" optional="show"/>
+                            <field name="loc_a_id" string="Plats A"/>
+                            <field name="radius_a" string="Radie A (m)" optional="show"/>
+                            <field name="loc_b_id" string="Plats B"/>
+                            <field name="radius_b" string="Radie B (m)" optional="show"/>
+                            <button
+                                name="action_deactivate_b"
+                                type="object"
+                                string="Inaktivera B"
+                                icon="fa-times-circle"
+                                confirm="Inaktivera '%s'?"
+                            />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_clio_location_overlap_server" model="ir.actions.server">
+        <field name="name">Visa överlappningar</field>
+        <field name="model_id" ref="model_clio_location"/>
+        <field name="binding_model_id" ref="model_clio_location"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = env['clio.location.overlap.wizard'].action_open()</field>
+    </record>
+
+</odoo>
