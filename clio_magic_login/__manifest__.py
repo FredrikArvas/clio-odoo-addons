@@ -1,4 +1,4 @@
-﻿{
+{
     'name': 'Clio Magic Login',
     'version': '19.0.1.1.0',
     'summary': 'Signup-first portal login with magic link authentication',

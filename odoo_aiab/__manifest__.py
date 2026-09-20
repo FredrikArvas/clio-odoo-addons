@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 {
     'name': 'AIAB — Installationsprofil',
     'version': '19.0.4.4.0',

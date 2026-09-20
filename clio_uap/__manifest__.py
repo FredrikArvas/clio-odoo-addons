@@ -1,4 +1,4 @@
-﻿{
+{
     "name":        "Clio UAP Tracking",
     "version":     "19.0.1.2.0",
     "category":    "Research",

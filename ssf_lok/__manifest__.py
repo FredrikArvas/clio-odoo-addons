@@ -1,4 +1,4 @@
-﻿{
+{
     "name": "SSF - LOK-stöd",
     "version": "19.0.1.0.0",
     "summary": "LOK-stödsrapporter (FeeReports) synkade från SSFTA.",

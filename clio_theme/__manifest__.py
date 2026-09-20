@@ -1,4 +1,4 @@
-﻿{
+{
     'name': 'Clio Theme',
     'version': '19.0.1.1.0',
     'summary': 'Fargkodad navbar per databas med konfigurerbar fargvaljare',
