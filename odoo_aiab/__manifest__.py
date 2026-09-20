@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'AIAB — Installationsprofil',
-    'version': '19.0.4.3.0',
+    'version': '19.0.4.4.0',
     'summary': 'Meta-modul: installerar alla moduler for AIAB-databasen',
     'author': 'Arvas International AB',
     'license': 'LGPL-3',
@@ -10,6 +10,7 @@
         'clio_cockpit',                               # Dashboard och startvy
         'clio_discuss',                               # Odoo Discuss-integration (Clio Bot)
         'clio_event_log',                             # Handelselogg
+        'clio_geo',                                   # GPS-platsregister (clio.location)
         'clio_graph',                                 # Relationsgrafer mellan kontakter
         'clio_interview',                             # Intervjuer och anstallningsprocess
         'clio_job',                                   # Jobbartikelbevakning och profiler
