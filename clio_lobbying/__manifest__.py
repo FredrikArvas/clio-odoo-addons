@@ -1,7 +1,7 @@
-{
-    'name': 'Clio Lobbying — PR och Mediarelationer',
+﻿{
+    'name': 'Clio Lobbying â€” PR och Mediarelationer',
     'version': '19.0.1.0.0',
-    'summary': 'Journalist-databas, pitch-hantering och mediarelationer för Clio Lobbying',
+    'summary': 'Journalist-databas, pitch-hantering och mediarelationer fÃ¶r Clio Lobbying',
     'author': 'Arvas International AB',
     'depends': ['contacts', 'clio_vigil'],
     'data': [
@@ -15,4 +15,5 @@
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }

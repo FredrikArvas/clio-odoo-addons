@@ -1,7 +1,7 @@
-{
-    'name': 'Clio SSF — Installationsprofil',
+﻿{
+    'name': 'Clio SSF â€” Installationsprofil',
     'version': '19.0.4.0.0',
-    'summary': 'Meta-modul: installerar alla Clio-moduler för SSF-databasen',
+    'summary': 'Meta-modul: installerar alla Clio-moduler fÃ¶r SSF-databasen',
     'author': 'Arvas International AB',
     'depends': [
         'clio_cockpit',
@@ -16,4 +16,5 @@
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }

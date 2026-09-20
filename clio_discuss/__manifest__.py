@@ -1,7 +1,7 @@
-{
+﻿{
     'name': 'Clio Discuss',
     'version': '19.0.0.1.0',
-    'summary': 'Clio AI-assistent i Odoo Discuss — global #clio-kanal',
+    'summary': 'Clio AI-assistent i Odoo Discuss â€” global #clio-kanal',
     'author': 'Arvas International AB',
     'depends': ['mail'],
     'data': [
@@ -12,4 +12,5 @@
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }

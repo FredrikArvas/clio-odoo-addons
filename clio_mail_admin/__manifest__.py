@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Mail Admin",
     "version":     "19.0.2.0.0",
     "category":    "Extra Tools",
     "summary":     "Admin-panel för clio-agent-mail — kör kommandon direkt från Odoo.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",

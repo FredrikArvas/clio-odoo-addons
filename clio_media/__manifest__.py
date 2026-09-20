@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Media — Artikelarkiv",
     "version":     "19.0.1.5.0",
     "category":    "Extra Tools",
     "summary":     "Delad artikelbank för Clio-agenter (clio_job, clio_recruit, clio_vigil).",
     "author":      "Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",

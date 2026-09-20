@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Cockpit",
     "version":     "19.0.4.0.0",
     "category":    "Extra Tools",
     "summary":     "Samlad kontrollpanel för alla clio-agenter — flik-design med behörighetsstyrning.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["base", "web"],
     "data": [
         "security/security.xml",

@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 {
     'name': 'AIAB — Installationsprofil',
     'version': '19.0.4.4.0',
     'summary': 'Meta-modul: installerar alla moduler for AIAB-databasen',
     'author': 'Arvas International AB',
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
     'depends': [
-        # ── Clio-moduler ──────────────────────────────────────────────────
+        # â”€â”€ Clio-moduler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'clio_cockpit',                               # Dashboard och startvy
         'clio_discuss',                               # Odoo Discuss-integration (Clio Bot)
         'clio_event_log',                             # Handelselogg
@@ -21,17 +22,17 @@
         'clio_recruit',                               # Passiv kandidatsourcing (clio-recruiter)
         'clio_theme',                                 # AIAB-fargkodning av navbar
         'clio_vigil',                                 # Mediebevakning
-        # ── Lokalisering ──────────────────────────────────────────────────
+        # â”€â”€ Lokalisering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'l10n_se_partner',                            # Svenska adressfaltsordning
         'l10n_se_ssn',                                # Personnummer pa kontakter
-        # ── Odoo standard ─────────────────────────────────────────────────
+        # â”€â”€ Odoo standard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'partner_autocomplete',                       # Foretassokning via VAT/org.nr
-        # ── OCA / partner-contact ─────────────────────────────────────────
+        # â”€â”€ OCA / partner-contact â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'partner_contact_birthdate',                  # Fodelsedag pa kontakter
         'partner_contact_personal_information_page',  # Personlig info-flik pa kontakter
         'partner_firstname',                          # Fornamn och efternamn som separata falt
         'partner_multi_relation',                     # Typade relationer mellan kontakter
-        # ── Bokio-integration ─────────────────────────────────────────────
+        # â”€â”€ Bokio-integration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'invoice_bokio',                              # Synkar fakturor fran Bokio
         'invoice_bokio_portal',                       # Bokio fakturavy for kontakter
         'partner_bokio',                              # Kopplar Odoo-kontakter till Bokio

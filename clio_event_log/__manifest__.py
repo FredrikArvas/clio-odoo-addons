@@ -1,7 +1,7 @@
-{
+﻿{
     'name': 'Clio Event Log',
     'version': '19.0.1.0.0',
-    'summary': 'Logg över inkommande mail-händelser från clio-agent-mail (intent-klassificering, PII, blockeringar)',
+    'summary': 'Logg Ã¶ver inkommande mail-hÃ¤ndelser frÃ¥n clio-agent-mail (intent-klassificering, PII, blockeringar)',
     'author': 'Arvas International AB',
     'category': 'Clio',
     'depends': ['base', 'clio_mail_admin'],
@@ -12,4 +12,5 @@
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }

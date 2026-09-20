@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="menu_clio_geo_root"
+        name="Clio Geo"
+        sequence="90"
+        web_icon="clio_geo,static/description/icon.png"
+    />
+
+    <menuitem
+        id="menu_clio_geo_locations"
+        name="Known Locations"
+        parent="menu_clio_geo_root"
+        action="action_clio_location"
+        sequence="10"
+    />
+
+</odoo>

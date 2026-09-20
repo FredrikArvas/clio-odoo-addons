@@ -1,6 +1,7 @@
-{
+﻿{
     "name":     "Clio — E-postbehörigheter",
     "version":  "19.0.1.0.0",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "summary":  "Behörighetshantering för clio-agent-mail med tvåvägssynk",
     "depends":  ["base", "clio_mail_admin"],
     "application": False,

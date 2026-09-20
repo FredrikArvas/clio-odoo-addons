@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Graph — Nätverksrelationer",
     "version":     "19.0.1.2.0",
     "category":    "Extra Tools",
     "summary":     "Extends partner_multi_relation with Neo4j sync flags and seeds GSF relation types.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["partner_multi_relation", "contacts"],
     "data": [
         "security/ir.model.access.csv",

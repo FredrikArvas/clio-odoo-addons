@@ -1,4 +1,4 @@
-{
+﻿{
     "name": "SSF - Competition Module",
     "version": "19.0.1.16.0",
     "summary": "SSF competition data (Events, Competitions, Results) synced from SSFTA.",
@@ -20,4 +20,5 @@
     "installable": True,
     "auto_install": False,
     "license": "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
 }

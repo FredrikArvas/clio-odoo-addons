@@ -1,4 +1,4 @@
-{
+﻿{
     'name': 'Clio Magic Login',
     'version': '19.0.1.1.0',
     'summary': 'Signup-first portal login with magic link authentication',
@@ -10,6 +10,7 @@
         'views/templates.xml',
     ],
     'license': 'AGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
     'auto_install': False,
     'installable': True,
 }

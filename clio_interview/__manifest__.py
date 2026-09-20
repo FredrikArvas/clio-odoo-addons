@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Interview",
     "version":     "19.0.1.0.0",
     "category":    "Extra Tools",
     "summary":     "Cockpit for Claude-driven interviews via email — templates, sessions and summaries.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",

@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Recruit — Passiv kandidatsourcing",
     "version":     "19.0.2.0.0",
     "category":    "Extra Tools",
     "summary":     "Odoo-vy for clio-recruiter: rekryterarprofiler och matchhistorik.",
     "author":      "Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["contacts", "clio_cockpit", "clio_media"],
     "data": [
         "security/ir.model.access.csv",

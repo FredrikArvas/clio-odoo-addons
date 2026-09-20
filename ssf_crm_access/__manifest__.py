@@ -1,7 +1,7 @@
-{
-    'name': 'SSF CRM — Behörighetsmodell',
+﻿{
+    'name': 'SSF CRM â€” BehÃ¶righetsmodell',
     'version': '19.0.1.0.0',
-    'summary': 'Grupper, custom fält och record rules för SSF-administratörer.',
+    'summary': 'Grupper, custom fÃ¤lt och record rules fÃ¶r SSF-administratÃ¶rer.',
     'author': 'Arvas International AB',
     'depends': ['contacts', 'base_setup'],
     'data': [
@@ -12,4 +12,5 @@
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }
