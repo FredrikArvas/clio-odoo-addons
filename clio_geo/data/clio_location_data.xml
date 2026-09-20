@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="location_musko_hemma" model="clio.location">
+        <field name="name">Muskö/Hemma</field>
+        <field name="display_name_geo">Muskö, Sweden</field>
+        <field name="lat">58.9681</field>
+        <field name="lon">18.0636</field>
+        <field name="radius_m">300</field>
+        <field name="category">home</field>
+        <field name="city">Muskö</field>
+        <field name="country_id" ref="base.se"/>
+    </record>
+
+</odoo>

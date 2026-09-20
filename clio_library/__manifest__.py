@@ -1,7 +1,7 @@
-{
+﻿{
     'name': 'Clio Bibliotek',
     'version': '19.0.1.0.0',
-    'summary': 'Arvas Familjebibliotek — bokregister, betyg och AI-smakrådgivare',
+    'summary': 'Arvas Familjebibliotek â€” bokregister, betyg och AI-smakrÃ¥dgivare',
     'author': 'Arvas International AB',
     'category': 'Extra Tools',
     'depends': ['base'],
@@ -17,4 +17,5 @@
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
 }

@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "GSF Jubileum",
     "version":     "19.0.1.0.0",
     "category":    "Extra Tools",
     "summary":     "Insamling av fastighetshistorier till Guldboda 80-årsjubileum.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["base", "mail", "web", "portal", "website", "property_mgmt"],
     "data": [
         "security/security.xml",

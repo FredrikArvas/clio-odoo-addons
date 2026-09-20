@@ -1,10 +1,11 @@
-{
+﻿{
     "name":        "Clio Job — Jobbsökar-profiler",
     "version":     "19.0.3.2.0",
     "category":    "Extra Tools",
     "summary":     "Extends res.partner with job-signal profile and match history for Clio automation.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
+    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
     "depends":     ["contacts", "clio_media"],
     "data": [
         "security/groups.xml",
