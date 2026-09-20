@@ -1,4 +1,4 @@
-﻿{
+{
     'name': 'Clio Bibliotek',
     'version': '19.0.1.0.0',
     'summary': 'Arvas Familjebibliotek â€” bokregister, betyg och AI-smakrÃ¥dgivare',

@@ -1,4 +1,4 @@
-﻿{
+{
     "name":        "Clio Recruit — Passiv kandidatsourcing",
     "version":     "19.0.2.3.0",
     "category":    "Extra Tools",

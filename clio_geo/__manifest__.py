@@ -1,4 +1,4 @@
-﻿{
+{
     "name": "Clio Geo — Known Locations",
     "version": "19.0.1.0.0",
     "summary": "GPS-baserat register över kända platser för clio_vision och adresshantering",

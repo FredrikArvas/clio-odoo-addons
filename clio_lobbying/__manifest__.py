@@ -1,4 +1,4 @@
-﻿{
+{
     'name': 'Clio Lobbying â€” PR och Mediarelationer',
     'version': '19.0.1.0.0',
     'summary': 'Journalist-databas, pitch-hantering och mediarelationer fÃ¶r Clio Lobbying',

@@ -1,4 +1,4 @@
-﻿{
+{
     "name":        "Clio Job — Jobbsökar-profiler",
     "version":     "19.0.3.2.0",
     "category":    "Extra Tools",

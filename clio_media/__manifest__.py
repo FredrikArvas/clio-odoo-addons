@@ -1,4 +1,4 @@
-﻿{
+{
     "name":        "Clio Media — Artikelarkiv",
     "version":     "19.0.1.5.0",
     "category":    "Extra Tools",
