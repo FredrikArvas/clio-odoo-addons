@@ -75,6 +75,21 @@ class ClioVigilSource(models.Model):
     )
     notes = fields.Text(string="Anteckningar")
 
+    # ── Transkription ────────────────────────────────────────────────────────
+    transcript_provider = fields.Selection(
+        selection = [
+            ("whisper",  "Whisper (GPU)"),
+            ("supadata", "Supadata"),
+            ("none",     "Ingen"),
+        ],
+        string  = "Transkriptionskälla",
+        default = "whisper",
+        index   = True,
+        help    = "Vilket system som hämtar transkript för denna källa. "
+                  "Supadata: molntjänst utan GPU-åtgång, rekommenderas för YouTube. "
+                  "Whisper: lokal GPU-transkription. Ingen: ren textartikel.",
+    )
+
     # ── Källspecifika fält ───────────────────────────────────────────────────
     channel_id = fields.Char(
         string = "YouTube Channel ID",

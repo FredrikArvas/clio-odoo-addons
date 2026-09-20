@@ -40,3 +40,31 @@ class UapReport(models.Model):
     encounter_id  = fields.Many2one("uap.encounter", string="Encounter", index=True, ondelete="set null")
     canonical_id  = fields.Many2one("uap.report", string="Canonical Report", ondelete="set null")
     duplicate_ids = fields.One2many("uap.report", "canonical_id", string="Duplicates")
+
+    # --- Skywatcher-klassificering (heuristisk, baserad på shape-fältet) ---
+    skywatcher_class = fields.Selection(
+        selection=[
+            ("I",    "I — Tetra"),
+            ("II",   "II — Tic Tac"),
+            ("III",  "III — Blob"),
+            ("IV",   "IV — Beam"),
+            ("V",    "V — Manta Ray"),
+            ("VI",   "VI — Bright Star"),
+            ("VII",  "VII — Jellyfish"),
+            ("VIII", "VIII — Hornet"),
+            ("IX",   "IX — Egg"),
+            ("X",    "X — Teardrop"),
+        ],
+        string="Skywatcher Class",
+        index=True,
+        help="Heuristisk Skywatcher-klass baserad på shape-fältet (auto_low konfidensgrad); X=Teardrop (eget tillägg)",
+    )
+    skywatcher_confidence = fields.Selection(
+        selection=[
+            ("auto_high", "Auto — hög"),
+            ("auto_low",  "Auto — låg"),
+            ("manual",    "Manuell"),
+        ],
+        string="SW Confidence",
+        help="Källan till Skywatcher-klassificeringen på rårapportnivå",
+    )

@@ -14,6 +14,13 @@
             action="action_clio_recruiter_profile"
             sequence="10"/>
 
+  <!-- ── Analyscache ──────────────────────────────────────────────────────── -->
+  <menuitem id="menu_clio_recruit_analysis"
+            name="Article Analyses"
+            parent="menu_clio_recruit_root"
+            action="action_clio_recruiter_article_analysis"
+            sequence="15"/>
+
   <!-- ── Matchhistorik ──────────────────────────────────────────────────── -->
   <menuitem id="menu_clio_recruit_matches"
             name="Matchhistorik"
