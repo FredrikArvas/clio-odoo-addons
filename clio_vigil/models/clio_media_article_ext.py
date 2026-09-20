@@ -35,6 +35,11 @@ class ClioMediaArticleVigilExt(models.Model):
         index   = True,
     )
 
+    supadata_url = fields.Char(
+        string = "Supadata URL",
+        help   = "Den Supadata-endpoint som användes för att hämta transkriptet.",
+    )
+
     @api.depends("vigil_notified_at")
     def _compute_vigil_notified_date(self):
         for rec in self:
@@ -66,3 +71,45 @@ class ClioMediaArticleVigilExt(models.Model):
         """Återkö: sätt vigil_state = queued (write-through till vigil_item_id.state).
         Pipelinen synkar SQLite vid nästa körning via pull_state_changes."""
         self.filtered("vigil_item_id").write({"vigil_state": "queued"})
+
+    # ── Återpubliceringsdetektering ────────────────────────────────────────
+
+    canonical_article_id = fields.Many2one(
+        comodel_name = "clio.media.article",
+        string       = "Kanonisk version (original)",
+        index        = True,
+        ondelete     = "set null",
+        help         = "Pekar på originalposten om detta är en återpublicering. "
+                       "Null = original eller okänt.",
+    )
+
+    repub_note = fields.Char(
+        string = "Återpubliceringskälla",
+        help   = "Fritext om ursprungskällan, t.ex. 'Exopolitics via Multiverse 5D'.",
+    )
+
+    repub_count = fields.Integer(
+        string  = "Antal återpubliceringar",
+        compute = "_compute_repub_count",
+        store   = False,
+        help    = "Hur många andra poster pekar på denna som original. "
+                  "Hög siffra = brett spridet avsnitt.",
+    )
+
+    def _compute_repub_count(self):
+        # Räknar live via SQL för prestanda — ingen @api.depends behövs eftersom
+        # store=False alltid triggar om (inga cache-problem med det inversa fältet).
+        if not self.ids:
+            return
+        self.env.cr.execute(
+            """
+            SELECT canonical_article_id, COUNT(*) AS cnt
+            FROM clio_media_article
+            WHERE canonical_article_id = ANY(%s)
+            GROUP BY canonical_article_id
+            """,
+            (list(self.ids),),
+        )
+        counts = dict(self.env.cr.fetchall())
+        for rec in self:
+            rec.repub_count = counts.get(rec.id, 0)

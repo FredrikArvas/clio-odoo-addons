@@ -12,9 +12,12 @@
         <field name="date_observed"/>
         <field name="country_id"/>
         <field name="encounter_class"/>
+        <field name="skywatcher_class" optional="show"/>
         <field name="discourse_level"/>
         <field name="official_response"/>
         <field name="status"/>
+        <field name="eth_origin"/>
+        <field name="observables_count" string="Obs."/>
         <field name="source_count" string="Sources"/>
         <field name="witness_count" string="Witnesses"/>
       </list>
@@ -67,38 +70,57 @@
             <field name="official_response"/>
           </group>
 
+          <group string="ETH / Observables">
+            <group>
+              <field name="eth_origin"/>
+              <field name="intelligence_indicator"/>
+            </group>
+            <group string="Five Observables">
+              <field name="obs_antigravity" widget="boolean_toggle"/>
+              <field name="obs_instant_accel" widget="boolean_toggle"/>
+              <field name="obs_hypersonic" widget="boolean_toggle"/>
+              <field name="obs_low_observability" widget="boolean_toggle"/>
+              <field name="obs_transmedium" widget="boolean_toggle"/>
+              <field name="observables_count" readonly="1"/>
+            </group>
+          </group>
+
+          <group string="Skywatcher Classification">
+            <group>
+              <field name="skywatcher_class"/>
+              <field name="skywatcher_confidence"/>
+            </group>
+            <group col="1">
+              <field name="skywatcher_notes" nolabel="1"
+                     placeholder="Motivering: form, beteende, spektralsignatur som stödjer klassen..."/>
+            </group>
+          </group>
+
           <notebook>
-            <page string="Titles &amp; Descriptions">
-              <group string="Titles">
-                <field name="title_en" placeholder="English title"/>
-                <field name="title_original" placeholder="Original language title"/>
+            <page string="Descriptions">
+              <group string="English">
+                <field name="title_en" nolabel="1"/>
+                <field name="description_en" nolabel="1"/>
+              </group>
+              <group string="Original">
                 <field name="language_original"/>
+                <field name="title_original" nolabel="1"/>
+                <field name="description_original" nolabel="1"/>
               </group>
-              <group string="Description (EN)" col="1">
-                <field name="description_en" nolabel="1" placeholder="English description"/>
-              </group>
-              <group string="Description (SV)" col="1">
-                <field name="description_sv" nolabel="1" placeholder="Swedish description"/>
-              </group>
-              <group string="Description (Original)" col="1">
-                <field name="description_original" nolabel="1" placeholder="Original language description"/>
+              <group string="Swedish">
+                <field name="description_sv" nolabel="1"/>
               </group>
             </page>
 
-            <page string="Sources">
-              <field name="source_ids" nolabel="1">
+            <page string="Sources &amp; Witnesses">
+              <field name="source_ids">
                 <list>
-                  <field name="source_id"/>
                   <field name="name"/>
                   <field name="source_type"/>
-                  <field name="tier"/>
-                  <field name="url" widget="url"/>
+                  <field name="url"/>
                 </list>
               </field>
-            </page>
-
-            <page string="Witnesses">
-              <field name="witness_ids" nolabel="1">
+              <field name="witness_ids">
                 <list>
                   <field name="name"/>
                   <field name="witness_type"/>
@@ -138,7 +160,7 @@
     </field>
   </record>
 
-  <!-- Kanbanvy -->
+  <!-- Kanban -->
   <record id="view_uap_encounter_kanban" model="ir.ui.view">
     <field name="name">uap.encounter.kanban</field>
     <field name="model">uap.encounter</field>
@@ -148,6 +170,7 @@
         <field name="title_en"/>
         <field name="country_id"/>
         <field name="encounter_class"/>
+        <field name="skywatcher_class"/>
         <field name="discourse_level"/>
         <field name="status"/>
         <templates>
@@ -164,6 +187,9 @@
               </span>
               <span class="badge rounded-pill text-bg-primary me-1">
                 Class <field name="encounter_class"/>
+              </span>
+              <span class="badge rounded-pill text-bg-warning me-1" t-if="record.skywatcher_class.value">
+                SW <field name="skywatcher_class"/>
               </span>
               <span class="badge rounded-pill text-bg-info">
                 DL <field name="discourse_level"/>
@@ -193,8 +219,8 @@
     <field name="model">uap.encounter</field>
     <field name="arch" type="xml">
       <pivot string="Encounters">
-        <field name="encounter_class" type="row"/>
-        <field name="discourse_level" type="col"/>
+        <field name="skywatcher_class" type="row"/>
+        <field name="encounter_class" type="col"/>
       </pivot>
     </field>
   </record>
@@ -215,10 +241,22 @@
         <separator/>
         <filter string="Class 3+" name="class3" domain="[('encounter_class','in',['3','4'])]"/>
         <filter string="Discourse 4+" name="disc4" domain="[('discourse_level','in',['4','5'])]"/>
+        <separator/>
+        <filter string="ETH 3+" name="eth3" domain="[('eth_origin','in',['3','4','5'])]"/>
+        <filter string="ETH 4+" name="eth4" domain="[('eth_origin','in',['4','5'])]"/>
+        <filter string="Intelligence 2+" name="intel2" domain="[('intelligence_indicator','in',['2','3'])]"/>
+        <filter string="Has Observables" name="has_obs" domain="[('observables_count','>',0)]"/>
+        <filter string="3+ Observables" name="obs3" domain="[('observables_count','>=',3)]"/>
+        <separator/>
+        <filter string="SW klassificerad" name="sw_set" domain="[('skywatcher_class','!=',False)]"/>
+        <filter string="SW ej klassificerad" name="sw_unset" domain="[('skywatcher_class','=',False)]"/>
+        <filter string="SW hög konfidens" name="sw_high" domain="[('skywatcher_confidence','in',['auto_high','manual'])]"/>
         <group>
           <filter string="Country" name="by_country" context="{'group_by': 'country_id'}"/>
           <filter string="Encounter Class" name="by_class" context="{'group_by': 'encounter_class'}"/>
+          <filter string="Skywatcher Class" name="by_sw" context="{'group_by': 'skywatcher_class'}"/>
           <filter string="Discourse Level" name="by_disc" context="{'group_by': 'discourse_level'}"/>
+          <filter string="ETH Origin" name="by_eth" context="{'group_by': 'eth_origin'}"/>
           <filter string="Status" name="by_status" context="{'group_by': 'status'}"/>
         </group>
       </search>

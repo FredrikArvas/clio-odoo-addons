@@ -1,0 +1,45 @@
+# Swedish translation for clio_recruit
+# Copyright (C) 2026 Arvas International AB
+# License LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-03 00:00+0000\n"
+"PO-Revision-Date: 2026-08-03 00:00+0000\n"
+"Last-Translator: Clio <clio@arvas.international>\n"
+"Language-Team: Swedish <sv@li.org>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: clio_recruit
+#: model:ir.actions.act_window,name:clio_recruit.action_clio_recruiter_article_analysis
+msgid "Article Analyses"
+msgstr "Artikelanalyser"
+
+#. module: clio_recruit
+#: model:ir.ui.menu,name:clio_recruit.menu_clio_recruit_analysis
+msgid "Article Analyses"
+msgstr "Artikelanalyser"
+
+#. module: clio_recruit
+#: model:ir.actions.act_window,name:clio_recruit.action_clio_recruiter_match
+msgid "Match History"
+msgstr "Matchhistorik"
+
+#. module: clio_recruit
+#: model:ir.ui.menu,name:clio_recruit.menu_clio_recruit_matches
+msgid "Match History"
+msgstr "Matchhistorik"
+
+#. module: clio_recruit
+#: model:ir.ui.menu,name:clio_recruit.menu_clio_recruit_profiles
+msgid "Recruiter Profiles"
+msgstr "Rekryterarprofiler"
+
+#. module: clio_recruit
+#: model:ir.ui.menu,name:clio_recruit.menu_clio_recruit_root
+msgid "Clio Recruit"
+msgstr "Clio Recruit"

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ── List view ──────────────────────────────────────────────────────── -->
+  <record id="view_clio_recruiter_article_analysis_list" model="ir.ui.view">
+    <field name="name">clio.recruiter.article_analysis.list</field>
+    <field name="model">clio.recruiter.article_analysis</field>
+    <field name="arch" type="xml">
+      <list string="Article Analyses"
+            decoration-success="match_score &gt;= 60"
+            decoration-warning="match_score &gt;= 30 and match_score &lt; 60"
+            decoration-muted="match_score == 0"
+            default_order="analyzed_at desc, match_score desc">
+        <field name="article_id"         string="Article ID"/>
+        <field name="profile_id"         string="Profile"/>
+        <field name="match_score"        string="Score"/>
+        <field name="signal_type"        string="Signal Type" widget="badge"/>
+        <field name="recommended_action" string="Action" widget="badge"/>
+        <field name="analyzed_at"        string="Analyzed"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- ── Form view ──────────────────────────────────────────────────────── -->
+  <record id="view_clio_recruiter_article_analysis_form" model="ir.ui.view">
+    <field name="name">clio.recruiter.article_analysis.form</field>
+    <field name="model">clio.recruiter.article_analysis</field>
+    <field name="arch" type="xml">
+      <form string="Analysis Result">
+        <sheet>
+          <group>
+            <group string="Article">
+              <field name="article_id"  string="Article ID"/>
+              <field name="analyzed_at" string="Analyzed"/>
+            </group>
+            <group string="Profile &amp; Score">
+              <field name="profile_id"         string="Recruiter Profile"/>
+              <field name="match_score"        string="Score"/>
+              <field name="signal_type"        string="Signal Type"/>
+              <field name="recommended_action" string="Recommended Action"/>
+            </group>
+          </group>
+          <group string="Contact Hint" colspan="2">
+            <field name="contact_hint" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ── Search view ────────────────────────────────────────────────────── -->
+  <record id="view_clio_recruiter_article_analysis_search" model="ir.ui.view">
+    <field name="name">clio.recruiter.article_analysis.search</field>
+    <field name="model">clio.recruiter.article_analysis</field>
+    <field name="arch" type="xml">
+      <search string="Search Article Analyses">
+        <field name="article_id"/>
+        <field name="profile_id"/>
+        <field name="signal_type"/>
+        <filter name="med_signal" string="With Signal"
+                domain="[('match_score', '&gt;', 0)]"/>
+        <filter name="kontakta_nu" string="Contact Now"
+                domain="[('recommended_action', '=', 'kontakta_nu')]"/>
+        <filter name="bevaka" string="Monitor"
+                domain="[('recommended_action', 'like', 'bevaka')]"/>
+        <group>
+          <filter name="group_profile" string="Profile"     context="{'group_by': 'profile_id'}"/>
+          <filter name="group_signal"  string="Signal Type" context="{'group_by': 'signal_type'}"/>
+          <filter name="group_action"  string="Action"      context="{'group_by': 'recommended_action'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- ── Action ─────────────────────────────────────────────────────────── -->
+  <record id="action_clio_recruiter_article_analysis" model="ir.actions.act_window">
+    <field name="name">Article Analyses</field>
+    <field name="res_model">clio.recruiter.article_analysis</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{"search_default_med_signal": 1}</field>
+  </record>
+
+</odoo>

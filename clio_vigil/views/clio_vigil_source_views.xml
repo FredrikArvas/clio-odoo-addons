@@ -16,6 +16,11 @@
         <field name="language" string="Språk" widget="badge"
                decoration-success="language == 'en'"
                decoration-info="language == 'sv'"/>
+        <field name="transcript_provider" string="Transkription" widget="badge"
+               decoration-success="transcript_provider == 'supadata'"
+               decoration-info="transcript_provider == 'whisper'"
+               decoration-muted="transcript_provider == 'none'"
+               optional="show"/>
         <field name="maturity" string="Mognad" widget="badge"
                decoration-success="maturity == 'akademisk'"
                decoration-info="maturity == 'etablerad'"
@@ -46,6 +51,9 @@
               <field name="maturity"    string="Mognad"/>
               <field name="weight"      string="Prioritetsvikt"/>
             </group>
+          </group>
+          <group string="Transkription">
+            <field name="transcript_provider" string="Transkriptionskälla" widget="radio"/>
           </group>
           <group string="Källspecifikt">
             <field name="channel_id"              string="YouTube Channel ID" invisible="source_type != 'youtube'"/>
@@ -83,14 +91,18 @@
         <filter name="rss"     string="RSS"     domain="[('source_type','=','rss')]"/>
         <filter name="youtube" string="YouTube" domain="[('source_type','=','youtube')]"/>
         <separator/>
+        <filter name="supadata" string="Supadata" domain="[('transcript_provider','=','supadata')]"/>
+        <filter name="whisper"  string="Whisper"  domain="[('transcript_provider','=','whisper')]"/>
+        <separator/>
         <filter name="etablerad" string="Etablerad+"
                 domain="[('maturity','in',['etablerad','akademisk'])]"/>
 
         <group>
-          <filter name="group_domain"   string="Domän"   context="{'group_by': 'domain'}"/>
-          <filter name="group_type"     string="Typ"     context="{'group_by': 'source_type'}"/>
-          <filter name="group_language" string="Språk"   context="{'group_by': 'language'}"/>
-          <filter name="group_maturity" string="Mognad"  context="{'group_by': 'maturity'}"/>
+          <filter name="group_domain"      string="Domän"          context="{'group_by': 'domain'}"/>
+          <filter name="group_type"        string="Typ"            context="{'group_by': 'source_type'}"/>
+          <filter name="group_language"    string="Språk"          context="{'group_by': 'language'}"/>
+          <filter name="group_provider"    string="Transkription"   context="{'group_by': 'transcript_provider'}"/>
+          <filter name="group_maturity"    string="Mognad"         context="{'group_by': 'maturity'}"/>
         </group>
       </search>
     </field>
@@ -111,13 +123,14 @@
         <field name="weight"/>
         <field name="active"/>
         <field name="url"/>
+        <field name="transcript_provider"/>
         <templates>
           <t t-name="card">
             <div class="fw-bold fs-6"><field name="name"/></div>
             <div class="mt-1">
-              <field name="source_type" widget="badge"/>
-              <field name="language"    widget="badge" class="ms-1"/>
-              <field name="maturity"    widget="badge" class="ms-1"/>
+              <field name="source_type"        widget="badge"/>
+              <field name="language"           widget="badge" class="ms-1"/>
+              <field name="transcript_provider" widget="badge" class="ms-1"/>
             </div>
             <div class="text-muted small mt-1">
               Vikt: <field name="weight"/>
