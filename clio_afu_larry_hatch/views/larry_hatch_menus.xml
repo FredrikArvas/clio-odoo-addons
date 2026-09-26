@@ -8,13 +8,15 @@
     <field name="domain">[('is_deleted','=',False)]</field>
   </record>
 
-  <menuitem id="menu_afu_root"
-    name="AFU Archives"
-    sequence="100"/>
+  <record id="action_afu_larry_hatch_case_all" model="ir.actions.act_window">
+    <field name="name">Larry Hatch Cases (inkl. raderade)</field>
+    <field name="res_model">afu.larry_hatch.case</field>
+    <field name="view_mode">list,form</field>
+  </record>
 
   <menuitem id="menu_afu_larry_hatch"
     name="Larry Hatch U*"
-    parent="menu_afu_root"
+    parent="clio_afu_archives.menu_afu_root"
     sequence="10"/>
 
   <menuitem id="menu_afu_larry_hatch_cases"
@@ -22,5 +24,11 @@
     parent="menu_afu_larry_hatch"
     action="action_afu_larry_hatch_case"
     sequence="10"/>
+
+  <menuitem id="menu_afu_larry_hatch_cases_all"
+    name="Cases (inkl. raderade)"
+    parent="menu_afu_larry_hatch"
+    action="action_afu_larry_hatch_case_all"
+    sequence="20"/>
 
 </odoo>
