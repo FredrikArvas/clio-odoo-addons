@@ -50,6 +50,12 @@
                     icon="fa-check-circle">
               <field name="verification_count" widget="statinfo" string="Log Entries"/>
             </button>
+            <button name="%(action_uap_anomaly)d"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-exclamation-triangle">
+              <field name="anomaly_count" widget="statinfo" string="Anomalier"/>
+            </button>
           </div>
 
           <group string="Identification">
@@ -112,6 +118,20 @@
               </group>
             </page>
 
+            <page string="Klassificeringar">
+              <field name="classification_ids" nolabel="1">
+                <list editable="bottom">
+                  <field name="system"/>
+                  <field name="class_value"/>
+                  <field name="label"/>
+                  <field name="confidence"/>
+                  <field name="source"/>
+                  <field name="classified_at" optional="hide"/>
+                  <field name="notes" optional="hide"/>
+                </list>
+              </field>
+            </page>
+
             <page string="Sources &amp; Witnesses">
               <field name="source_ids">
                 <list>
@@ -145,6 +165,18 @@
                   <field name="original_value"/>
                   <field name="updated_value"/>
                   <field name="verification_status"/>
+                </list>
+              </field>
+            </page>
+
+            <page string="Anomalier">
+              <field name="anomaly_ids" nolabel="1">
+                <list>
+                  <field name="name"/>
+                  <field name="anomaly_type"/>
+                  <field name="confidence"/>
+                  <field name="eth_relevance"/>
+                  <field name="status"/>
                 </list>
               </field>
             </page>

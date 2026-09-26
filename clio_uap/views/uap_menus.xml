@@ -13,6 +13,13 @@
             action="action_uap_encounter"
             sequence="10"/>
 
+  <!-- Anomalier -->
+  <menuitem id="menu_uap_anomalies"
+            name="Anomalier"
+            parent="menu_uap_root"
+            action="action_uap_anomaly"
+            sequence="15"/>
+
   <!-- Sources -->
   <menuitem id="menu_uap_sources"
             name="Sources"

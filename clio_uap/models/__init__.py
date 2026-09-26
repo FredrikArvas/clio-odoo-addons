@@ -3,8 +3,11 @@ from . import uap_witness
 from . import uap_database
 from . import uap_series
 from . import uap_encounter
+from . import uap_encounter_classification
 from . import uap_encounter_witness
 from . import uap_report
 from . import uap_verification
+from . import uap_anomaly
+from . import uap_anomaly_source
 from . import res_partner_uap
 from . import clio_media_article
