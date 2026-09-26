@@ -35,6 +35,13 @@ class UapEncounterClassification(models.Model):
         string="Etikett",
         help="Läsbar etikett: t.ex. 'III — Blob', 'Short Gray', 'CE2 — Physical Trace'",
     )
+    transmorf_entity_id = fields.Many2one(
+        comodel_name="uap.transmorf.entity",
+        string="Transmorf-entitet",
+        ondelete="set null",
+        index=True,
+        help="Länk till entitetsregistret — fylls i när system = Transmorf — Varelse",
+    )
     confidence = fields.Selection(
         selection=[
             ("auto_high", "Auto — hög"),
@@ -57,7 +64,7 @@ class UapEncounterClassification(models.Model):
         default=fields.Datetime.now,
     )
 
-    @api.onchange("system", "class_value")
+    @api.onchange("system", "class_value", "transmorf_entity_id")
     def _onchange_fill_label(self):
         skywatcher_labels = {
             "I":    "I — Tetra",
@@ -83,5 +90,9 @@ class UapEncounterClassification(models.Model):
             self.label = skywatcher_labels[self.class_value]
         elif self.system == "eth" and self.class_value in eth_labels:
             self.label = eth_labels[self.class_value]
+        elif self.system == "transmorf_entity" and self.transmorf_entity_id:
+            self.label = self.transmorf_entity_id.name
+            if not self.class_value:
+                self.class_value = self.transmorf_entity_id.name
         elif self.class_value and not self.label:
             self.label = self.class_value

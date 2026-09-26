@@ -20,6 +20,13 @@
             action="action_uap_anomaly"
             sequence="15"/>
 
+  <!-- Transmorf-entiteter -->
+  <menuitem id="menu_uap_transmorf_entities"
+            name="Transmorf-entiteter"
+            parent="menu_uap_root"
+            action="action_uap_transmorf_entity"
+            sequence="18"/>
+
   <!-- Sources -->
   <menuitem id="menu_uap_sources"
             name="Sources"

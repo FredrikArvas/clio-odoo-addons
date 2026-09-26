@@ -86,6 +86,13 @@ class UapAnomaly(models.Model):
         column2="encounter_id",
         string="Encounters",
     )
+    transmorf_entity_ids = fields.Many2many(
+        comodel_name="uap.transmorf.entity",
+        relation="uap_anomaly_transmorf_entity_rel",
+        column1="anomaly_id",
+        column2="entity_id",
+        string="Transmorf-entiteter",
+    )
 
     # --- Computed counts ---
     source_count = fields.Integer(
