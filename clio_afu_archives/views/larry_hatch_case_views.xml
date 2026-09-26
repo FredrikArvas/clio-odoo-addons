@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_larry_hatch_case_tree" model="ir.ui.view">
+    <field name="name">afu.larry_hatch.case.tree</field>
+    <field name="model">afu.larry_hatch.case</field>
+    <field name="arch" type="xml">
+      <list string="Larry Hatch Cases">
+        <field name="year_val"/>
+        <field name="date_display" string="Date"/>
+        <field name="continent"/>
+        <field name="country"/>
+        <field name="state_code"/>
+        <field name="summary"/>
+        <field name="strangeness"/>
+        <field name="credibility"/>
+        <field name="duration"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_larry_hatch_case_form" model="ir.ui.view">
+    <field name="name">afu.larry_hatch.case.form</field>
+    <field name="model">afu.larry_hatch.case</field>
+    <field name="arch" type="xml">
+      <form string="Larry Hatch Case">
+        <sheet>
+          <group>
+            <group string="Date &amp; Time">
+              <field name="year_val"/>
+              <field name="month_val"/>
+              <field name="day_val"/>
+              <field name="hour_val"/>
+              <field name="minute_val"/>
+              <field name="duration"/>
+            </group>
+            <group string="Location">
+              <field name="continent"/>
+              <field name="country"/>
+              <field name="state_code"/>
+              <field name="lat_deg"/>
+              <field name="lat_dir"/>
+              <field name="lon_deg"/>
+              <field name="lon_dir"/>
+              <field name="prec"/>
+            </group>
+          </group>
+          <group>
+            <group string="Assessment">
+              <field name="strangeness"/>
+              <field name="credibility"/>
+              <field name="terrain"/>
+            </group>
+            <group string="Source">
+              <field name="ref_no"/>
+              <field name="page_no"/>
+              <field name="rnd_index"/>
+              <field name="content_hash"/>
+              <field name="is_deleted"/>
+            </group>
+          </group>
+          <group string="Summary">
+            <field name="summary" nolabel="1"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_larry_hatch_case_search" model="ir.ui.view">
+    <field name="name">afu.larry_hatch.case.search</field>
+    <field name="model">afu.larry_hatch.case</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="summary"/>
+        <field name="year_val"/>
+        <field name="country"/>
+        <field name="continent"/>
+        <field name="state_code"/>
+        <filter name="not_deleted" string="Active" domain="[('is_deleted','=',False)]"/>
+        <filter name="high_strangeness" string="S&gt;=7" domain="[('strangeness','&gt;=',7)]"/>
+        <separator/>
+        <filter name="group_continent" string="Continent" context="{'group_by':'continent'}"/>
+        <filter name="group_country" string="Country" context="{'group_by':'country'}"/>
+        <filter name="group_year" string="Year" context="{'group_by':'year_val'}"/>
+      </search>
+    </field>
+  </record>
+
+</odoo>
