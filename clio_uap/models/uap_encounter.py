@@ -96,7 +96,7 @@ class UapEncounter(models.Model):
         index=True,
     )
 
-    # --- Skywatcher-klassificering ---
+    # --- Skywatcher-klassificering (deprecated: se classification_ids) ---
     skywatcher_class = fields.Selection(
         selection=[
             ("I",    "I — Tetra"),
@@ -147,6 +147,18 @@ class UapEncounter(models.Model):
         comodel_name="uap.verification",
         inverse_name="encounter_id",
         string="Verification Log",
+    )
+    classification_ids = fields.One2many(
+        comodel_name="uap.encounter.classification",
+        inverse_name="encounter_id",
+        string="Klassificeringar",
+    )
+    anomaly_ids = fields.Many2many(
+        comodel_name="uap.anomaly",
+        relation="uap_anomaly_encounter_rel",
+        column1="encounter_id",
+        column2="anomaly_id",
+        string="Anomalier",
     )
 
     # --- ETH-hypotes (utomjordiskt ursprung) ---
@@ -229,12 +241,24 @@ class UapEncounter(models.Model):
         compute="_compute_counts",
         store=False,
     )
+    classification_count = fields.Integer(
+        string="# Klassificeringar",
+        compute="_compute_counts",
+        store=False,
+    )
+    anomaly_count = fields.Integer(
+        string="# Anomalier",
+        compute="_compute_counts",
+        store=False,
+    )
 
     def _compute_counts(self):
         for rec in self:
             rec.source_count = len(rec.source_ids)
             rec.witness_count = len(rec.witness_ids)
             rec.verification_count = len(rec.verification_ids)
+            rec.classification_count = len(rec.classification_ids)
+            rec.anomaly_count = len(rec.anomaly_ids)
 
     def _compute_observables_count(self):
         obs_fields = [

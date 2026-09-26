@@ -15,3 +15,9 @@ access_uap_report_user,uap.report user,model_uap_report,base.group_user,1,0,0,0
 access_uap_report_admin,uap.report admin,model_uap_report,base.group_system,1,1,1,1
 access_uap_encounter_witness_user,uap.encounter.witness user,model_uap_encounter_witness,base.group_user,1,0,0,0
 access_uap_encounter_witness_admin,uap.encounter.witness admin,model_uap_encounter_witness,base.group_system,1,1,1,1
+access_uap_encounter_classification_user,uap.encounter.classification user,model_uap_encounter_classification,base.group_user,1,0,0,0
+access_uap_encounter_classification_admin,uap.encounter.classification admin,model_uap_encounter_classification,base.group_system,1,1,1,1
+access_uap_anomaly_user,uap.anomaly user,model_uap_anomaly,base.group_user,1,0,0,0
+access_uap_anomaly_admin,uap.anomaly admin,model_uap_anomaly,base.group_system,1,1,1,1
+access_uap_anomaly_source_user,uap.anomaly.source user,model_uap_anomaly_source,base.group_user,1,0,0,0
+access_uap_anomaly_source_admin,uap.anomaly.source admin,model_uap_anomaly_source,base.group_system,1,1,1,1
