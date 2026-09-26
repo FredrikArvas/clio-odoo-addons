@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="action_afu_larry_hatch_case" model="ir.actions.act_window">
+    <field name="name">Larry Hatch Cases</field>
+    <field name="res_model">afu.larry_hatch.case</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('is_deleted','=',False)]</field>
+  </record>
+
+  <menuitem id="menu_afu_root"
+    name="AFU Archives"
+    sequence="100"/>
+
+  <menuitem id="menu_afu_larry_hatch"
+    name="Larry Hatch U*"
+    parent="menu_afu_root"
+    sequence="10"/>
+
+  <menuitem id="menu_afu_larry_hatch_cases"
+    name="Cases"
+    parent="menu_afu_larry_hatch"
+    action="action_afu_larry_hatch_case"
+    sequence="10"/>
+
+</odoo>
