@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_afu_larry_hatch_case_user,afu.larry_hatch.case user,model_afu_larry_hatch_case,,1,0,0,0
-access_afu_larry_hatch_case_admin,afu.larry_hatch.case admin,model_afu_larry_hatch_case,base.group_system,1,1,1,1
+access_afu_attribute_user,afu.attribute user,model_afu_attribute,,1,0,0,0
+access_afu_attribute_admin,afu.attribute admin,model_afu_attribute,base.group_system,1,1,1,1
+access_afu_archive_source_user,afu.archive.source user,model_afu_archive_source,,1,0,0,0
+access_afu_archive_source_admin,afu.archive.source admin,model_afu_archive_source,base.group_system,1,1,1,1

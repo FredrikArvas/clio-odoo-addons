@@ -9,6 +9,7 @@ class LarryHatchCase(models.Model):
 
     # Stable identifier
     content_hash = fields.Char(string='Content Hash', index=True, readonly=True)
+    import_batch = fields.Char(string='Import Batch', index=True, readonly=True)
 
     # Date/time
     year_val = fields.Integer(string='Year')
@@ -41,6 +42,23 @@ class LarryHatchCase(models.Model):
 
     # Summary
     summary = fields.Text(string='Summary')
+
+    # Attributes (64 binary flags from U.RND attribute matrix)
+    attribute_ids = fields.Many2many(
+        'afu.attribute',
+        'afu_larry_hatch_case_attribute_rel',
+        'case_id', 'attribute_id',
+        string='Attributes',
+        domain=[('archive', '=', 'larry_hatch')],
+    )
+
+    # Source publication
+    source_id = fields.Many2one(
+        'afu.archive.source',
+        string='Source',
+        domain=[('archive', '=', 'larry_hatch')],
+        ondelete='set null',
+    )
 
     # Source tracking
     rnd_index = fields.Integer(string='RND Record Index', readonly=True)
