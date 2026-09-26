@@ -71,6 +71,20 @@
               </field>
             </page>
 
+            <page string="Transmorf-entiteter">
+              <field name="transmorf_entity_ids" nolabel="1">
+                <list>
+                  <field name="name"/>
+                  <field name="category"/>
+                  <field name="family_taxon"  string="Familj"/>
+                  <field name="genus_taxon"   string="Släkte"/>
+                  <field name="species_taxon" string="Art"/>
+                  <field name="biological_status"/>
+                  <field name="confidence"/>
+                </list>
+              </field>
+            </page>
+
             <page string="Encounters">
               <field name="encounter_ids" nolabel="1">
                 <list>
@@ -93,6 +107,68 @@
           </notebook>
         </sheet>
       </form>
+    </field>
+  </record>
+
+  <!-- Kanban -->
+  <record id="view_uap_anomaly_kanban" model="ir.ui.view">
+    <field name="name">uap.anomaly.kanban</field>
+    <field name="model">uap.anomaly</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="anomaly_type">
+        <field name="name"/>
+        <field name="anomaly_type"/>
+        <field name="confidence"/>
+        <field name="eth_relevance"/>
+        <field name="status"/>
+        <field name="source_count"/>
+        <field name="encounter_count"/>
+        <templates>
+          <t t-name="card">
+            <div class="fw-bold">
+              <field name="name"/>
+            </div>
+            <div class="mt-1">
+              <span class="badge rounded-pill text-bg-secondary me-1">
+                Konf <field name="confidence"/>
+              </span>
+              <span class="badge rounded-pill text-bg-primary me-1">
+                ETH <field name="eth_relevance"/>
+              </span>
+              <span class="badge rounded-pill text-bg-info me-1">
+                <field name="source_count"/> källor
+              </span>
+              <span class="badge rounded-pill text-bg-warning">
+                <field name="encounter_count"/> enc.
+              </span>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Grafvy -->
+  <record id="view_uap_anomaly_graph" model="ir.ui.view">
+    <field name="name">uap.anomaly.graph</field>
+    <field name="model">uap.anomaly</field>
+    <field name="arch" type="xml">
+      <graph string="Anomalier" type="bar">
+        <field name="anomaly_type" type="row"/>
+        <field name="confidence" type="col"/>
+      </graph>
+    </field>
+  </record>
+
+  <!-- Pivotvy -->
+  <record id="view_uap_anomaly_pivot" model="ir.ui.view">
+    <field name="name">uap.anomaly.pivot</field>
+    <field name="model">uap.anomaly</field>
+    <field name="arch" type="xml">
+      <pivot string="Anomalier">
+        <field name="anomaly_type" type="row"/>
+        <field name="confidence" type="col"/>
+      </pivot>
     </field>
   </record>
 
@@ -123,7 +199,7 @@
   <record id="action_uap_anomaly" model="ir.actions.act_window">
     <field name="name">Anomalier</field>
     <field name="res_model">uap.anomaly</field>
-    <field name="view_mode">list,form</field>
+    <field name="view_mode">list,kanban,graph,pivot,form</field>
     <field name="search_view_id" ref="view_uap_anomaly_search"/>
   </record>
 

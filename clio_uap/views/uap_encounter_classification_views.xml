@@ -11,6 +11,7 @@
         <field name="system"/>
         <field name="class_value"/>
         <field name="label"/>
+        <field name="transmorf_entity_id" optional="show"/>
         <field name="confidence"/>
         <field name="source"/>
         <field name="classified_at"/>
@@ -30,6 +31,8 @@
             <field name="system"/>
             <field name="class_value"/>
             <field name="label"/>
+            <field name="transmorf_entity_id"
+                   invisible="system != 'transmorf_entity'"/>
           </group>
           <group>
             <field name="confidence"/>

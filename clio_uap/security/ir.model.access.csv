@@ -21,3 +21,5 @@ access_uap_anomaly_user,uap.anomaly user,model_uap_anomaly,base.group_user,1,0,0
 access_uap_anomaly_admin,uap.anomaly admin,model_uap_anomaly,base.group_system,1,1,1,1
 access_uap_anomaly_source_user,uap.anomaly.source user,model_uap_anomaly_source,base.group_user,1,0,0,0
 access_uap_anomaly_source_admin,uap.anomaly.source admin,model_uap_anomaly_source,base.group_system,1,1,1,1
+access_uap_transmorf_entity_user,uap.transmorf.entity user,model_uap_transmorf_entity,base.group_user,1,0,0,0
+access_uap_transmorf_entity_admin,uap.transmorf.entity admin,model_uap_transmorf_entity,base.group_system,1,1,1,1

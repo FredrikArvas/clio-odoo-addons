@@ -3,6 +3,7 @@ from . import uap_witness
 from . import uap_database
 from . import uap_series
 from . import uap_encounter
+from . import uap_transmorf_entity
 from . import uap_encounter_classification
 from . import uap_encounter_witness
 from . import uap_report
