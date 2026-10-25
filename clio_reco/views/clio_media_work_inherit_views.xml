@@ -7,11 +7,13 @@
         <field name="model">clio.media.work</field>
         <field name="inherit_id" ref="clio_media.view_clio_media_work_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_ratings" type="object"
-                    class="oe_stat_button" icon="fa-star">
-                    <field name="rating_count" widget="statinfo" string="Betyg"/>
-                </button>
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div name="button_box" class="oe_button_box">
+                    <button name="action_view_ratings" type="object"
+                        class="oe_stat_button" icon="fa-star">
+                        <field name="rating_count" widget="statinfo" string="Betyg"/>
+                    </button>
+                </div>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Betyg" name="ratings">
