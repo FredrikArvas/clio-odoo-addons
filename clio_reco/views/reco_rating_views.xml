@@ -67,12 +67,11 @@
                 <separator/>
                 <filter name="filter_consent_given" string="Samtycke givet"
                     domain="[('consent', '=', 'given')]"/>
-                <group expand="0" string="Gruppera efter">
-                    <filter name="group_context" string="Sammanhang"
-                        context="{'group_by': 'context_id'}"/>
-                    <filter name="group_origin" string="Ursprung"
-                        context="{'group_by': 'origin'}"/>
-                </group>
+                <separator/>
+                <filter name="group_context" string="Gruppera: Sammanhang"
+                    context="{'group_by': 'context_id'}"/>
+                <filter name="group_origin" string="Gruppera: Ursprung"
+                    context="{'group_by': 'origin'}"/>
             </search>
         </field>
     </record>
