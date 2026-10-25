@@ -10,7 +10,7 @@
         'views/templates.xml',
     ],
     'license': 'AGPL-3',
-    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
+    'website': 'https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_magic_login',
     'auto_install': False,
     'installable': True,
 }

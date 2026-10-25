@@ -5,7 +5,7 @@
     "summary":     "Odoo-vy for clio-recruiter: rekryterarprofiler och matchhistorik.",
     "author":      "Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_recruit",
     "depends":     ["contacts", "clio_cockpit", "clio_media"],
     "data": [
         "security/ir.model.access.csv",

@@ -10,7 +10,7 @@
         Resultat kopplas till res.users och visas som trend över tid.
     """,
     'author': 'Arvas International AB',
-    'website': 'https://arvas.international',
+    'website': 'https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_keds',
     'category': 'Extra Tools',
     'license': 'LGPL-3',
     'depends': ['base', 'mail', 'web'],

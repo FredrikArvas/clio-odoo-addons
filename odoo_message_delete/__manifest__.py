@@ -5,7 +5,7 @@
     "summary": "Behörighetsgrupp som får radera meddelanden och köade mail.",
     "author": "Fredrik Arvas / Arvas International AB",
     "license": "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/odoo_message_delete",
     "depends": ["mail"],
     "data": [
         "security/security.xml",

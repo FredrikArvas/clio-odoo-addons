@@ -5,7 +5,7 @@
     "summary":     "Delad artikelbank för Clio-agenter (clio_job, clio_recruit, clio_vigil).",
     "author":      "Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_media",
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",

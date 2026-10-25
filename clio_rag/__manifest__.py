@@ -5,7 +5,7 @@
     "summary":     "Fristående RAG-sökning mot Qdrant-kunskapsbaser, med per-databas urval av korpus.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_rag",
     "depends":     ["base", "web"],
     "data": [
         "security/ir.model.access.csv",

@@ -5,7 +5,7 @@
     "summary":     "Cockpit for Claude-driven interviews via email — templates, sessions and summaries.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_interview",
     "depends":     ["base"],
     "data": [
         "security/ir.model.access.csv",
