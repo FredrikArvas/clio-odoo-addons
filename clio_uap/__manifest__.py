@@ -5,7 +5,7 @@
     "summary":     "UAP encounter tracking, multi-classification, anomaly index and transmorf taxonomy.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_uap",
     "depends":     ["base", "contacts", "clio_media"],
     "data": [
         "security/ir.model.access.csv",

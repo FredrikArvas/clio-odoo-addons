@@ -5,7 +5,7 @@
     "summary":     "Extends partner_multi_relation with Neo4j sync flags and seeds GSF relation types.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_graph",
     "depends":     ["partner_multi_relation", "contacts"],
     "data": [
         "security/ir.model.access.csv",

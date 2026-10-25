@@ -5,7 +5,7 @@
     "summary":     "Insamling av fastighetshistorier till Guldboda 80-årsjubileum.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/gsf_jubileum",
     "depends":     ["base", "mail", "web", "portal", "website", "property_mgmt"],
     "data": [
         "security/security.xml",

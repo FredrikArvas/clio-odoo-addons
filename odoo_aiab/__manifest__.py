@@ -5,7 +5,7 @@
     'summary': 'Meta-modul: installerar alla moduler for AIAB-databasen',
     'author': 'Arvas International AB',
     'license': 'LGPL-3',
-    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
+    'website': 'https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/odoo_aiab',
     'depends': [
         # â”€â”€ Clio-moduler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         'clio_cockpit',                               # Dashboard och startvy

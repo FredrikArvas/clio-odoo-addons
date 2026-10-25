@@ -20,5 +20,5 @@
     "installable": True,
     "auto_install": False,
     "license": "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/ssf_competition",
 }

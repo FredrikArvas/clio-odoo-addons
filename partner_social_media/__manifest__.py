@@ -5,7 +5,7 @@
     'category': 'Contacts',
     'author': 'Fredrik Arvas / Arvas International AB',
     'license': 'LGPL-3',
-    'url': 'https://github.com/FredrikArvas/clio-odoo-addons',
+    'website': 'https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/partner_social_media',
     'depends': ['contacts'],
     'data': [
         'views/res_partner_views.xml',

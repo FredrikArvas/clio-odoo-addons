@@ -4,7 +4,7 @@
     "summary": "GPS-baserat register över kända platser för clio_vision och adresshantering",
     "author": "Arvas International AB",
     "license": "LGPL-3",
-    "url": "https://github.com/FredrikArvas/clio-odoo-addons",
+    "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_geo",
     "category": "Tools",
     "depends": ["base"],
     "data": [
