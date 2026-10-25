@@ -17,7 +17,7 @@
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Betyg" name="ratings">
-                    <field name="rating_ids" context="{'default_work_id': active_id}">
+                    <field name="rating_ids" context="{'default_work_id': id}">
                         <list>
                             <field name="context_id"/>
                             <field name="user_id"/>
