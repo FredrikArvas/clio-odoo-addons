@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Verkstyp ──────────────────────────────────────────────── -->
+
+    <record id="view_clio_media_work_type_list" model="ir.ui.view">
+        <field name="name">clio.media.work.type.list</field>
+        <field name="model">clio.media.work.type</field>
+        <field name="arch" type="xml">
+            <list string="Verkstyper" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_clio_media_work_type_form" model="ir.ui.view">
+        <field name="name">clio.media.work.type.form</field>
+        <field name="model">clio.media.work.type</field>
+        <field name="arch" type="xml">
+            <form string="Verkstyp">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_clio_media_work_type" model="ir.actions.act_window">
+        <field name="name">Verkstyper</field>
+        <field name="res_model">clio.media.work.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Genre ─────────────────────────────────────────────────── -->
+
+    <record id="view_clio_media_genre_list" model="ir.ui.view">
+        <field name="name">clio.media.genre.list</field>
+        <field name="model">clio.media.genre</field>
+        <field name="arch" type="xml">
+            <list string="Genrer" editable="bottom">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_clio_media_genre" model="ir.actions.act_window">
+        <field name="name">Genrer</field>
+        <field name="res_model">clio.media.genre</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- ── Verk ──────────────────────────────────────────────────── -->
+
+    <record id="view_clio_media_work_list" model="ir.ui.view">
+        <field name="name">clio.media.work.list</field>
+        <field name="model">clio.media.work</field>
+        <field name="arch" type="xml">
+            <list string="Verk">
+                <field name="name"/>
+                <field name="work_type_id"/>
+                <field name="author"/>
+                <field name="year"/>
+                <field name="genre_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_clio_media_work_kanban" model="ir.ui.view">
+        <field name="name">clio.media.work.kanban</field>
+        <field name="model">clio.media.work</field>
+        <field name="arch" type="xml">
+            <kanban string="Verk">
+                <field name="name"/>
+                <field name="work_type_id"/>
+                <field name="author"/>
+                <field name="image_128"/>
+                <templates>
+                    <t t-name="card">
+                        <figure>
+                            <img t-att-src="kanban_image('clio.media.work', 'image_128', record.id.raw_value)"
+                                 t-att-alt="record.name.value"/>
+                        </figure>
+                        <div class="oe_kanban_details">
+                            <strong><field name="name"/></strong>
+                            <div><field name="work_type_id"/></div>
+                            <div t-if="record.author.value"><field name="author"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_clio_media_work_form" model="ir.ui.view">
+        <field name="name">clio.media.work.form</field>
+        <field name="model">clio.media.work</field>
+        <field name="arch" type="xml">
+            <form string="Verk">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Titel"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_type_id"/>
+                            <field name="author"/>
+                            <field name="year"/>
+                        </group>
+                        <group>
+                            <field name="genre_ids" widget="many2many_tags"/>
+                            <field name="source_ref"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Beskrivning">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Identifierare">
+                            <field name="identifier_ids">
+                                <list editable="bottom">
+                                    <field name="scheme"/>
+                                    <field name="value"/>
+                                    <field name="link_url" widget="url" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_clio_media_work" model="ir.actions.act_window">
+        <field name="name">Verk</field>
+        <field name="res_model">clio.media.work</field>
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+    <!-- ── Menystruktur ──────────────────────────────────────────── -->
+
+    <menuitem id="menu_clio_media_root"
+              name="Media"
+              sequence="50"
+              groups="clio_media.group_clio_media_work_user"/>
+
+    <menuitem id="menu_clio_media_works"
+              name="Verk"
+              parent="menu_clio_media_root"
+              action="action_clio_media_work"
+              sequence="10"/>
+
+    <menuitem id="menu_clio_media_config"
+              name="Konfiguration"
+              parent="menu_clio_media_root"
+              sequence="90"
+              groups="clio_media.group_clio_media_work_manager"/>
+
+    <menuitem id="menu_clio_media_work_types"
+              name="Verkstyper"
+              parent="menu_clio_media_config"
+              action="action_clio_media_work_type"
+              sequence="10"/>
+
+    <menuitem id="menu_clio_media_genres"
+              name="Genrer"
+              parent="menu_clio_media_config"
+              action="action_clio_media_genre"
+              sequence="20"/>
+
+</odoo>

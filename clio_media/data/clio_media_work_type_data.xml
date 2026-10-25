@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="work_type_book"            model="clio.media.work.type"><field name="code">book</field><field name="name">Bok</field><field name="sequence">10</field></record>
+        <record id="work_type_film"            model="clio.media.work.type"><field name="code">film</field><field name="name">Film</field><field name="sequence">20</field></record>
+        <record id="work_type_series"          model="clio.media.work.type"><field name="code">series</field><field name="name">Serie</field><field name="sequence">25</field></record>
+        <record id="work_type_episode"         model="clio.media.work.type"><field name="code">episode</field><field name="name">Avsnitt</field><field name="sequence">26</field></record>
+        <record id="work_type_album"           model="clio.media.work.type"><field name="code">album</field><field name="name">Album</field><field name="sequence">30</field></record>
+        <record id="work_type_song"            model="clio.media.work.type"><field name="code">song</field><field name="name">Låt</field><field name="sequence">35</field></record>
+        <record id="work_type_psalm"           model="clio.media.work.type"><field name="code">psalm</field><field name="name">Psalm</field><field name="sequence">36</field></record>
+        <record id="work_type_podcast"         model="clio.media.work.type"><field name="code">podcast</field><field name="name">Podd</field><field name="sequence">40</field></record>
+        <record id="work_type_podcast_episode" model="clio.media.work.type"><field name="code">podcast_episode</field><field name="name">Poddavsnitt</field><field name="sequence">41</field></record>
+        <record id="work_type_report"          model="clio.media.work.type"><field name="code">report</field><field name="name">Rapport</field><field name="sequence">50</field></record>
+        <record id="work_type_website"         model="clio.media.work.type"><field name="code">website</field><field name="name">Webbplats</field><field name="sequence">60</field></record>
+
+    </data>
+</odoo>

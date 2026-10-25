@@ -3,3 +3,13 @@ access_clio_media_article_user,clio.media.article user,model_clio_media_article,
 access_clio_media_article_admin,clio.media.article admin,model_clio_media_article,base.group_system,1,1,1,1
 access_clio_media_source_user,clio.media.source user,model_clio_media_source,base.group_user,1,0,0,0
 access_clio_media_source_admin,clio.media.source admin,model_clio_media_source,base.group_system,1,1,1,1
+access_clio_media_event_user,clio.media.event user,model_clio_media_event,base.group_user,1,0,0,0
+access_clio_media_event_admin,clio.media.event admin,model_clio_media_event,base.group_system,1,1,1,1
+access_clio_media_work_type_user,clio.media.work.type user,model_clio_media_work_type,clio_media.group_clio_media_work_user,1,0,0,0
+access_clio_media_work_type_manager,clio.media.work.type manager,model_clio_media_work_type,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_genre_user,clio.media.genre user,model_clio_media_genre,clio_media.group_clio_media_work_user,1,0,0,0
+access_clio_media_genre_manager,clio.media.genre manager,model_clio_media_genre,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_work_user,clio.media.work user,model_clio_media_work,clio_media.group_clio_media_work_user,1,0,0,0
+access_clio_media_work_manager,clio.media.work manager,model_clio_media_work,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_work_identifier_user,clio.media.work.identifier user,model_clio_media_work_identifier,clio_media.group_clio_media_work_user,1,0,0,0
+access_clio_media_work_identifier_manager,clio.media.work.identifier manager,model_clio_media_work_identifier,clio_media.group_clio_media_work_manager,1,1,1,1
