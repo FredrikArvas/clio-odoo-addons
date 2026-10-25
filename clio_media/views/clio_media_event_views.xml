@@ -46,7 +46,6 @@
                 <list>
                   <field name="name" string="Namn"/>
                   <field name="country_id" string="Land" optional="show"/>
-                  <field name="uap_role" string="Roll" optional="show"/>
                 </list>
               </field>
             </page>
