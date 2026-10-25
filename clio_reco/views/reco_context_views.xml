@@ -72,10 +72,9 @@
                     domain="[('state', '=', 'nominated')]"/>
                 <filter name="filter_sensitive" string="Känsliga"
                     domain="[('is_sensitive', '=', True)]"/>
-                <group expand="0" string="Gruppera efter">
-                    <filter name="group_state" string="Status"
-                        context="{'group_by': 'state'}"/>
-                </group>
+                <separator/>
+                <filter name="group_state" string="Gruppera: Status"
+                    context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
