@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- List -->
+  <record id="view_clio_media_event_list" model="ir.ui.view">
+    <field name="name">clio.media.event.list</field>
+    <field name="model">clio.media.event</field>
+    <field name="arch" type="xml">
+      <list string="Evenemang" default_order="date_start desc">
+        <field name="date_start"          string="Start"/>
+        <field name="date_end"            string="Slut" optional="show"/>
+        <field name="name"                string="Evenemang"/>
+        <field name="event_type"          string="Typ" widget="badge"/>
+        <field name="organizer"           string="Arrangör" optional="show"/>
+        <field name="location"            string="Plats" optional="show"/>
+        <field name="presentation_count"  string="Presentationer"/>
+        <field name="attendee_count"       string="Deltagare"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Form -->
+  <record id="view_clio_media_event_form" model="ir.ui.view">
+    <field name="name">clio.media.event.form</field>
+    <field name="model">clio.media.event</field>
+    <field name="arch" type="xml">
+      <form string="Evenemang">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="event_type" widget="radio"/>
+              <field name="organizer"/>
+              <field name="url" widget="url"/>
+            </group>
+            <group>
+              <field name="date_start"/>
+              <field name="date_end"/>
+              <field name="location"/>
+            </group>
+          </group>
+          <field name="description" placeholder="Beskrivning..."/>
+          <notebook>
+            <page string="Deltagare" name="attendees">
+              <field name="attendee_ids">
+                <list>
+                  <field name="name" string="Namn"/>
+                  <field name="country_id" string="Land" optional="show"/>
+                  <field name="uap_role" string="Roll" optional="show"/>
+                </list>
+              </field>
+            </page>
+            <page string="Presentationer" name="presentations">
+              <field name="article_ids">
+                <list>
+                  <field name="title" string="Presentation"/>
+                  <field name="speaker_ids" string="Talare" widget="many2many_tags"/>
+                  <field name="published" string="Datum"/>
+                  <field name="url" widget="url"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_clio_media_event" model="ir.actions.act_window">
+    <field name="name">Evenemang</field>
+    <field name="res_model">clio.media.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Menu -->
+  <menuitem id="menu_clio_media_events"
+            name="Evenemang"
+            parent="clio_media.menu_clio_media_root"
+            action="action_clio_media_event"
+            sequence="20"/>
+
+</odoo>

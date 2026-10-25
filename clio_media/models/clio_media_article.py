@@ -19,7 +19,7 @@ class ClioMediaArticle(models.Model):
     title       = fields.Char(string="Rubrik")
     source      = fields.Char(string="Källa")
     media_type  = fields.Selection(
-        selection = [("article", "Artikel"), ("podcast", "Podcast"), ("video", "Video")],
+        selection = [("article", "Artikel"), ("podcast", "Podcast"), ("video", "Video"), ("conference_presentation", "Konferenspresentation")],
         string    = "Typ",
         default   = "article",
     )
@@ -159,6 +159,19 @@ class ClioMediaArticle(models.Model):
         string="Klassificering",
         default="not_classified",
         index=True,
+    )
+    event_id = fields.Many2one(
+        comodel_name = "clio.media.event",
+        string       = "Evenemang",
+        index        = True,
+        ondelete     = "set null",
+    )
+    speaker_ids = fields.Many2many(
+        comodel_name = "res.partner",
+        relation     = "clio_media_article_speaker_rel",
+        column1      = "article_id",
+        column2      = "partner_id",
+        string       = "Talare",
     )
     journalist_ids = fields.Many2many(
         comodel_name = 'res.partner',

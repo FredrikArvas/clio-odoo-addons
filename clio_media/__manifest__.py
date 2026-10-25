@@ -1,6 +1,6 @@
 {
     "name":        "Clio Media — Artikelarkiv",
-    "version":     "19.0.1.5.0",
+    "version":     "19.0.1.8.0",
     "category":    "Extra Tools",
     "summary":     "Delad artikelbank för Clio-agenter (clio_job, clio_recruit, clio_vigil).",
     "author":      "Arvas International AB",
@@ -8,10 +8,14 @@
     "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_media",
     "depends":     ["base"],
     "data": [
+        "security/clio_media_work_security.xml",
         "security/ir.model.access.csv",
         "data/clio_media_source_data.xml",
+        "data/clio_media_work_type_data.xml",
         "views/clio_media_article_views.xml",
+        "views/clio_media_event_views.xml",
         "views/clio_media_source_views.xml",
+        "views/clio_media_work_views.xml",
     ],
     "installable":  True,
     "auto_install": False,
