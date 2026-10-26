@@ -13,6 +13,7 @@ class ClioMediaWorkIdentifier(models.Model):
         ("tmdb", "TMDB"),
         ("musicbrainz", "MusicBrainz"),
         ("notion", "Notion"),
+        ("psalm_nr", "Psalmnummer"),
         ("url", "URL"),
     ]
 
