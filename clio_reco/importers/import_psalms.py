@@ -1,6 +1,6 @@
-"""Import av begravningspsalmer från begravningspsalmer.json → clio.reco.item (item_type=link).
+"""Import av begravningspsalmer från begravningspsalmer.json → clio.media.work (work_type=Psalm).
 
-Upsert-nyckel: spotify_url (primär), annars psalm_nr.
+Upsert-nyckel: Spotify-URL (primär), annars "Psalmbok:nr".
 Kör: python import_psalms.py [--dry-run] [--file /annan/sökväg.json]
 """
 import argparse
@@ -8,12 +8,16 @@ import json
 import sys
 from pathlib import Path
 
-from odoo_client import ODOO_DB, ODOO_PASSWORD, connect, ensure_genre
+from odoo_client import (
+    ODOO_DB, ODOO_PASSWORD, connect,
+    ensure_genre, ensure_work_type, find_work_by_identifier,
+)
 
-DEFAULT_JSON = Path(__file__).parent.parent.parent.parent / (
+DEFAULT_JSON = Path(__file__).parent.parent.parent.parent.parent / (
     "Dropbox/projekt/Clio-projekt/Clio_Reco/begravningspsalmer.json"
 )
 
+WORK_TYPE_NAME = "Psalm"
 FIXED_GENRE = "Begravningspsalm"
 
 
@@ -32,39 +36,44 @@ def build_description(track: dict) -> str:
     return "".join(parts)
 
 
-def upsert_psalm(models, uid, track: dict, genre_cache: dict, dry_run: bool) -> str:
+def upsert_psalm(models, uid, track: dict, caches: dict, dry_run: bool) -> str:
     psalm_nr = track.get("psalm_nr")
     title = track["title"].strip()
     name = f"{title} (nr {psalm_nr})" if psalm_nr else title
-    url = track.get("spotify_url", "").strip()
-    composer = track.get("composer_text", "").strip()
+    url = (track.get("spotify_url") or "").strip()
+    composer = (track.get("composer_text") or "").strip()
 
-    domain = [["item_type", "=", "link"]]
-    if url:
-        domain.append(["url", "=", url])
+    if dry_run:
+        existing = []
+    elif url:
+        existing = find_work_by_identifier(models, uid, "spotify", url)
     elif psalm_nr:
-        domain.append(["name", "ilike", f"nr {psalm_nr}"])
+        existing = find_work_by_identifier(models, uid, "url", f"psalm:{psalm_nr}")
+    else:
+        existing = models.execute_kw(
+            ODOO_DB, uid, ODOO_PASSWORD,
+            "clio.media.work", "search",
+            [[["name", "=", name]]],
+        )
 
-    existing = models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.reco.item", "search", [domain]) if not dry_run else []
+    work_type_id = ensure_work_type(models, uid, WORK_TYPE_NAME, caches["work_type"]) if not dry_run else -1
 
-    # Alltid genre "Begravningspsalm" + ev. specifik genre
+    genre_names = [FIXED_GENRE]
+    extra = (track.get("genre") or "").strip()
+    if extra and extra != "Psalm":
+        genre_names.append(extra)
     genre_ids = []
-    for gname in [FIXED_GENRE, track.get("genre", "").strip()]:
-        if not gname or gname == FIXED_GENRE and track.get("genre") == "Psalm":
-            gname = FIXED_GENRE
-        if gname and gname not in genre_cache:
-            genre_cache[gname] = ensure_genre(models, uid, gname) if not dry_run else -1
-        if gname and genre_cache.get(gname, -1) > 0:
-            genre_ids.append((4, genre_cache[gname]))
+    for gname in genre_names:
+        gid = ensure_genre(models, uid, gname, caches["genre"]) if not dry_run else -1
+        if gid > 0:
+            genre_ids.append((4, gid))
 
     vals = {
         "name": name,
-        "item_type": "link",
+        "work_type_id": work_type_id,
         "author": composer or False,
-        "url": url or False,
         "description": build_description(track),
         "genre_ids": genre_ids,
-        "is_published": True,
     }
 
     if dry_run:
@@ -73,15 +82,27 @@ def upsert_psalm(models, uid, track: dict, genre_cache: dict, dry_run: bool) -> 
         return action.lower()
 
     if existing:
-        models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.reco.item", "write", [existing, vals])
-        return "updated"
+        models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.media.work", "write", [existing, vals])
+        action = "updated"
+        work_id = existing[0]
     else:
-        models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.reco.item", "create", [vals])
-        return "created"
+        work_id = models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.media.work", "create", [vals])
+        action = "created"
+
+    if action == "created":
+        idents = []
+        if url:
+            idents.append({"work_id": work_id, "scheme": "spotify", "value": url})
+        if psalm_nr:
+            idents.append({"work_id": work_id, "scheme": "url", "value": f"psalm:{psalm_nr}"})
+        for ident in idents:
+            models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.media.work.identifier", "create", [ident])
+
+    return action
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Importera begravningspsalmer till clio_reco")
+    parser = argparse.ArgumentParser(description="Importera begravningspsalmer till clio.media.work")
     parser.add_argument("--dry-run", action="store_true", help="Simulera utan att skriva till Odoo")
     parser.add_argument("--file", default=str(DEFAULT_JSON), help="Sökväg till JSON-fil")
     args = parser.parse_args()
@@ -95,15 +116,17 @@ def main():
     tracks = data.get("tracks", [])
     print(f"Läser {len(tracks)} psalmer från {json_path.name}")
 
-    uid, models = (None, None) if args.dry_run else connect()
     if args.dry_run:
+        uid, models = None, None
         print("[DRY RUN — inga ändringar skrivs]")
+    else:
+        uid, models = connect()
 
-    genre_cache: dict = {}
+    caches = {"work_type": {}, "genre": {}}
     counts = {"created": 0, "updated": 0}
 
     for track in tracks:
-        result = upsert_psalm(models, uid, track, genre_cache, args.dry_run)
+        result = upsert_psalm(models, uid, track, caches, args.dry_run)
         if result in counts:
             counts[result] += 1
 
