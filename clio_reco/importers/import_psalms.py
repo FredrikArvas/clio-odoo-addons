@@ -1,6 +1,7 @@
 """Import av begravningspsalmer från begravningspsalmer.json → clio.media.work (work_type=Psalm).
 
-Upsert-nyckel: Spotify-URL (primär), annars "Psalmbok:nr".
+Upsert-nyckel: psalm_nr (primär, scheme "psalm_nr"), annars name.
+Spotify-URL läggs bara till som identifierare för track-URL:er (inte playlists).
 Kör: python import_psalms.py [--dry-run] [--file /annan/sökväg.json]
 """
 import argparse
@@ -36,24 +37,48 @@ def build_description(track: dict) -> str:
     return "".join(parts)
 
 
+def _is_track_url(url: str) -> bool:
+    return bool(url) and "/track/" in url
+
+
+def _ensure_identifier(models, uid, work_id: int, scheme: str, value: str) -> None:
+    """Lägger till identifierare om värdet inte redan finns (globalt, undviker UNIQUE-konflikt)."""
+    existing = models.execute_kw(
+        ODOO_DB, uid, ODOO_PASSWORD,
+        "clio.media.work.identifier", "search",
+        [[["scheme", "=", scheme], ["value", "=", value]]],
+    )
+    if not existing:
+        models.execute_kw(
+            ODOO_DB, uid, ODOO_PASSWORD,
+            "clio.media.work.identifier", "create",
+            [{"work_id": work_id, "scheme": scheme, "value": value}],
+        )
+    elif existing and models.execute_kw(
+        ODOO_DB, uid, ODOO_PASSWORD,
+        "clio.media.work.identifier", "read",
+        [existing, ["work_id"]],
+    )[0]["work_id"][0] != work_id:
+        print(f"  [VARNING] {scheme}:{value[:50]} används redan av annat verk — hoppar över")
+
+
 def upsert_psalm(models, uid, track: dict, caches: dict, dry_run: bool) -> str:
     psalm_nr = track.get("psalm_nr")
     title = track["title"].strip()
     name = f"{title} (nr {psalm_nr})" if psalm_nr else title
-    url = (track.get("spotify_url") or "").strip()
+    spotify_url = (track.get("spotify_url") or "").strip()
+    track_url = spotify_url if _is_track_url(spotify_url) else ""
     composer = (track.get("composer_text") or "").strip()
 
     if dry_run:
         existing = []
-    elif url:
-        existing = find_work_by_identifier(models, uid, "spotify", url)
     elif psalm_nr:
-        existing = find_work_by_identifier(models, uid, "url", f"psalm:{psalm_nr}")
+        existing = find_work_by_identifier(models, uid, "psalm_nr", str(psalm_nr))
     else:
         existing = models.execute_kw(
             ODOO_DB, uid, ODOO_PASSWORD,
             "clio.media.work", "search",
-            [[["name", "=", name]]],
+            [[["name", "=", name], ["work_type_id.code", "=", "psalm"]]],
         )
 
     work_type_id = ensure_work_type(models, uid, WORK_TYPE_NAME, caches["work_type"]) if not dry_run else -1
@@ -77,8 +102,9 @@ def upsert_psalm(models, uid, track: dict, caches: dict, dry_run: bool) -> str:
     }
 
     if dry_run:
+        track_note = f" [track: {track_url[:40]}…]" if track_url else ""
         action = "UPDATE" if existing else "CREATE"
-        print(f"  [{action}] {name}")
+        print(f"  [{action}] {name}{track_note}")
         return action.lower()
 
     if existing:
@@ -89,14 +115,10 @@ def upsert_psalm(models, uid, track: dict, caches: dict, dry_run: bool) -> str:
         work_id = models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.media.work", "create", [vals])
         action = "created"
 
-    if action == "created":
-        idents = []
-        if url:
-            idents.append({"work_id": work_id, "scheme": "spotify", "value": url})
-        if psalm_nr:
-            idents.append({"work_id": work_id, "scheme": "url", "value": f"psalm:{psalm_nr}"})
-        for ident in idents:
-            models.execute_kw(ODOO_DB, uid, ODOO_PASSWORD, "clio.media.work.identifier", "create", [ident])
+    if psalm_nr:
+        _ensure_identifier(models, uid, work_id, "psalm_nr", str(psalm_nr))
+    if track_url:
+        _ensure_identifier(models, uid, work_id, "spotify", track_url)
 
     return action
 
