@@ -7,9 +7,13 @@ access_clio_media_event_user,clio.media.event user,model_clio_media_event,base.g
 access_clio_media_event_admin,clio.media.event admin,model_clio_media_event,base.group_system,1,1,1,1
 access_clio_media_work_type_user,clio.media.work.type user,model_clio_media_work_type,clio_media.group_clio_media_work_user,1,0,0,0
 access_clio_media_work_type_manager,clio.media.work.type manager,model_clio_media_work_type,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_work_type_admin,clio.media.work.type admin,model_clio_media_work_type,base.group_system,1,1,1,1
 access_clio_media_genre_user,clio.media.genre user,model_clio_media_genre,clio_media.group_clio_media_work_user,1,0,0,0
 access_clio_media_genre_manager,clio.media.genre manager,model_clio_media_genre,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_genre_admin,clio.media.genre admin,model_clio_media_genre,base.group_system,1,1,1,1
 access_clio_media_work_user,clio.media.work user,model_clio_media_work,clio_media.group_clio_media_work_user,1,0,0,0
 access_clio_media_work_manager,clio.media.work manager,model_clio_media_work,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_work_admin,clio.media.work admin,model_clio_media_work,base.group_system,1,1,1,1
 access_clio_media_work_identifier_user,clio.media.work.identifier user,model_clio_media_work_identifier,clio_media.group_clio_media_work_user,1,0,0,0
 access_clio_media_work_identifier_manager,clio.media.work.identifier manager,model_clio_media_work_identifier,clio_media.group_clio_media_work_manager,1,1,1,1
+access_clio_media_work_identifier_admin,clio.media.work.identifier admin,model_clio_media_work_identifier,base.group_system,1,1,1,1
