@@ -97,6 +97,10 @@ class GsfJubileumFastighet(models.Model):
         string="Länk till besökarformuläret",
         compute="_compute_chatt_url",
     )
+    lasvy_url = fields.Char(
+        string="Läsvy (redaktör)",
+        compute="_compute_chatt_url",
+    )
     svar_ids = fields.One2many("gsf.jubileum.svar", "fastighet_id", string="Svar")
     samtycke_ids = fields.One2many("gsf.jubileum.samtycke", "fastighet_id", string="Samtycke")
 
@@ -113,6 +117,7 @@ class GsfJubileumFastighet(models.Model):
         base = self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
         for rec in self:
             rec.chatt_url = f"{base}/jubileum/{rec.unik_token}" if rec.unik_token else ""
+            rec.lasvy_url = f"{base}/jubileum/{rec.unik_token}/lasvy" if rec.unik_token else ""
 
     @api.depends("partner_id", "partner_id.email")
     def _compute_email(self):
@@ -186,3 +191,109 @@ class GsfJubileumFastighet(models.Model):
     def chat_history_parsed(self, fastighet_id):
         rec = self.browse(fastighet_id)
         return json.loads(rec.coaching_history or "[]")
+
+    def action_reextract_svar(self):
+        import requests as _requests
+        from ..fragor import FRAGOR
+
+        self.ensure_one()
+        history = json.loads(self.coaching_history or "[]")
+        if not history:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": "Ingen historik",
+                    "message": "Chatthistoriken är tom, inget att bearbeta.",
+                    "type": "warning",
+                },
+            }
+
+        icp = self.env["ir.config_parameter"].sudo()
+        url = icp.get_param("gsf.bridge.url", "http://172.19.0.1:8090")
+        secret = icp.get_param("gsf.bridge.secret")
+        if not secret:
+            raise ValueError("gsf.bridge.secret saknas i Odoo-konfigurationen")
+
+        try:
+            resp = _requests.post(
+                f"{url}/extract",
+                json={
+                    "fastighet_token": self.unik_token,
+                    "history": history,
+                    "fragor": FRAGOR,
+                },
+                headers={"X-Bridge-Secret": secret},
+                timeout=60,
+            )
+            resp.raise_for_status()
+            svar_map = resp.json().get("svar")
+        except Exception as exc:
+            _logger.error("reextract bridge call failed for %s: %s", self.id, exc)
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": "Bridge-fel",
+                    "message": f"Kunde inte nå AI-tjänsten: {exc}",
+                    "type": "danger",
+                },
+            }
+
+        if not svar_map:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": "Extraktion misslyckades",
+                    "message": "AI returnerade inga svar. Försök igen.",
+                    "type": "warning",
+                },
+            }
+
+        self.svar_ids.unlink()
+        SvarModel = self.env["gsf.jubileum.svar"].sudo()
+        for nr, rubrik, fraga_text in FRAGOR:
+            SvarModel.create({
+                "fastighet_id": self.id,
+                "fraga_nr": str(nr),
+                "fraga_text": fraga_text,
+                "svar_text": svar_map.get(str(nr), "") or "",
+                "kalla": "clio_chatt",
+            })
+        n = len(FRAGOR)
+        self.message_post(
+            body=f"Svar ombearbetade: {n} svarsposter återskapade från chatthistorik.",
+            message_type="comment",
+            subtype_xmlid="mail.mt_note",
+        )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Klart",
+                "message": f"{n} svarsposter återskapade.",
+                "type": "success",
+            },
+        }
+
+    def action_skicka_bekraftelse(self):
+        self.ensure_one()
+        if not self.email:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {"title": "Ingen e-post", "message": "Fastigheten saknar e-postadress.", "type": "warning"},
+            }
+        template = self.env.ref("gsf_jubileum.mail_template_jubileum_bekraftelse")
+        template.send_mail(self.id, force_send=True)
+        self.message_post(
+            body=f"Intervjusammanfattning skickad manuellt till {self.email}.",
+            message_type="comment",
+            subtype_xmlid="mail.mt_note",
+        )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {"title": "Skickat", "message": f"Mail skickat till {self.email}.", "type": "success"},
+        }

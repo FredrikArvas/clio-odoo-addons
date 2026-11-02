@@ -68,6 +68,14 @@
           <button name="action_skicka_inbjudan" type="object"
                   string="Skicka inbjudan" class="btn-primary"
                   invisible="not email or status in ('inlamnad','vantar_godkannande','godkand_for_publicering','vill_ej_publiceras')"/>
+          <button name="action_reextract_svar" type="object"
+                  string="Bearbeta om svar" class="btn-secondary"
+                  invisible="status not in ('inlamnad', 'vantar_godkannande', 'godkand_for_publicering') or not coaching_history"
+                  confirm="Det tar ~15 sek. Befintliga svarsposter ersätts. Fortsätt?"/>
+          <button name="action_skicka_bekraftelse" type="object"
+                  string="Skicka intervjumail" class="btn-secondary"
+                  invisible="status not in ('inlamnad', 'vantar_godkannande', 'godkand_for_publicering') or not email"
+                  confirm="Skickar intervjusammanfattningen till respondenten. Fortsätt?"/>
           <button name="action_markera_inbjuden" type="object"
                   string="Markera som inbjuden (utan mejl)" class="btn-secondary"
                   invisible="status != 'ej_kontaktad'"/>
@@ -88,6 +96,8 @@
               <field name="datum_inbjudan" string="Datum inbjudan"/>
               <field name="datum_inlamnad" string="Datum inlämnad"/>
               <field name="chatt_url"      string="Länk (besökare)" widget="url"/>
+              <field name="lasvy_url"       string="Läsvy (redaktör)" widget="url"
+                     invisible="status not in ('inlamnad', 'vantar_godkannande', 'godkand_for_publicering')"/>
               <field name="unik_token"     string="Token" optional="show"/>
               <button name="action_generera_token" type="object"
                       string="Generera ny token" class="btn-link"

@@ -26,6 +26,37 @@
 
     if (!chatWindow || !input || !sendBtn) return;
 
+
+    // Flodesmätare
+    const progressBar     = document.getElementById('gsf-progress-bar');
+    const progressToggle  = document.getElementById('gsf-progress-toggle');
+    const progressList    = document.getElementById('gsf-progress-list');
+    const progressChevron = document.getElementById('gsf-progress-chevron');
+    const TOTAL_STEPS = 22;
+
+    function countUserMessages() {
+        return chatWindow.querySelectorAll('.gsf-bubble-user').length;
+    }
+
+    function updateProgress() {
+        if (!progressBar) return;
+        const pct = Math.min(100, Math.round(countUserMessages() * 100 / TOTAL_STEPS));
+        progressBar.style.width = pct + '%';
+    }
+
+    if (progressToggle && progressList) {
+        progressToggle.addEventListener('click', function () {
+            const open = progressList.style.display !== 'none';
+            progressList.style.display = open ? 'none' : 'block';
+            if (progressChevron) progressChevron.classList.toggle('open', !open);
+        });
+        progressToggle.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); progressToggle.click(); }
+        });
+    }
+
+    updateProgress();
+
     // ── Hjälpfunktioner ──────────────────────────────────────────────────
 
     function scrollToBottom() {
@@ -79,6 +110,7 @@
         if (!message) return;
 
         appendBubble("user", message);
+        updateProgress();
         input.value = "";
         setLoading(true);
 
