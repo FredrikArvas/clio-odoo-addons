@@ -56,6 +56,33 @@
               </p>
             </div>
 
+
+            <!-- Flodesmätare -->
+            <div class="gsf-progress-panel" id="gsf-progress-panel">
+              <div class="gsf-progress-header" id="gsf-progress-toggle" role="button" tabindex="0">
+                <span class="gsf-progress-title">11 frågeområden · ca 5–15 min</span>
+                <div class="gsf-progress-bar-wrap">
+                  <div class="gsf-progress-bar" id="gsf-progress-bar" style="width:0%"></div>
+                </div>
+                <span class="gsf-progress-chevron" id="gsf-progress-chevron">▼</span>
+              </div>
+              <div class="gsf-progress-list" id="gsf-progress-list" style="display:none;">
+                <ol>
+                  <li>Öppning — hur familjen hittade hit</li>
+                  <li>Ursprung — vem köpte eller byggde</li>
+                  <li>Släktträd — generationer och namn</li>
+                  <li>Huset och platsen — ombyggnader, tomtens namn</li>
+                  <li>Musik — låtar kopplade till somrarna</li>
+                  <li>Spel och böcker — sällskapsspel och läsning</li>
+                  <li>Lekar och sport — aktiviteter på tomten</li>
+                  <li>En anekdot — historien som alltid berättas</li>
+                  <li>Ovanliga händelser — oväntade minnen</li>
+                  <li>Fritt utrymme — övrigt att ha med</li>
+                  <li>Avslutning — samtycke och kontakt</li>
+                </ol>
+              </div>
+            </div>
+
             <!-- Chattfönster -->
             <div class="gsf-chat-window" id="gsf-chat-window">
               <t t-foreach="history" t-as="msg">
@@ -188,6 +215,62 @@
               Om du har frågor — kontakta
               <a href="mailto:fredrik@arvas.se">fredrik@arvas.se</a>.
             </p>
+          </div>
+        </main>
+      </div>
+    </t>
+  </template>
+
+
+  <!-- Läsvänlig intervjuvy (för Fredrik som redaktör) -->
+  <template id="page_lasvy" name="GSF Jubileum — Läsvy">
+    <t t-call="website.layout">
+      <div class="gsf-interview-root">
+        <header class="gsf-header">
+          <div class="gsf-header-inner">
+            <span class="gsf-logo">GSF</span>
+            <span class="gsf-subtitle">Guldboda 80 år — Intervjusammanfattning</span>
+          </div>
+        </header>
+        <main class="gsf-main">
+          <div class="gsf-submitted-box" style="max-width:720px;margin:0 auto;">
+            <h2><t t-esc="fastighet.namn"/></h2>
+            <p class="text-muted small">
+              Inlämnad: <t t-esc="fastighet.datum_inlamnad or '-'"/> ·
+              Kanal: <t t-esc="fastighet.kanal or '-'"/>
+            </p>
+            <t t-if="svar_ids">
+              <t t-foreach="svar_ids" t-as="svar">
+                <div style="margin-bottom:20px;">
+                  <p style="font-weight:600;margin-bottom:4px;">
+                    <t t-esc="svar.fraga_nr"/>. <t t-esc="svar.fraga_text"/>
+                  </p>
+                  <p style="white-space:pre-wrap;margin:0;color:#333;">
+                    <t t-if="svar.svar_text">
+                      <t t-esc="svar.svar_text"/>
+                    </t>
+                    <t t-else="">
+                      <em style="color:#999;">Inget svar</em>
+                    </t>
+                  </p>
+                </div>
+              </t>
+            </t>
+            <t t-else="">
+              <p class="text-muted">Inga svarsposter ännu.</p>
+            </t>
+            <t t-if="samtycke">
+              <hr/>
+              <p class="text-muted small">
+                Samtycke till publicering:
+                <strong><t t-esc="'Ja' if samtycke.godkand_publicering else 'Nej'"/></strong> ·
+                Vill bli kontaktad:
+                <strong><t t-esc="'Ja' if samtycke.vill_bli_kontaktad_igen else 'Nej'"/></strong>
+                <t t-if="samtycke.kommentar">
+                  · Kommentar: <em><t t-esc="samtycke.kommentar"/></em>
+                </t>
+              </p>
+            </t>
           </div>
         </main>
       </div>

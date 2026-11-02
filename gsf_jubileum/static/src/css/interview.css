@@ -206,3 +206,57 @@
   .gsf-intro, .gsf-submitted-box, .gsf-summary-panel { padding: 16px; }
   .gsf-bubble { max-width: 95%; }
 }
+
+/* ── Flödesmätare ──────────────────────────────────────────────────────── */
+.gsf-progress-panel {
+  background: var(--gsf-card);
+  border: 1px solid var(--gsf-border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.gsf-progress-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.gsf-progress-header:hover { background: rgba(0,0,0,.03); }
+.gsf-progress-title {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gsf-text);
+  white-space: nowrap;
+}
+.gsf-progress-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--gsf-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.gsf-progress-bar {
+  height: 100%;
+  background: var(--gsf-green);
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+.gsf-progress-chevron {
+  font-size: .7rem;
+  color: var(--gsf-muted);
+  transition: transform .2s;
+}
+.gsf-progress-chevron.open { transform: rotate(180deg); }
+.gsf-progress-list {
+  padding: 0 14px 12px 14px;
+  border-top: 1px solid var(--gsf-border);
+}
+.gsf-progress-list ol {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  font-size: .83rem;
+  color: var(--gsf-text);
+  line-height: 1.7;
+}

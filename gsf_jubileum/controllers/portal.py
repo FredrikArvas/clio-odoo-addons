@@ -208,4 +208,25 @@ class GsfJubileumPortal(http.Controller):
             "status": new_status,
             "datum_inlamnad": fields.Date.today(),
         })
+        if new_status == "inlamnad" and fastighet.email:
+            try:
+                template = request.env.ref("gsf_jubileum.mail_template_jubileum_bekraftelse")
+                template.sudo().send_mail(fastighet.id, force_send=True)
+                _logger.info("bekraftelse skickad till %s", fastighet.email)
+            except Exception as exc:
+                _logger.error("bekraftelse kunde inte skickas: %s", exc)
+
         return {"ok": True}
+
+    @http.route("/jubileum/<string:token>/lasvy", type="http", auth="user", website=True)
+    def jubileum_lasvy(self, token, **kw):
+        fastighet = _get_fastighet(token)
+        if not fastighet:
+            return request.not_found()
+        svar_ids = fastighet.svar_ids.sorted(key=lambda s: int(s.fraga_nr))
+        samtycke = fastighet.samtycke_ids[:1] if fastighet.samtycke_ids else None
+        return request.render("gsf_jubileum.page_lasvy", {
+            "fastighet": fastighet,
+            "svar_ids": svar_ids,
+            "samtycke": samtycke,
+        })

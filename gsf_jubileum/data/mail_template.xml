@@ -46,5 +46,63 @@
       </field>
     </record>
 
+
+    <record id="mail_template_jubileum_bekraftelse" model="mail.template">
+      <field name="name">GSF Jubileum — Bekräftelse och sammanfattning</field>
+      <field name="model_id" ref="gsf_jubileum.model_gsf_jubileum_fastighet"/>
+      <field name="subject">Din berättelse om {{ object.namn }} är mottagen — Guldboda 80 år</field>
+      <field name="email_from">clio@arvas.international</field>
+      <field name="email_to">{{ object.email }}</field>
+      <field name="use_default_to">False</field>
+      <field name="auto_delete">False</field>
+      <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #3A4F66;">
+  <div style="background: #192A3D; padding: 32px 40px 24px;">
+    <p style="color: #A8BFDA; margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .07em;">
+      Guldboda Samfällighetsförening
+    </p>
+    <h1 style="color: #FFFFFF; font-size: 20px; margin: 8px 0 0;">Tack för din berättelse!</h1>
+  </div>
+  <div style="padding: 32px 40px;">
+    <p>Hej <strong><t t-out="object.partner_id.name or 'fastighetsägare'"/></strong>,</p>
+    <p>
+      Din berättelse om <strong><t t-out="object.namn"/></strong> är nu mottagen och sparad.
+      Fredrik Arvas tar del av den inför Guldboda Samfällighetsförenings 80-årsjubileumsskrift.
+    </p>
+    <p style="font-size: 13px; color: #6B7F99;">
+      Nedan ser du vad vi fångade upp — det är råmaterialet från ert samtal med Clio.
+      Det Fredrik publicerar i skriften kan se annorlunda ut och redigeras för att passa helheten.
+    </p>
+
+    <hr style="border: none; border-top: 1px solid #E2E8EF; margin: 24px 0;"/>
+    <h2 style="font-size: 15px; color: #192A3D; margin-bottom: 16px;">Era svar</h2>
+
+    <t t-foreach="object.svar_ids.sorted(key=lambda s: int(s.fraga_nr))" t-as="svar">
+      <t t-if="svar.svar_text">
+        <div style="margin-bottom: 16px;">
+          <p style="font-weight: 600; color: #3A4F66; margin: 0 0 4px;">
+            <t t-out="svar.fraga_nr"/>. <t t-out="svar.fraga_text"/>
+          </p>
+          <p style="margin: 0; color: #4A5568; white-space: pre-wrap; font-size: 14px; line-height: 1.6;">
+            <t t-out="svar.svar_text"/>
+          </p>
+        </div>
+      </t>
+    </t>
+
+    <hr style="border: none; border-top: 1px solid #E2E8EF; margin: 24px 0;"/>
+    <p style="font-size: 13px; color: #6B7F99;">
+      Vill du lägga till något, ändra eller ta bort? Hör av dig direkt till
+      <a href="mailto:fredrik@arvas.se" style="color: #1559ED;">fredrik@arvas.se</a>.
+    </p>
+    <p>Tack för att du bidrar till minnet av Guldboda!<br/>
+       <strong>Fredrik Arvas</strong><br/>
+       Ordförande, Guldboda Samfällighetsförening
+    </p>
+  </div>
+</div>
+      </field>
+    </record>
+
   </data>
 </odoo>
