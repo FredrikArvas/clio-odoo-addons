@@ -59,25 +59,25 @@
             </group>
           </group>
           <group string="Kandidattyper">
-            <field name="candidate_type_ids" widget="many2many_checkboxes" nolabel="1"/>
+            <field name="candidate_type_ids" widget="many2many_checkboxes" nolabel="1" colspan="2"/>
           </group>
           <separator string="Kandidatprofil"/>
           <group string="Eftersökta egenskaper">
             <field name="target_characteristics"
-                   widget="text" placeholder="En egenskap per rad…" nolabel="1"/>
+                   widget="text" placeholder="En egenskap per rad…" nolabel="1" colspan="2"/>
           </group>
           <group string="Undvik">
             <field name="target_avoid"
-                   widget="text" placeholder="En per rad…" nolabel="1"/>
+                   widget="text" placeholder="En per rad…" nolabel="1" colspan="2"/>
           </group>
           <separator string="Triggersignaler"/>
           <group string="Högvärda signaler">
             <field name="trigger_signals_high"
-                   widget="text" placeholder="En signal per rad…" nolabel="1"/>
+                   widget="text" placeholder="En signal per rad…" nolabel="1" colspan="2"/>
           </group>
           <group string="Medelvärda signaler">
             <field name="trigger_signals_medium"
-                   widget="text" placeholder="En signal per rad…" nolabel="1"/>
+                   widget="text" placeholder="En signal per rad…" nolabel="1" colspan="2"/>
           </group>
           <notebook>
             <page string="Matchhistorik">
