@@ -8,10 +8,14 @@ Speglar vigil_items-tabellen i SQLite.
 from __future__ import annotations
 
 import logging
+import re
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
+
+_LANGUAGE_CODE_RE = re.compile(r"[a-z]{2,3}")
 
 
 class ClioVigilItem(models.Model):
@@ -129,16 +133,15 @@ class ClioVigilItem(models.Model):
 
     # ── Språk ────────────────────────────────────────────────────────────────
 
-    language = fields.Selection(
-        selection = [
-            ("en",    "Engelska"),
-            ("sv",    "Svenska"),
-            ("pt",    "Portugisiska"),
-            ("other", "Annat"),
-        ],
+    # ISO 639-1-kod (en, sv, pt, fi …). Var tidigare en Selection med en/sv/pt/other —
+    # bytt till Char 2026-10-19 så att detekterade språk inte tappas till "other".
+    # Samma kolumntyp (varchar) → ingen datamigrering behövs.
+    language = fields.Char(
         string = "Språk",
+        size   = 3,
         index  = True,
-        help   = "Ärvs från källans grundspråk vid skapande. "
+        help   = "ISO 639-1-kod, t.ex. en, sv, pt, fi. Tomt = okänt. "
+                 "Ärvs från källans grundspråk vid skapande. "
                  "Transkriptionen kan korrigera fältet om detekterat språk avviker (≥85% konfidensgrad).",
     )
 
@@ -247,6 +250,14 @@ class ClioVigilItem(models.Model):
             src_lang = self.source_id.language
             # "multi" på källan = okänt på avsnittsnivå — vänta på transkription
             self.language = src_lang if src_lang != "multi" else False
+
+    @api.constrains("language")
+    def _check_language(self):
+        for rec in self:
+            if rec.language and not _LANGUAGE_CODE_RE.fullmatch(rec.language):
+                raise ValidationError(
+                    f"Ogiltig språkkod '{rec.language}' — använd ISO 639-1 med gemener (t.ex. en, sv, fi)."
+                )
 
     @api.model_create_multi
     def create(self, vals_list):
