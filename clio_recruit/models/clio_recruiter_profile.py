@@ -5,6 +5,8 @@ En profil per rekryteringsuppdrag (t.ex. "CapFM SAP-rekrytering").
 """
 
 import logging
+import subprocess
+import sys
 from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
@@ -15,6 +17,7 @@ class ClioRecruiterProfile(models.Model):
     _description = "Clio Recruit — Rekryterarprofil"
     _order       = "name"
     _rec_name    = "name"
+    _inherit     = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(
         string   = "Profilnamn",
@@ -110,6 +113,36 @@ class ClioRecruiterProfile(models.Model):
     def _compute_match_count(self):
         for rec in self:
             rec.match_count = len(rec.match_ids)
+
+    def action_run_manual_search(self):
+        self.ensure_one()
+        if not self.email:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {"message": "Profilen saknar mottagaradress.", "type": "warning"},
+            }
+        try:
+            proc = subprocess.run(
+                [sys.executable, _AGENT_SCRIPT, "--odoo-recruiter-id", str(self.id)],
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+            output = proc.stdout + (proc.stderr or "")
+        except subprocess.TimeoutExpired:
+            output = "[FEL] Sokningen tog for lang tid."
+        except Exception as exc:
+            output = f"[FEL] Kunde inte starta agenten: {exc}"
+        self.message_post(
+            body=f"<b>Manuell sokning</b><br/><pre>{output[:4000]}</pre>",
+            subject=f"Manuell sokning -- {self.name}",
+        )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {"message": "Sokning klar -- se chatter for resultat.", "type": "success"},
+        }
 
     def action_view_matches(self):
         self.ensure_one()
