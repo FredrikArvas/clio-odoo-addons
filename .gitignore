@@ -1,1 +1,12 @@
 __pycache__/
+*.pyc
+
+# Hemligheter
+.env
+.env.*
+!.env.example
+
+# Säkerhetskopior från serverredigering
+*.bak
+*.bak.*
+*.bak-*
