@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Listvy -->
+  <record id="view_uap_transmorf_entity_tree" model="ir.ui.view">
+    <field name="name">uap.transmorf.entity.list</field>
+    <field name="model">uap.transmorf.entity</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="category"/>
+        <field name="family_taxon"  string="Familj"/>
+        <field name="genus_taxon"   string="Släkte"/>
+        <field name="species_taxon" string="Art"/>
+        <field name="biological_status"/>
+        <field name="confidence"/>
+        <field name="encounter_count" string="Encounters"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Formvy -->
+  <record id="view_uap_transmorf_entity_form" model="ir.ui.view">
+    <field name="name">uap.transmorf.entity.form</field>
+    <field name="model">uap.transmorf.entity</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" placeholder="t.ex. Short Gray"/>
+              <field name="category"/>
+              <field name="biological_status"/>
+              <field name="confidence"/>
+            </group>
+            <group string="Medium / rörlighet">
+              <field name="medium_aerial"/>
+              <field name="medium_aquatic"/>
+              <field name="medium_space"/>
+              <field name="medium_terrestrial"/>
+              <field name="medium_among_us"/>
+              <field name="medium_transmedium"/>
+            </group>
+          </group>
+
+          <group string="Linnésk taxonomi">
+            <group>
+              <field name="domain_taxon"/>
+              <field name="kingdom_taxon"/>
+              <field name="phylum_taxon"/>
+              <field name="class_taxon"/>
+            </group>
+            <group>
+              <field name="order_taxon"/>
+              <field name="family_taxon"/>
+              <field name="genus_taxon"/>
+              <field name="species_taxon"/>
+            </group>
+          </group>
+
+          <group col="1">
+            <field name="morphology" nolabel="1"
+                   placeholder="Morfologi: utseende, storlek, anatomi, särdrag..."/>
+          </group>
+
+          <notebook>
+            <page string="Klassificeringar (encounters)">
+              <field name="classification_ids" nolabel="1">
+                <list>
+                  <field name="encounter_id"/>
+                  <field name="confidence"/>
+                  <field name="source"/>
+                  <field name="classified_at"/>
+                </list>
+              </field>
+            </page>
+            <page string="Anteckningar">
+              <group col="1">
+                <field name="notes" nolabel="1"
+                       placeholder="Källor, tvivel, metodologiska anmärkningar..."/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Sökvy -->
+  <record id="view_uap_transmorf_entity_search" model="ir.ui.view">
+    <field name="name">uap.transmorf.entity.search</field>
+    <field name="model">uap.transmorf.entity</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="family_taxon"/>
+        <separator/>
+        <filter string="Varelser"   name="varelse" domain="[('category','=','varelse')]"/>
+        <filter string="Farkoster"  name="farkost" domain="[('category','=','farkost')]"/>
+        <separator/>
+        <filter string="Bland oss"   name="among" domain="[('medium_among_us','=',True)]"/>
+        <filter string="Transmedium" name="trans"  domain="[('medium_transmedium','=',True)]"/>
+        <group>
+          <filter string="Kategori"        name="by_cat"  context="{'group_by': 'category'}"/>
+          <filter string="Biologisk status" name="by_bio"  context="{'group_by': 'biological_status'}"/>
+          <filter string="Konfidensgrad"   name="by_conf" context="{'group_by': 'confidence'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_uap_transmorf_entity" model="ir.actions.act_window">
+    <field name="name">Transmorf-entiteter</field>
+    <field name="res_model">uap.transmorf.entity</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="view_uap_transmorf_entity_search"/>
+  </record>
+
+</odoo>
