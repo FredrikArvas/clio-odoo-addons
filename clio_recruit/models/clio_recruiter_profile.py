@@ -4,9 +4,12 @@ Rekryterarprofil för passiv kandidatsourcing.
 En profil per rekryteringsuppdrag (t.ex. "CapFM SAP-rekrytering").
 """
 
+import json
 import logging
-import subprocess
-import sys
+import urllib.error
+import urllib.request
+
+from markupsafe import Markup
 from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
@@ -122,26 +125,45 @@ class ClioRecruiterProfile(models.Model):
                 "tag": "display_notification",
                 "params": {"message": "Profilen saknar mottagaradress.", "type": "warning"},
             }
+        base = self.env["ir.config_parameter"].sudo().get_param(
+            "clio.service.url", default="http://172.19.0.1:7200"
+        )
+        url = base.rstrip("/") + "/recruit/run"
+        body = json.dumps({"profile_id": self.id}).encode()
+        req = urllib.request.Request(
+            url, data=body, method="POST",
+            headers={"Content-Type": "application/json"},
+        )
         try:
-            proc = subprocess.run(
-                [sys.executable, _AGENT_SCRIPT, "--odoo-recruiter-id", str(self.id)],
-                capture_output=True,
-                text=True,
-                timeout=300,
-            )
-            output = proc.stdout + (proc.stderr or "")
-        except subprocess.TimeoutExpired:
-            output = "[FEL] Sokningen tog for lang tid."
+            with urllib.request.urlopen(req, timeout=310) as resp:
+                result = json.loads(resp.read())
+        except urllib.error.URLError as exc:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {"message": f"Kunde inte nå clio-service: {exc.reason}", "type": "danger"},
+            }
         except Exception as exc:
-            output = f"[FEL] Kunde inte starta agenten: {exc}"
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {"message": f"Sökning misslyckades: {exc}", "type": "danger"},
+            }
+        if not result.get("ok"):
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {"message": result.get("error", "Okänt fel från clio-service"), "type": "danger"},
+            }
+        output = result.get("output", "")
         self.message_post(
-            body=f"<b>Manuell sokning</b><br/><pre>{output[:4000]}</pre>",
-            subject=f"Manuell sokning -- {self.name}",
+            body=Markup("<b>Manuell sökning</b><br/><pre>{}</pre>").format(output[:4000]),
+            subject=f"Manuell sökning — {self.name}",
         )
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
-            "params": {"message": "Sokning klar -- se chatter for resultat.", "type": "success"},
+            "params": {"message": "Sökning klar — se chatter för resultat.", "type": "success"},
         }
 
     def action_view_matches(self):
