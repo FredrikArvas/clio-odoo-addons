@@ -14,7 +14,7 @@
   </record>
 
   <menuitem id="menu_afu_root"
-    name="AFU Archives"
+    name="Clio AFU Archives"
     sequence="100"/>
 
   <menuitem id="menu_afu_config"
