@@ -8,7 +8,10 @@ from __future__ import annotations
 
 import logging
 
-from odoo import fields, models
+import re
+
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -114,3 +117,22 @@ class ClioVigilSource(models.Model):
         default = False,
         help    = "Om aktiverad laddar --archive-sources ned hela källarkivet.",
     )
+
+    _URL_RE  = re.compile(r'^https?://', re.IGNORECASE)
+    _URL_MAX = 2048
+
+    @api.constrains('url')
+    def _check_url_format(self):
+        for rec in self:
+            if not rec.url:
+                continue
+            if not self._URL_RE.match(rec.url):
+                raise ValidationError(
+                    "URL måste börja med http:// eller https://. "
+                    f"Fick: {rec.url[:80]!r}"
+                )
+            if len(rec.url) > self._URL_MAX:
+                raise ValidationError(
+                    f"URL är för lång ({len(rec.url)} tecken, max {self._URL_MAX})."
+                )
+
