@@ -51,7 +51,6 @@ class ClioVigilSource(models.Model):
     )
     url = fields.Char(
         string   = "URL",
-        index    = True,
         help     = "Feed-URL (RSS), kanal-handle (YouTube) eller startsida (webb).",
     )
     maturity = fields.Selection(
