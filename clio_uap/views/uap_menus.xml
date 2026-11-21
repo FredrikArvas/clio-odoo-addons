@@ -3,7 +3,7 @@
 
   <!-- Toppmeny -->
   <menuitem id="menu_uap_root"
-            name="UAP"
+            name="Clio UAP"
             sequence="90"/>
 
   <!-- Encounters -->
