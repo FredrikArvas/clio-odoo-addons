@@ -149,7 +149,7 @@
     <!-- ── Menystruktur ──────────────────────────────────────────── -->
 
     <menuitem id="menu_clio_media_root"
-              name="Media"
+              name="Clio Media"
               sequence="50"
               groups="clio_media.group_clio_media_work_user"/>
 
