@@ -4,14 +4,14 @@
   <record id="action_afu_larry_hatch_case" model="ir.actions.act_window">
     <field name="name">Larry Hatch Cases</field>
     <field name="res_model">afu.larry_hatch.case</field>
-    <field name="view_mode">list,form</field>
+    <field name="view_mode">list,kanban,graph,pivot,form</field>
     <field name="domain">[('is_deleted','=',False)]</field>
   </record>
 
   <record id="action_afu_larry_hatch_case_all" model="ir.actions.act_window">
     <field name="name">Larry Hatch Cases (inkl. raderade)</field>
     <field name="res_model">afu.larry_hatch.case</field>
-    <field name="view_mode">list,form</field>
+    <field name="view_mode">list,kanban,graph,pivot,form</field>
   </record>
 
   <menuitem id="menu_afu_larry_hatch"

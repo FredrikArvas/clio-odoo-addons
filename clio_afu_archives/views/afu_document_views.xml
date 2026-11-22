@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- AFU-dokument = clio.media.article med URL under files.afu.se.
+       Egna vyer med hög priority så att clio_medias standardvyer inte påverkas. -->
+
+  <record id="view_afu_document_list" model="ir.ui.view">
+    <field name="name">clio.media.article.afu.list</field>
+    <field name="model">clio.media.article</field>
+    <field name="priority">90</field>
+    <field name="arch" type="xml">
+      <list string="AFU-dokument" decoration-success="is_afu_case_report">
+        <field name="title" string="Fil"/>
+        <field name="afu_folder"/>
+        <field name="media_type" widget="badge"/>
+        <field name="is_afu_case_report" widget="boolean"/>
+        <field name="afu_eth_origin" optional="show"/>
+        <field name="afu_case_date" optional="show"/>
+        <field name="afu_location" optional="show"/>
+        <field name="afu_summary" optional="show"/>
+        <field name="afu_text_chars" optional="hide"/>
+        <field name="afu_classified_at" optional="hide"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_afu_document_kanban" model="ir.ui.view">
+    <field name="name">clio.media.article.afu.kanban</field>
+    <field name="model">clio.media.article</field>
+    <field name="priority">90</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="afu_folder" default_order="afu_case_year desc, title">
+        <field name="is_afu_case_report"/>
+        <templates>
+          <t t-name="card">
+            <div class="o_kanban_record_headings">
+              <strong class="o_kanban_record_title"><field name="title"/></strong>
+            </div>
+            <div class="small text-muted">
+              <field name="afu_case_date"/>
+              <t t-if="record.afu_location.raw_value"> · <field name="afu_location"/></t>
+            </div>
+            <div class="small mt-1"><field name="afu_summary"/></div>
+            <div class="mt-1">
+              <field name="media_type" widget="badge"/>
+              <span t-if="record.is_afu_case_report.raw_value"
+                    class="badge text-bg-success ms-1">Fallrapport</span>
+              <t t-if="record.afu_eth_origin.raw_value">
+                <span class="badge text-bg-warning ms-1">ETH <field name="afu_eth_origin"/></span>
+              </t>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="view_afu_document_graph" model="ir.ui.view">
+    <field name="name">clio.media.article.afu.graph</field>
+    <field name="model">clio.media.article</field>
+    <field name="priority">90</field>
+    <field name="arch" type="xml">
+      <graph string="AFU-dokument" type="bar" stacked="1">
+        <field name="afu_folder" type="row"/>
+        <field name="is_afu_case_report" type="col"/>
+      </graph>
+    </field>
+  </record>
+
+  <record id="view_afu_document_pivot" model="ir.ui.view">
+    <field name="name">clio.media.article.afu.pivot</field>
+    <field name="model">clio.media.article</field>
+    <field name="priority">90</field>
+    <field name="arch" type="xml">
+      <pivot string="AFU-dokument">
+        <field name="afu_folder" type="row"/>
+        <field name="media_type" type="col"/>
+      </pivot>
+    </field>
+  </record>
+
+  <record id="view_afu_document_search" model="ir.ui.view">
+    <field name="name">clio.media.article.afu.search</field>
+    <field name="model">clio.media.article</field>
+    <field name="priority">90</field>
+    <field name="arch" type="xml">
+      <search string="AFU-dokument">
+        <field name="title" string="Fil"/>
+        <field name="afu_summary"/>
+        <field name="afu_location"/>
+        <field name="afu_folder"/>
+        <field name="body" string="Fulltext"/>
+        <filter name="case_report" string="Fallrapporter" domain="[('is_afu_case_report','=',True)]"/>
+        <filter name="eth_ge_2" string="ETH ≥ 2" domain="[('afu_eth_origin','in',['2','3','4','5'])]"/>
+        <separator/>
+        <filter name="classified" string="Klassade" domain="[('afu_classified_at','!=',False)]"/>
+        <filter name="not_classified" string="Ej klassade" domain="[('afu_classified_at','=',False)]"/>
+        <filter name="has_text" string="Med text" domain="[('afu_text_chars','&gt;',0)]"/>
+        <separator/>
+        <filter name="group_folder" string="Mapp" context="{'group_by':'afu_folder'}"/>
+        <filter name="group_media_type" string="Filtyp" context="{'group_by':'media_type'}"/>
+        <filter name="group_eth" string="ETH" context="{'group_by':'afu_eth_origin'}"/>
+        <filter name="group_case_year" string="Händelseår" context="{'group_by':'afu_case_year'}"/>
+      </search>
+    </field>
+  </record>
+
+  <!-- Klassning i artikelformuläret, bara synlig för AFU-dokument -->
+  <record id="view_clio_media_article_form_afu" model="ir.ui.view">
+    <field name="name">clio.media.article.form.afu</field>
+    <field name="model">clio.media.article</field>
+    <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//group[field[@name='body_snippet']]" position="before">
+        <field name="is_afu_document" invisible="1"/>
+        <group string="AFU-klassning" invisible="not is_afu_document">
+          <group>
+            <field name="afu_folder"/>
+            <field name="is_afu_case_report"/>
+            <field name="afu_eth_origin"/>
+            <field name="afu_intelligence_indicator"/>
+            <field name="afu_discourse_level"/>
+            <field name="afu_craft_class"/>
+          </group>
+          <group>
+            <field name="afu_case_date"/>
+            <field name="afu_location"/>
+            <field name="afu_text_chars"/>
+            <field name="afu_classified_at"/>
+          </group>
+          <field name="afu_summary" colspan="2"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="action_afu_document" model="ir.actions.act_window">
+    <field name="name">AFU-dokument</field>
+    <field name="res_model">clio.media.article</field>
+    <field name="view_mode">kanban,list,graph,pivot,form</field>
+    <field name="domain">[('is_afu_document','=',True)]</field>
+    <field name="search_view_id" ref="view_afu_document_search"/>
+    <field name="view_ids" eval="[Command.clear(),
+        Command.create({'view_mode': 'kanban', 'view_id': ref('view_afu_document_kanban')}),
+        Command.create({'view_mode': 'list',   'view_id': ref('view_afu_document_list')}),
+        Command.create({'view_mode': 'graph',  'view_id': ref('view_afu_document_graph')}),
+        Command.create({'view_mode': 'pivot',  'view_id': ref('view_afu_document_pivot')})]"/>
+  </record>
+
+  <record id="action_afu_case_report" model="ir.actions.act_window">
+    <field name="name">Fallrapporter</field>
+    <field name="res_model">clio.media.article</field>
+    <field name="view_mode">list,kanban,graph,pivot,form</field>
+    <field name="domain">[('is_afu_document','=',True), ('is_afu_case_report','=',True)]</field>
+    <field name="search_view_id" ref="view_afu_document_search"/>
+    <field name="context">{'graph_groupbys': ['afu_case_year'], 'pivot_row_groupby': ['afu_case_year']}</field>
+    <field name="view_ids" eval="[Command.clear(),
+        Command.create({'view_mode': 'list',   'view_id': ref('view_afu_document_list')}),
+        Command.create({'view_mode': 'kanban', 'view_id': ref('view_afu_document_kanban')}),
+        Command.create({'view_mode': 'graph',  'view_id': ref('view_afu_document_graph')}),
+        Command.create({'view_mode': 'pivot',  'view_id': ref('view_afu_document_pivot')})]"/>
+  </record>
+
+  <menuitem id="menu_afu_documents"
+    name="AFU-dokument"
+    parent="menu_afu_root"
+    sequence="5"/>
+
+  <menuitem id="menu_afu_documents_all"
+    name="Dokument"
+    parent="menu_afu_documents"
+    action="action_afu_document"
+    sequence="10"/>
+
+  <menuitem id="menu_afu_documents_case_reports"
+    name="Fallrapporter"
+    parent="menu_afu_documents"
+    action="action_afu_case_report"
+    sequence="20"/>
+
+</odoo>
