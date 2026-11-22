@@ -221,6 +221,69 @@ class UapEncounter(models.Model):
 
     # --- Övrigt ---
     research_notes = fields.Text(string="Research Notes")
+    # --- Transmorf-taxonomin (Projekt 23) ---
+    is_case_report = fields.Boolean(
+        string="Fallrapport", default=False,
+        help="True om dokumentet innehåller ett konkret fallrapport enligt transmorf-taxonomin",
+        index=True,
+    )
+    eth_origin = fields.Selection(
+        selection=[
+            ("0", "0 — Förklarat/mänskligt ursprung"),
+            ("1", "1 — Troligen mänskligt, oklart"),
+            ("2", "2 — Okänt ursprung"),
+            ("3", "3 — Stark icke-mänsklig indikation"),
+            ("4", "4 — Icke-mänsklig med officiell korroboration"),
+            ("5", "5 — Bekräftat av declassificerade dokument"),
+        ],
+        string="ETH Origin", index=True,
+    )
+    craft_class = fields.Selection(
+        selection=[
+            ("I",   "I — Tetra"),
+            ("II",  "II — Tic-Tac"),
+            ("III", "III — Blob"),
+            ("IV",  "IV — Beam"),
+            ("V",   "V — Manta-Ray"),
+            ("VI",  "VI — Bright-Star"),
+            ("VII", "VII — Jellyfish"),
+            ("VIII","VIII — Hornet"),
+            ("IX",  "IX — Egg"),
+            ("X",   "X — Teardrop"),
+            ("unknown", "Unknown"),
+        ],
+        string="Craft Class (Skywatcher)",
+    )
+    entity_type = fields.Selection(
+        selection=[
+            ("Nordic",    "Nordic"),
+            ("TallGray",  "TallGray"),
+            ("ShortGray", "ShortGray"),
+            ("LongGray",  "LongGray"),
+            ("Reptilian", "Reptilian"),
+            ("Mantid",    "Mantid"),
+            ("Hybrid",    "Hybrid"),
+            ("Energy",    "Energy"),
+            ("Unknown",   "Unknown"),
+        ],
+        string="Entity Type",
+    )
+    suppression_indicator = fields.Boolean(
+        string="Suppression Indicator", default=False,
+        help="Tecken på aktivt undertryckande av information",
+    )
+    suppression_note = fields.Char(string="Suppression Note", size=120)
+    afu_article_id = fields.Integer(
+        string="AFU Article ID",
+        help="Odoo-ID för källartikeln i clio.media.article",
+        index=True,
+    )
+    afu_doc_path = fields.Char(
+        string="AFU Document Path",
+        help="Relativ sökväg till källdokumentet under data/downloads/",
+        index=True,
+    )
+
     neo4j_node_id = fields.Char(string="Neo4j Node ID", readonly=True, copy=False)
     series_id = fields.Many2one("uap.series", string="Series", index=True, ondelete="set null")
     database_id = fields.Many2one("uap.database", string="Source Database", index=True, ondelete="set null")

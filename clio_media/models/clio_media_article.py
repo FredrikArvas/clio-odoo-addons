@@ -19,7 +19,25 @@ class ClioMediaArticle(models.Model):
     title       = fields.Char(string="Rubrik")
     source      = fields.Char(string="Källa")
     media_type  = fields.Selection(
-        selection = [("article", "Artikel"), ("podcast", "Podcast"), ("video", "Video"), ("conference_presentation", "Konferenspresentation")],
+        selection = [
+            ("article",                 "Artikel"),
+            ("podcast",                 "Podcast"),
+            ("video",                   "Video"),
+            ("conference_presentation", "Konferenspresentation"),
+            ("pdf",                     "PDF"),
+            ("rtf",                     "RTF"),
+            ("docx",                    "DOCX"),
+            ("doc",                     "DOC"),
+            ("jpg",                     "JPG"),
+            ("png",                     "PNG"),
+            ("zip",                     "ZIP"),
+            ("txt",                     "TXT"),
+            ("mp3",                     "MP3"),
+            ("wav",                     "WAV"),
+            ("xls",                     "XLS"),
+            ("xlsx",                    "XLSX"),
+            ("other",                   "Övrigt"),
+        ],
         string    = "Typ",
         default   = "article",
     )
@@ -85,10 +103,19 @@ class ClioMediaArticle(models.Model):
     )
     data_source = fields.Selection(
         selection = [
-            ("gdelt",           "GDELT"),
-            ("vigil_ufo", "vigil_ufo"),
-            ("vigil_ai",  "vigil_ai"),
-            ("google_news_rss", "Google News RSS"),
+            ("gdelt",              "GDELT"),
+            ("vigil_ufo",          "vigil_ufo"),
+            ("vigil_ai",           "vigil_ai"),
+            ("google_news_rss",    "Google News RSS"),
+            ("afu_cia",            "AFU — CIA"),
+            ("afu_fbi",            "AFU — FBI"),
+            ("afu_aaro",           "AFU — AARO"),
+            ("afu_congress",       "AFU — Congress"),
+            ("afu_researchers",    "AFU — UFO Researchers"),
+            ("afu_reports_scand",  "AFU — UFO-rapporter Skandinavien"),
+            ("afu_reports_uk",     "AFU — UFO-rapporter UK"),
+            ("afu_topics",         "AFU — Topics"),
+            ("afu_search",         "AFU — Search releases"),
         ],
         string = "Datakälla",
         help   = "Vilken connector som hämtade artikeln.",
