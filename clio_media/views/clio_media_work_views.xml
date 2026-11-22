@@ -86,7 +86,7 @@
                 <templates>
                     <t t-name="card">
                         <figure>
-                            <img t-att-src="kanban_image('clio.media.work', 'image_128', record.id.raw_value)"
+                            <img t-attf-src="/web/image/clio.media.work/#{record.id.raw_value}/image_128"
                                  t-att-alt="record.name.value"/>
                         </figure>
                         <div class="oe_kanban_details">
@@ -97,6 +97,28 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <record id="view_clio_media_work_graph" model="ir.ui.view">
+        <field name="name">clio.media.work.graph</field>
+        <field name="model">clio.media.work</field>
+        <field name="arch" type="xml">
+            <graph string="Verk per typ" type="bar">
+                <field name="work_type_id" type="row"/>
+                <field name="year" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_clio_media_work_pivot" model="ir.ui.view">
+        <field name="name">clio.media.work.pivot</field>
+        <field name="model">clio.media.work</field>
+        <field name="arch" type="xml">
+            <pivot string="Verk">
+                <field name="work_type_id" type="row"/>
+                <field name="year" type="col"/>
+            </pivot>
         </field>
     </record>
 
@@ -143,7 +165,7 @@
     <record id="action_clio_media_work" model="ir.actions.act_window">
         <field name="name">Verk</field>
         <field name="res_model">clio.media.work</field>
-        <field name="view_mode">list,kanban,form</field>
+        <field name="view_mode">list,kanban,graph,pivot,form</field>
     </record>
 
     <!-- ── Menystruktur ──────────────────────────────────────────── -->
