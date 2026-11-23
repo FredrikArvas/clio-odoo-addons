@@ -117,6 +117,9 @@
         <attribute name="readonly">not is_afu_document</attribute>
         <attribute name="placeholder">Dokumentets titel</attribute>
       </xpath>
+      <xpath expr="//sheet" position="after">
+        <chatter/>
+      </xpath>
       <xpath expr="//group[field[@name='body_snippet']]" position="before">
         <field name="is_afu_document" invisible="1"/>
         <group string="AFU-klassning" invisible="not is_afu_document">

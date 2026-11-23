@@ -19,8 +19,10 @@ class ClioMediaArticle(models.Model):
     """AFU-dokument = clio.media.article med URL under files.afu.se.
 
     Klassningsfälten skrivs av clio-afu/afu_classify_docs.py.
+    mail.thread ger chatter (kommentarer) i formuläret.
     """
-    _inherit = "clio.media.article"
+    _name = "clio.media.article"
+    _inherit = ["clio.media.article", "mail.thread"]
 
     is_afu_document = fields.Boolean(
         string="AFU-dokument", compute="_compute_afu_path", store=True, index=True,
@@ -44,6 +46,15 @@ class ClioMediaArticle(models.Model):
     afu_summary = fields.Text(string="Sammanfattning")
     afu_text_chars = fields.Integer(string="Texttecken")
     afu_classified_at = fields.Datetime(string="Klassad")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Artiklar skapas i bulk av vigil/importer — ingen följare eller
+        # "skapad"-logg per artikel; chattern är till för kommentarer.
+        return super(
+            ClioMediaArticle,
+            self.with_context(mail_create_nolog=True, mail_create_nosubscribe=True),
+        ).create(vals_list)
 
     @api.depends("url")
     def _compute_afu_path(self):
