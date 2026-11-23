@@ -1,12 +1,12 @@
 {
     "name":        "Clio UAP Tracking",
-    "version": "19.0.1.7.0",
+    "version": "19.0.1.8.0",
     "category":    "Research",
     "summary":     "UAP encounter tracking, multi-classification, anomaly index and transmorf taxonomy.",
     "author":      "Fredrik Arvas / Arvas International AB",
     "license":     "LGPL-3",
     "website": "https://github.com/FredrikArvas/clio-odoo-addons/tree/19.0/clio_uap",
-    "depends":     ["base", "contacts", "clio_media"],
+    "depends":     ["base", "mail", "contacts", "clio_media"],
     "data": [
         "security/ir.model.access.csv",
         "views/uap_source_views.xml",

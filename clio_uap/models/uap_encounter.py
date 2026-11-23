@@ -1,9 +1,10 @@
 import uuid
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class UapEncounter(models.Model):
     _name        = "uap.encounter"
+    _inherit     = ["mail.thread"]
     _description = "UAP — Encounter"
     _order       = "date_observed desc, encounter_id"
     _rec_name    = "title_en"
@@ -336,6 +337,15 @@ class UapEncounter(models.Model):
             rec.verification_count = len(rec.verification_ids)
             rec.classification_count = len(rec.classification_ids)
             rec.anomaly_count = len(rec.anomaly_ids)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Encounters importeras i bulk (NUFORC, GEIPAN, AFU …) — ingen följare
+        # eller "skapad"-logg per post; chattern är till för kommentarer.
+        return super(
+            UapEncounter,
+            self.with_context(mail_create_nolog=True, mail_create_nosubscribe=True),
+        ).create(vals_list)
 
     def _compute_article_count(self):
         for rec in self:
