@@ -3,6 +3,7 @@ from odoo import models, fields, api
 
 class LarryHatchCase(models.Model):
     _name = 'afu.larry_hatch.case'
+    _inherit = ['mail.thread']
     _description = 'Larry Hatch U* Case'
     _order = 'year_val, month_val, day_val'
     _rec_name = 'display_name'
@@ -65,6 +66,14 @@ class LarryHatchCase(models.Model):
     is_deleted = fields.Boolean(string='Deleted Record', default=False)
 
     display_name = fields.Char(compute='_compute_display_name', store=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # U.RND importeras i bulk — ingen följare eller "skapad"-logg per post.
+        return super(
+            LarryHatchCase,
+            self.with_context(mail_create_nolog=True, mail_create_nosubscribe=True),
+        ).create(vals_list)
 
     @api.depends('year_val', 'summary')
     def _compute_display_name(self):
