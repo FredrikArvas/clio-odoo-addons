@@ -1,6 +1,6 @@
 {
     'name': 'AFU Archives — Delad infrastruktur',
-    'version': '19.0.3.0.0',
+    'version': '19.0.3.1.0',
     'summary': 'AFU-appen: toppnivåmeny, attribut/källor och AFU-dokument (klassade clio.media.article)',
     'description': 'Bas-modul för alla clio_afu_*-moduler. Tillhandahåller afu.attribute och afu.archive.source.',
     'author': 'Arvas International AB',

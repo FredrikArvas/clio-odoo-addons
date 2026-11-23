@@ -111,6 +111,12 @@
     <field name="model">clio.media.article</field>
     <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
     <field name="arch" type="xml">
+      <!-- AFU-titlar kommer från filnamn/PDF-rubrik och behöver kunna rättas
+           för hand; övriga artiklars titel förblir låst. -->
+      <xpath expr="//field[@name='title']" position="attributes">
+        <attribute name="readonly">not is_afu_document</attribute>
+        <attribute name="placeholder">Dokumentets titel</attribute>
+      </xpath>
       <xpath expr="//group[field[@name='body_snippet']]" position="before">
         <field name="is_afu_document" invisible="1"/>
         <group string="AFU-klassning" invisible="not is_afu_document">
