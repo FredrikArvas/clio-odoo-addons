@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Larry Hatch U*-poster på encountern: smart knapp + lista i fliken Källor -->
+  <record id="view_uap_encounter_form_larry_hatch" model="ir.ui.view">
+    <field name="name">uap.encounter.form.larry_hatch</field>
+    <field name="model">uap.encounter</field>
+    <field name="inherit_id" ref="clio_uap.view_uap_encounter_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[@name='button_box']" position="inside">
+        <button name="action_open_larry_hatch_cases"
+                type="object"
+                class="oe_stat_button"
+                icon="fa-database"
+                invisible="not larry_hatch_count">
+          <field name="larry_hatch_count" widget="statinfo" string="Larry Hatch"/>
+        </button>
+      </xpath>
+      <xpath expr="//page[@name='source_documents']" position="inside">
+        <group string="Larry Hatch U*">
+          <field name="larry_hatch_case_ids" nolabel="1" colspan="2"
+                 context="{'create': False}">
+            <list>
+              <field name="date_display" string="Date"/>
+              <field name="country"/>
+              <field name="state_code"/>
+              <field name="summary"/>
+              <field name="strangeness"/>
+              <field name="credibility"/>
+            </list>
+          </field>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+</odoo>

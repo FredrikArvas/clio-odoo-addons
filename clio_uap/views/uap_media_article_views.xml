@@ -12,4 +12,24 @@
     <field name="code">records.action_classify_uap()</field>
   </record>
 
+  <!-- Smart knapp: vilka encounters bygger på artikeln/dokumentet -->
+  <record id="view_clio_media_article_form_uap" model="ir.ui.view">
+    <field name="name">clio.media.article.form.uap</field>
+    <field name="model">clio.media.article</field>
+    <field name="inherit_id" ref="clio_media.view_clio_media_article_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet/*[1]" position="before">
+        <div class="oe_button_box" name="button_box">
+          <button name="action_open_encounters"
+                  type="object"
+                  class="oe_stat_button"
+                  icon="fa-eye"
+                  invisible="not encounter_count">
+            <field name="encounter_count" widget="statinfo" string="Encounters"/>
+          </button>
+        </div>
+      </xpath>
+    </field>
+  </record>
+
 </odoo>

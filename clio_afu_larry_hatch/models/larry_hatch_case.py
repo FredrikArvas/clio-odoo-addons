@@ -67,6 +67,30 @@ class LarryHatchCase(models.Model):
 
     display_name = fields.Char(compute='_compute_display_name', store=True)
 
+    encounter_ids = fields.Many2many(
+        comodel_name='uap.encounter',
+        relation='uap_encounter_larry_hatch_rel',
+        column1='case_id',
+        column2='encounter_id',
+        string='Encounters',
+    )
+    encounter_count = fields.Integer(string='# Encounters', compute='_compute_encounter_count')
+
+    def _compute_encounter_count(self):
+        for rec in self:
+            rec.encounter_count = len(rec.encounter_ids)
+
+    def action_open_encounters(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Encounters',
+            'res_model': 'uap.encounter',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', self.encounter_ids.ids)],
+            'context': {'create': False},
+        }
+
     @api.model_create_multi
     def create(self, vals_list):
         # U.RND importeras i bulk — ingen följare eller "skapad"-logg per post.

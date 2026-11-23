@@ -25,6 +25,15 @@
     <field name="arch" type="xml">
       <form string="Larry Hatch Case">
         <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_open_encounters"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-eye"
+                    invisible="not encounter_count">
+              <field name="encounter_count" widget="statinfo" string="Encounters"/>
+            </button>
+          </div>
           <group>
             <group string="Date &amp; Time">
               <field name="year_val"/>

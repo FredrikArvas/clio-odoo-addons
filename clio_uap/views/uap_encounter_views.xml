@@ -56,6 +56,13 @@
                     icon="fa-exclamation-triangle">
               <field name="anomaly_count" widget="statinfo" string="Anomalier"/>
             </button>
+            <button name="action_open_articles"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    invisible="not article_count">
+              <field name="article_count" widget="statinfo" string="Dokument"/>
+            </button>
           </div>
 
           <group string="Identification">
@@ -147,6 +154,23 @@
                   <field name="credibility"/>
                 </list>
               </field>
+            </page>
+
+            <page string="Källor" name="source_documents">
+              <group string="Källdokument">
+                <field name="article_ids" nolabel="1" colspan="2"
+                       context="{'create': False}">
+                  <list>
+                    <field name="title"/>
+                    <field name="media_type" widget="badge"/>
+                    <field name="source" optional="hide"/>
+                    <field name="url" widget="url"/>
+                  </list>
+                </field>
+              </group>
+              <group string="AFU-spårbarhet" invisible="not afu_doc_path">
+                <field name="afu_doc_path"/>
+              </group>
             </page>
 
             <page string="Research Notes">

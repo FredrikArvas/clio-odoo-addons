@@ -275,13 +275,27 @@ class UapEncounter(models.Model):
     suppression_note = fields.Char(string="Suppression Note", size=120)
     afu_article_id = fields.Integer(
         string="AFU Article ID",
-        help="Odoo-ID för källartikeln i clio.media.article",
+        help="Ersatt av article_ids (Källdokument) — behålls för spårbarhet. "
+             "Odoo-ID för källartikeln i clio.media.article",
         index=True,
     )
     afu_doc_path = fields.Char(
         string="AFU Document Path",
         help="Relativ sökväg till källdokumentet under data/downloads/",
         index=True,
+    )
+    # Källdokument: en händelse kan ha flera dokument (skanning, översättning,
+    # flera sidor) och ett dokument kan beskriva flera händelser.
+    article_ids = fields.Many2many(
+        comodel_name="clio.media.article",
+        relation="uap_encounter_article_rel",
+        column1="encounter_id",
+        column2="article_id",
+        string="Källdokument",
+    )
+    article_count = fields.Integer(
+        string="# Källdokument",
+        compute="_compute_article_count",
     )
 
     neo4j_node_id = fields.Char(string="Neo4j Node ID", readonly=True, copy=False)
@@ -322,6 +336,21 @@ class UapEncounter(models.Model):
             rec.verification_count = len(rec.verification_ids)
             rec.classification_count = len(rec.classification_ids)
             rec.anomaly_count = len(rec.anomaly_ids)
+
+    def _compute_article_count(self):
+        for rec in self:
+            rec.article_count = len(rec.article_ids)
+
+    def action_open_articles(self):
+        self.ensure_one()
+        return {
+            "type":      "ir.actions.act_window",
+            "name":      "Källdokument",
+            "res_model": "clio.media.article",
+            "view_mode": "list,form",
+            "domain":    [("id", "in", self.article_ids.ids)],
+            "context":   {"create": False},
+        }
 
     def _compute_observables_count(self):
         obs_fields = [

@@ -1,6 +1,6 @@
 {
     "name":        "Clio UAP Tracking",
-    "version": "19.0.1.6.0",
+    "version": "19.0.1.7.0",
     "category":    "Research",
     "summary":     "UAP encounter tracking, multi-classification, anomaly index and transmorf taxonomy.",
     "author":      "Fredrik Arvas / Arvas International AB",
