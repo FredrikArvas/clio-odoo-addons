@@ -265,7 +265,12 @@ class UapEncounter(models.Model):
             ("Mantid",    "Mantid"),
             ("Hybrid",    "Hybrid"),
             ("Energy",    "Energy"),
-            ("Unknown",   "Unknown"),
+            ("Angel",       "Angel (mal'ak)"),
+            ("AngelOfLord", "Angel of the LORD (teofani)"),
+            ("Cherub",      "Cherubim"),
+            ("Seraph",      "Seraphim"),
+            ("Nephilim",    "Nephilim / Giant"),
+            ("Unknown",     "Unknown"),
         ],
         string="Entity Type",
     )
@@ -300,6 +305,11 @@ class UapEncounter(models.Model):
     )
 
     neo4j_node_id = fields.Char(string="Neo4j Node ID", readonly=True, copy=False)
+    passage_ids = fields.One2many(
+        comodel_name="uap.encounter.passage",
+        inverse_name="encounter_id",
+        string="Passager",
+    )
     series_id = fields.Many2one("uap.series", string="Series", index=True, ondelete="set null")
     database_id = fields.Many2one("uap.database", string="Source Database", index=True, ondelete="set null")
 
