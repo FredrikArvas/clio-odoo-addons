@@ -305,6 +305,10 @@ class UapEncounter(models.Model):
     )
 
     neo4j_node_id = fields.Char(string="Neo4j Node ID", readonly=True, copy=False)
+    source_url = fields.Char(
+        string="Käll-URL",
+        help="Länk till primärkällan, t.ex. Bible.com-vers eller rapportarkiv.",
+    )
     passage_ids = fields.One2many(
         comodel_name="uap.encounter.passage",
         inverse_name="encounter_id",
