@@ -53,13 +53,15 @@ class ClioNccProject(models.Model):
     _order = "nr"
     _rec_name = "name"
 
-    nr         = fields.Char(string="Nr", index=True)
-    sfar       = fields.Char(string="Sfär")
-    kodord     = fields.Char(string="Kodord", index=True)
-    name       = fields.Char(string="Projektnamn", required=True)
-    ncc_ok     = fields.Boolean(string="NCC", default=False)
-    ncc_url    = fields.Char(string="Notion-länk", readonly=True)
-    status_raw = fields.Char(string="Status")
+    nr             = fields.Char(string="Nr", index=True)
+    sfar           = fields.Char(string="Sfär")
+    kodord         = fields.Char(string="Kodord", index=True)
+    name           = fields.Char(string="Projektnamn", required=True)
+    ncc_ok         = fields.Boolean(string="NCC", default=False)
+    ncc_url        = fields.Char(string="Notion-länk", readonly=True)
+    status_raw     = fields.Char(string="Status")
+    clio_md_path   = fields.Char(string="CLIO.md sökväg")
+    claude_md_path = fields.Char(string="CLAUDE.md sökväg")
 
     @api.model
     def action_reload_from_service(self):
@@ -74,13 +76,15 @@ class ClioNccProject(models.Model):
 
         vals_list = [
             {
-                "nr":         p.get("nr") or "",
-                "sfar":       p.get("sfar") or "",
-                "kodord":     p.get("kodord") or "",
-                "name":       p.get("name") or "(inget namn)",
-                "ncc_ok":     bool(p.get("ncc_url")),
-                "ncc_url":    p.get("ncc_url") or "",
-                "status_raw": p.get("status") or "",
+                "nr":             p.get("nr") or "",
+                "sfar":           p.get("sfar") or "",
+                "kodord":         p.get("kodord") or "",
+                "name":           p.get("name") or "(inget namn)",
+                "ncc_ok":         bool(p.get("ncc_url")),
+                "ncc_url":        p.get("ncc_url") or "",
+                "status_raw":     p.get("status") or "",
+                "clio_md_path":   p.get("clio_md_path") or "",
+                "claude_md_path": p.get("claude_md_path") or "",
             }
             for p in projects
         ]
