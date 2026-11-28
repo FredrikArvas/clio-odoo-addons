@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'AIAB — Installationsprofil',
-    'version': '19.0.4.4.0',
+    'version': '19.0.4.5.0',
     'summary': 'Meta-modul: installerar alla moduler for AIAB-databasen',
     'author': 'Arvas International AB',
     'license': 'LGPL-3',
@@ -19,7 +19,6 @@
         'clio_mail_permissions',                      # Behorighetsstyrning for e-post
         'clio_ncc_project',                           # NCC-projektkort i Odoo
         'odoo_message_delete',                         # Radera mail.message/mail.mail (grupp: Radera meddelanden)
-        'clio_recruit',                               # Passiv kandidatsourcing (clio-recruiter)
         'clio_theme',                                 # AIAB-fargkodning av navbar
         'clio_vigil',                                 # Mediebevakning
         # â”€â”€ Lokalisering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
