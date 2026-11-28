@@ -101,7 +101,7 @@
 
     <!-- ── Meny ─────────────────────────────────────────────────────────── -->
     <menuitem id="menu_clio_projekt_root"
-              name="Clio Projekt"
+              name="Clio Context Cards"
               sequence="85"/>
 
     <menuitem id="menu_clio_ncc_project"

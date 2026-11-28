@@ -49,7 +49,7 @@ def _call_raw(env, path: str, data: dict | None = None) -> dict:
 
 class ClioNccProject(models.Model):
     _name = "clio.ncc.project"
-    _description = "Clio — Projektlista (NCC)"
+    _description = "Clio — Context Cards"
     _order = "nr"
     _rec_name = "name"
 
