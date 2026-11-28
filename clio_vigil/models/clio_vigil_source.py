@@ -43,6 +43,7 @@ class ClioVigilSource(models.Model):
         selection = [
             ("en",    "Engelska"),
             ("sv",    "Svenska"),
+            ("fi",    "Finska"),
             ("pt",    "Portugisiska"),
             ("multi", "Flerspråkig"),
         ],
