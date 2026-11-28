@@ -60,7 +60,6 @@ class UapEncounter(models.Model):
             ("2", "2 — Close Encounter"),
             ("3", "3 — Physical Evidence"),
             ("4", "4 — Abduction / Contact"),
-            ("5", "5 — Media / Cultural Reference"),
         ],
         string="Encounter Class",
         index=True,
@@ -97,38 +96,6 @@ class UapEncounter(models.Model):
         index=True,
     )
 
-    # --- Skywatcher-klassificering (deprecated: se classification_ids) ---
-    skywatcher_class = fields.Selection(
-        selection=[
-            ("I",    "I — Tetra"),
-            ("II",   "II — Tic Tac"),
-            ("III",  "III — Blob"),
-            ("IV",   "IV — Beam"),
-            ("V",    "V — Manta Ray"),
-            ("VI",   "VI — Bright Star"),
-            ("VII",  "VII — Jellyfish"),
-            ("VIII", "VIII — Hornet"),
-            ("IX",   "IX — Egg"),
-            ("X",    "X — Teardrop"),
-        ],
-        string="Skywatcher Class",
-        index=True,
-        help="Morfologisk klass enligt Skywatcher UAP Classification Guide (I-IX + X Teardrop)",
-    )
-    skywatcher_confidence = fields.Selection(
-        selection=[
-            ("auto_high", "Auto — hög"),
-            ("auto_low",  "Auto — låg"),
-            ("manual",    "Manuell"),
-        ],
-        string="SW Confidence",
-        help="Källan till Skywatcher-klassificeringen: automatisk (hög/låg) eller manuell granskning",
-    )
-    skywatcher_notes = fields.Text(
-        string="SW Notes",
-        help="Motivering eller kommentar till Skywatcher-klassificeringen",
-    )
-
     # --- Relationer ---
     source_ids = fields.Many2many(
         comodel_name="uap.source",
@@ -149,75 +116,91 @@ class UapEncounter(models.Model):
         inverse_name="encounter_id",
         string="Verification Log",
     )
-    classification_ids = fields.One2many(
-        comodel_name="uap.encounter.classification",
-        inverse_name="encounter_id",
-        string="Klassificeringar",
-    )
-    anomaly_ids = fields.Many2many(
-        comodel_name="uap.anomaly",
-        relation="uap_anomaly_encounter_rel",
-        column1="encounter_id",
-        column2="anomaly_id",
-        string="Anomalier",
-    )
 
-    # --- ETH-hypotes (utomjordiskt ursprung) ---
+    # --- Transmorf-taxonomin (Projekt 23) ---
+    is_case_report = fields.Boolean(
+        string="Fallrapport",
+        default=False,
+        help="True om dokumentet beskriver ett faktiskt observationstillfälle/möte med UAP/fenomen.",
+    )
     eth_origin = fields.Selection(
         selection=[
-            ("0", "0 — Förklarat / Explained"),
-            ("1", "1 — Oklart / Unclear"),
-            ("2", "2 — Troligt mänskligt / Likely Human"),
-            ("3", "3 — Okänt ursprung / Unknown Origin"),
-            ("4", "4 — Troligt icke-mänskligt / Likely Non-Human"),
-            ("5", "5 — Bekräftat icke-mänskligt / Confirmed Non-Human"),
+            ("0", "0 — Förklarat/mänskligt ursprung"),
+            ("1", "1 — Troligen mänskligt, oklart"),
+            ("2", "2 — Okänt ursprung"),
+            ("3", "3 — Stark icke-mänsklig indikation"),
+            ("4", "4 — Icke-mänsklig med officiell korroboration"),
+            ("5", "5 — Bekräftat av declassificerade dokument"),
         ],
         string="ETH Origin",
         index=True,
-        help="Bedömning av icke-mänskligt / utomjordiskt ursprung (0=Förklarat, 5=Bekräftat)",
+    )
+    craft_class = fields.Selection(
+        selection=[
+            ("I",       "I — Tetra"),
+            ("II",      "II — Tic-Tac"),
+            ("III",     "III — Blob"),
+            ("IV",      "IV — Beam"),
+            ("V",       "V — Manta-Ray"),
+            ("VI",      "VI — Bright-Star"),
+            ("VII",     "VII — Jellyfish"),
+            ("VIII",    "VIII — Hornet"),
+            ("IX",      "IX — Egg"),
+            ("X",       "X — Teardrop"),
+            ("unknown", "Unknown"),
+        ],
+        string="Craft Class (Skywatcher)",
+    )
+    entity_type = fields.Selection(
+        selection=[
+            # --- Modern UAP-taxonomi ---
+            ("Nordic",      "Nordic"),
+            ("TallGray",    "TallGray"),
+            ("ShortGray",   "ShortGray"),
+            ("LongGray",    "LongGray"),
+            ("Reptilian",   "Reptilian"),
+            ("Mantid",      "Mantid"),
+            ("Hybrid",      "Hybrid"),
+            ("Energy",      "Energy"),
+            # --- Transmorf-taxonomi: bibliska/historiska entiteter ---
+            ("Angel",       "Angel (mal'ak)"),
+            ("AngelOfLord", "Angel of the LORD (teofani)"),
+            ("Cherub",      "Cherubim"),
+            ("Seraph",      "Seraphim"),
+            ("Nephilim",    "Nephilim / Giant"),
+            ("Demon",       "Demon / Evil Spirit"),
+            # --- Obestämd ---
+            ("Unknown",     "Unknown"),
+        ],
+        string="Entity Type",
     )
     intelligence_indicator = fields.Selection(
         selection=[
-            ("0", "0 — Inga tecken / No Signs"),
-            ("1", "1 — Svaga tecken / Weak Signs"),
-            ("2", "2 — Tydliga tecken / Clear Signs"),
-            ("3", "3 — Direkt kontakt / Direct Contact"),
+            ("0", "0 — Inga tecken på intelligens"),
+            ("1", "1 — Möjlig reaktiv/avsiktlig rörelse"),
+            ("2", "2 — Tydlig intelligens"),
+            ("3", "3 — Direkt kontakt eller kommunikation"),
         ],
         string="Intelligence Indicator",
-        help="Tecken på intelligent kontroll (0=Inga, 3=Direkt kontakt/besättning observerad)",
     )
-
-    # --- Pentagon Five Observables (AARO) ---
-    obs_antigravity = fields.Boolean(
-        string="Anti-Gravity",
+    suppression_indicator = fields.Boolean(
+        string="Suppression Indicator",
         default=False,
-        help="Observatorn rapporterar rörelse utan synbara propulsionssystem",
+        help="Texten tonar ned eller undviker ETH-implikationer trots eth_origin >= 3.",
     )
-    obs_instant_accel = fields.Boolean(
-        string="Instant Acceleration",
-        default=False,
-        help="Omedelbar acceleration / riktningsändring bortom känd fysik",
+    suppression_note = fields.Char(
+        string="Suppression Note",
+        size=120,
     )
-    obs_hypersonic = fields.Boolean(
-        string="Hypersonic",
-        default=False,
-        help="Hypersonisk hastighet utan värmesignatur",
+    afu_article_id = fields.Integer(
+        string="AFU Article ID",
+        help="Odoo-ID för källartikeln i clio.media.article (uap-databasen).",
+        index=True,
     )
-    obs_low_observability = fields.Boolean(
-        string="Low Observability",
-        default=False,
-        help="Låg observerbarhet / stealth-förmåga",
-    )
-    obs_transmedium = fields.Boolean(
-        string="Trans-Medium",
-        default=False,
-        help="Rör sig obehindrat mellan luft, vatten och rymden",
-    )
-    observables_count = fields.Integer(
-        string="Observables",
-        compute="_compute_observables_count",
-        store=True,
-        help="Antal Pentagon Five Observables som rapporterats (0-5)",
+    afu_doc_path = fields.Char(
+        string="AFU Document Path",
+        help="Relativ sökväg till källdokumentet under data/downloads/.",
+        index=True,
     )
 
     # --- Övrigt ---
@@ -326,16 +309,6 @@ class UapEncounter(models.Model):
     )
     verification_count = fields.Integer(
         string="# Verifications",
-        compute="_compute_counts",
-        store=False,
-    )
-    classification_count = fields.Integer(
-        string="# Klassificeringar",
-        compute="_compute_counts",
-        store=False,
-    )
-    anomaly_count = fields.Integer(
-        string="# Anomalier",
         compute="_compute_counts",
         store=False,
     )
